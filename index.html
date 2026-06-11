@@ -131,14 +131,260 @@ h1{font-size:18px;font-weight:600;margin-bottom:20px}
 
 <script>
 const CHIPS={
-  pos:[{k:"investi(e)",l:"investi(e)"},{k:"sérieux",l:"sérieux"},{k:"appliqué(e)",l:"appliqué(e)"},{k:"participation active",l:"participation active"},{k:"esprit d'équipe",l:"esprit d'équipe"},{k:"fair-play",l:"fair-play"},{k:"écoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},{k:"bon niveau technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}],
-  neg:[{k:"manque d'investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},{k:"manque de concentration",l:"manque de concentration"},{k:"difficultés techniques",l:"difficultés techniques"},{k:"en retrait",l:"en retrait"},{k:"irrégulier",l:"irrégulier"},{k:"efforts à fournir",l:"efforts à fournir"},{k:"perturbateur",l:"perturbateur"}],
-  comp:[{k:"attitude positive",l:"attitude positive"},{k:"respectueux",l:"respectueux"},{k:"agréable en cours",l:"agréable en cours"},{k:"comportement à améliorer",l:"comportement à améliorer"},{k:"ponctuel",l:"ponctualité"}],
-  prog:[{k:"en progrès",l:"en progrès"},{k:"progression constante",l:"progression constante"},{k:"potentiel à exploiter",l:"potentiel à exploiter"},{k:"résultats encourageants",l:"résultats encourageants"},{k:"trimestre en hausse",l:"trimestre en hausse"},{k:"acquis solides",l:"acquis solides"}]
+  pos:[
+    {k:"investi",l:"investi(e)"},
+    {k:"sérieux",l:"sérieux/sérieuse"},
+    {k:"appliqué",l:"appliqué(e)"},
+    {k:"participation",l:"participation active"},
+    {k:"equipe",l:"esprit d'équipe"},
+    {k:"fairplay",l:"fair-play"},
+    {k:"ecoute",l:"écoute des consignes"},
+    {k:"leadership",l:"leadership"},
+    {k:"technique",l:"bon niveau technique"},
+    {k:"autonome",l:"autonomie"}
+  ],
+  neg:[
+    {k:"investissement",l:"manque d'investissement"},
+    {k:"bavardage",l:"bavardage"},
+    {k:"concentration",l:"manque de concentration"},
+    {k:"difficultes",l:"difficultés techniques"},
+    {k:"retrait",l:"en retrait"},
+    {k:"irregulier",l:"irrégulier(e)"},
+    {k:"efforts",l:"efforts à fournir"},
+    {k:"perturbateur",l:"perturbateur/trice"}
+  ],
+  comp:[
+    {k:"attitude",l:"attitude positive"},
+    {k:"respectueux",l:"respectueux/euse"},
+    {k:"agreable",l:"agréable en cours"},
+    {k:"comportement",l:"comportement à améliorer"},
+    {k:"ponctuel",l:"ponctuel(le)"}
+  ],
+  prog:[
+    {k:"progres",l:"en progrès"},
+    {k:"progression",l:"progression constante"},
+    {k:"potentiel",l:"potentiel à exploiter"},
+    {k:"encourageant",l:"résultats encourageants"},
+    {k:"hausse",l:"trimestre en hausse"},
+    {k:"acquis",l:"acquis solides"}
+  ]
 };
 
+// Phrases complètes par profil — chaque entrée est une phrase prête à l'emploi
+// Variables : {il} {elle} {Il} {Elle} {son} {sa} {e} {ue}
+const PHRASES = {
+  // Très positif
+  pos_fort: [
+    "Élève très {investi_e}, {il} fait preuve d'un excellent {esprit_equipe} et d'une {ecoute} exemplaire. Félicitations pour ce trimestre.",
+    "Très bonne participation, {il} s'implique avec sérieux et montre un {leadership} naturel apprécié. Continuez ainsi.",
+    "Élève {applique_e} et {autonome}, {il} progresse régulièrement et constitue un atout pour le groupe.",
+    "Bon trimestre. {Il} s'investit pleinement, fait preuve de {fairplay} et d'une belle motivation. Bravo.",
+    "{Il} se distingue par {son} sérieux, {son} écoute et {son} implication constante. Excellent travail.",
+  ],
+  // Positif avec progression
+  pos_prog: [
+    "Élève sérieux{e} et {investi_e} qui affiche une {progression} régulière. Les efforts payent, continuons dans cette dynamique.",
+    "Bon trimestre en progression. {Il} s'implique avec sérieux et les résultats sont {encourageants}. Bravo.",
+    "{Il} est {investi_e} et motivé{e} ; la {progression} constatée ce trimestre est encourageante. À poursuivre.",
+    "Les acquis se consolident grâce à un travail sérieux et régulier. Trimestre positif et {encourageant}.",
+  ],
+  // Positif avec points à améliorer
+  pos_neg_bavardage: [
+    "Élève {investi_e} qui possède de réelles qualités, mais dont le {bavardage} nuit parfois au bon déroulement des séances. Des efforts sont attendus sur ce point.",
+    "{Il} fait preuve de {participation} et d'implication, cependant le {bavardage} reste un frein à sa concentration. À corriger.",
+  ],
+  pos_neg_concentration: [
+    "Des qualités certaines, mais le {manque_concentration} empêche {il} de donner le meilleur de {lui_elle_meme}. Un effort de rigueur est attendu.",
+    "Élève {investi_e} mais qui manque parfois de concentration. Avec plus de régularité, les résultats seront au rendez-vous.",
+  ],
+  pos_neg_investissement: [
+    "{Il} dispose de bonnes capacités mais l'investissement en séance reste insuffisant. {Il} doit se remobiliser pour progresser.",
+    "Du potentiel, mais un {manque_investissement} qui pénalise les résultats. Des efforts supplémentaires sont nécessaires.",
+  ],
+  pos_neg_retrait: [
+    "Élève discret{e} qui possède des qualités mais reste trop {en_retrait} lors des activités. Une plus grande implication est attendue.",
+    "{Il} doit prendre davantage de place dans les activités collectives. {Son} attitude réservée freine sa progression.",
+  ],
+  // Négatif dominant
+  neg_bavardage: [
+    "Le {bavardage} répété perturbe le bon déroulement des séances et nuit à la concentration de la classe. Un effort sérieux est indispensable.",
+    "{Il} doit impérativement réduire les bavardages en cours d'EPS, ce comportement freine sa progression et celle du groupe.",
+  ],
+  neg_investissement: [
+    "L'investissement en séance est insuffisant. {Il} doit se remobiliser et fournir davantage d'efforts pour progresser.",
+    "Des difficultés persistantes liées à un manque d'implication. Une véritable remobilisation est nécessaire ce trimestre.",
+  ],
+  neg_concentration: [
+    "{Il} manque de concentration en cours, ce qui impacte directement ses résultats. Des efforts de régularité sont attendus.",
+    "Des lacunes dues à un manque de concentration récurrent. {Il} doit apprendre à mieux se focaliser sur les objectifs des séances.",
+  ],
+  neg_perturbateur: [
+    "Le comportement perturbateur de {il} nuit au bon déroulement des cours. Une attitude plus respectueuse est indispensable.",
+    "{Il} perturbe régulièrement les séances. Ce comportement est inacceptable et doit changer rapidement.",
+  ],
+  neg_irregulier: [
+    "Des résultats irréguliers qui ne reflètent pas le potentiel réel de {il}. Plus de régularité dans l'effort est attendu.",
+    "L'irrégularité dans l'implication pénalise les résultats. {Il} doit s'investir de façon plus constante.",
+  ],
+  neg_difficultes: [
+    "{Il} rencontre des difficultés techniques persistantes. Un travail plus régulier et une meilleure écoute des consignes permettraient de progresser.",
+    "Des difficultés techniques à surmonter. {Il} doit persévérer et s'appuyer davantage sur les conseils dispensés en cours.",
+  ],
+  // Comportement positif
+  comp_positif: [
+    "{Il} fait preuve d'une attitude exemplaire en cours d'EPS : respectueux{se}, ponctuel{le} et toujours de bonne volonté.",
+    "Comportement très satisfaisant. {Il} est {agreable} et contribue positivement à l'ambiance de la classe.",
+    "Élève {respectueux_se} et {ponctuele} dont l'attitude positive est appréciée. Bon trimestre.",
+  ],
+  // Comportement à améliorer
+  comp_ameliorer: [
+    "Le comportement de {il} est à revoir : des efforts de respect et d'implication sont indispensables pour progresser.",
+    "{Il} doit travailler sur {son} comportement en cours, qui reste en-deçà de ce qui est attendu à ce niveau.",
+  ],
+  // Progression seule
+  prog_seul: [
+    "Trimestre en progression. {Il} fait des efforts qui commencent à porter leurs fruits. Continuons dans cette direction.",
+    "{Il} progresse à {son} rythme et les résultats s'améliorent. Ces efforts méritent d'être soulignés.",
+    "Des acquis solides qui témoignent d'un travail régulier. {Il} est sur la bonne voie.",
+    "Trimestre en hausse, les progrès sont visibles. {Il} doit maintenir cet effort pour consolider ses acquis.",
+  ],
+  // Potentiel non exploité
+  potentiel: [
+    "{Il} dispose d'un réel potentiel qui reste à exploiter. Avec plus d'implication, les résultats pourraient être bien meilleurs.",
+    "Du potentiel, mais des efforts insuffisants. {Il} doit se donner les moyens de progresser.",
+  ],
+  // Par défaut
+  defaut: [
+    "Trimestre correct. {Il} participe aux activités et s'implique de façon globalement satisfaisante.",
+    "Élève qui s'investit dans les activités proposées. Des marges de progression existent.",
+    "Participation correcte aux activités. {Il} doit poursuivre ses efforts pour progresser.",
+  ]
+};
+
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function appliquer(phrase, g){
+  const f = g==="F";
+  return phrase
+    .replace(/\{il\}/g, f?"elle":"il")
+    .replace(/\{Il\}/g, f?"Elle":"Il")
+    .replace(/\{son\}/g, f?"sa":"son")
+    .replace(/\{Son\}/g, f?"Sa":"Son")
+    .replace(/\{lui_elle_meme\}/g, f?"elle-même":"lui-même")
+    .replace(/\{e\}/g, f?"e":"")
+    .replace(/\{ue\}/g, f?"ue":"u")
+    .replace(/\{investi_e\}/g, f?"investie":"investi")
+    .replace(/\{applique_e\}/g, f?"appliquée":"appliqué")
+    .replace(/\{autonome\}/g, "autonome")
+    .replace(/\{respectueux_se\}/g, f?"respectueuse":"respectueux")
+    .replace(/\{ponctuele\}/g, f?"ponctuelle":"ponctuel")
+    .replace(/\{agreable\}/g, "agréable")
+    .replace(/\{esprit_equipe\}/g, "esprit d'équipe")
+    .replace(/\{ecoute\}/g, "écoute")
+    .replace(/\{fairplay\}/g, "fair-play")
+    .replace(/\{leadership\}/g, "leadership")
+    .replace(/\{participation\}/g, "participation active")
+    .replace(/\{bavardage\}/g, "bavardage")
+    .replace(/\{manque_concentration\}/g, "manque de concentration")
+    .replace(/\{manque_investissement\}/g, "manque d'investissement")
+    .replace(/\{en_retrait\}/g, "en retrait")
+    .replace(/\{progression\}/g, "progression")
+    .replace(/\{encourageant\}/g, f?"encourageante":"encourageant")
+    .replace(/\{encourageants\}/g, "encourageants");
+}
+
+function choisirPhrases(sel, genre, libre){
+  const pos = Object.entries(sel).filter(([k,v])=>v==="pos").map(([k])=>k);
+  const neg = Object.entries(sel).filter(([k,v])=>v==="neg").map(([k])=>k);
+  const comp = Object.entries(sel).filter(([k,v])=>v==="comp").map(([k])=>k);
+  const prog = Object.entries(sel).filter(([k,v])=>v==="prog").map(([k])=>k);
+
+  const hasPos = pos.length>0, hasNeg = neg.length>0;
+  const hasComp = comp.length>0, hasProg = prog.length>0;
+
+  let candidats = [];
+
+  // Profil très positif (3+ positifs ou leadership/technique)
+  if(hasPos && !hasNeg && (pos.length>=2 || pos.includes("leadership") || pos.includes("technique"))){
+    candidats = hasProg ? PHRASES.pos_prog : PHRASES.pos_fort;
+  }
+  // Positif + progression
+  else if(hasPos && hasProg && !hasNeg){
+    candidats = PHRASES.pos_prog;
+  }
+  // Positif + bavardage
+  else if(hasPos && neg.includes("bavardage")){
+    candidats = PHRASES.pos_neg_bavardage;
+  }
+  // Positif + manque de concentration
+  else if(hasPos && neg.includes("concentration")){
+    candidats = PHRASES.pos_neg_concentration;
+  }
+  // Positif + manque investissement
+  else if(hasPos && neg.includes("investissement")){
+    candidats = PHRASES.pos_neg_investissement;
+  }
+  // Positif + en retrait
+  else if(hasPos && neg.includes("retrait")){
+    candidats = PHRASES.pos_neg_retrait;
+  }
+  // Négatif dominant — bavardage
+  else if(!hasPos && neg.includes("bavardage")){
+    candidats = PHRASES.neg_bavardage;
+  }
+  // Négatif dominant — perturbateur
+  else if(!hasPos && neg.includes("perturbateur")){
+    candidats = PHRASES.neg_perturbateur;
+  }
+  // Négatif dominant — investissement
+  else if(!hasPos && neg.includes("investissement")){
+    candidats = PHRASES.neg_investissement;
+  }
+  // Négatif dominant — concentration
+  else if(!hasPos && neg.includes("concentration")){
+    candidats = PHRASES.neg_concentration;
+  }
+  // Négatif dominant — irrégulier
+  else if(!hasPos && neg.includes("irregulier")){
+    candidats = PHRASES.neg_irregulier;
+  }
+  // Négatif dominant — difficultés
+  else if(!hasPos && neg.includes("difficultes")){
+    candidats = PHRASES.neg_difficultes;
+  }
+  // Comportement positif
+  else if(hasComp && comp.includes("attitude") || comp.includes("respectueux") || comp.includes("agreable")){
+    candidats = hasPos ? PHRASES.pos_fort : PHRASES.comp_positif;
+  }
+  // Comportement à améliorer
+  else if(hasComp && comp.includes("comportement")){
+    candidats = PHRASES.comp_ameliorer;
+  }
+  // Potentiel à exploiter
+  else if(prog.includes("potentiel") && !hasPos){
+    candidats = PHRASES.potentiel;
+  }
+  // Progression seule
+  else if(hasProg && !hasNeg){
+    candidats = PHRASES.prog_seul;
+  }
+  // Défaut
+  else {
+    candidats = PHRASES.defaut;
+  }
+
+  let phrase = appliquer(pick(candidats), genre);
+
+  // Ajouter mots libres en fin de phrase si présents
+  if(libre.length){
+    phrase = phrase.replace(/\.$/, "") + `. À noter : ${libre.join(", ")}.`;
+  }
+
+  return phrase;
+}
+
 const KEY_DB="eps_appr_v1";
-let genre="M",sel={},filtreCur="toutes",phrase="",prenomCur="",classeCur="";
+let genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="";
 
 function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY_DB)||"[]");}catch(e){return[];}}
 function dbSave(d){localStorage.setItem(KEY_DB,JSON.stringify(d));}
@@ -152,7 +398,7 @@ function setG(g){
 function renderChips(){
   ["pos","neg","comp","prog"].forEach(cat=>{
     document.getElementById("cp-"+cat).innerHTML=CHIPS[cat].map(c=>
-      `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k.replace(/'/g,"\\'")}','${cat}')">${c.l}</button>`
+      `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k}','${cat}')">${c.l}</button>`
     ).join("");
   });
   renderTags();
@@ -165,81 +411,18 @@ function renderTags(){
   const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
   const all=[...keys,...ft];
   document.getElementById("sel-tags").innerHTML=all.length
-    ?all.map(k=>`<span class="stag">${k}</span>`).join("")
+    ?all.map(k=>`<span class="stag">${CHIPS.pos.concat(CHIPS.neg,CHIPS.comp,CHIPS.prog).find(c=>c.k===k)?.l||k}</span>`).join("")
     :'<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';
-}
-
-function accord(mot,g){
-  if(g==="F"){
-    const m={"sérieux":"sérieuse","irrégulier":"irrégulière","respectueux":"respectueuse","perturbateur":"perturbatrice","ponctuel":"ponctuelle","appliqué(e)":"appliquée","investi(e)":"investie","autonome":"autonome"};
-    return m[mot]||mot;
-  }
-  const m={"appliqué(e)":"appliqué","investi(e)":"investi"};
-  return m[mot]||mot;
 }
 
 function generer(){
   const keys=Object.keys(sel);
   const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
-  const all=[...keys,...ft];
-  if(!all.length){alert("Sélectionne au moins un mot-clé.");return;}
+  if(!keys.length && !ft.length){alert("Sélectionne au moins un mot-clé.");return;}
 
   prenomCur=document.getElementById("prenom").value.trim();
   classeCur=document.getElementById("classe").value;
-
-  const cats={pos:[],neg:[],comp:[],prog:[],libre:[]};
-  keys.forEach(k=>{if(cats[sel[k]])cats[sel[k]].push(k);});
-  ft.forEach(k=>cats.libre.push(k));
-
-  const g=genre;
-  const il=g==="F"?"Elle":"Il";
-  const son=g==="F"?"sa":"son";
-  const e=g==="F"?"e":"";
-
-  const posStr=cats.pos.map(k=>accord(k,g)).join(", ");
-  const negStr=cats.neg.map(k=>accord(k,g)).join(", ");
-  const compStr=cats.comp.map(k=>accord(k,g)).join(", ");
-  const progStr=cats.prog.map(k=>accord(k,g)).join(", ");
-  const libreStr=cats.libre.join(", ");
-
-  const hasPos=cats.pos.length>0, hasNeg=cats.neg.length>0;
-  const hasComp=cats.comp.length>0, hasProg=cats.prog.length>0;
-  const hasLibre=cats.libre.length>0;
-
-  const modeles=[];
-
-  if(hasPos&&hasProg){
-    modeles.push(`Élève ${posStr}. ${il} affiche ${progStr}, ce qui est encourageant.`);
-    modeles.push(`Bon trimestre : ${posStr} et ${progStr}. Continuons dans cette dynamique.`);
-  }
-  if(hasPos&&hasNeg){
-    modeles.push(`${il} fait preuve de ${posStr}, mais le ${negStr} freine sa progression. Des efforts sont attendus.`);
-    modeles.push(`Des qualités réelles (${posStr}), mais il faudra travailler sur le ${negStr} pour progresser davantage.`);
-  }
-  if(hasPos&&!hasNeg&&!hasProg){
-    modeles.push(`Élève ${posStr}, agréable à encadrer. Bon trimestre.`);
-    modeles.push(`${il} se distingue par ${son} ${posStr}. Continuez ainsi.`);
-  }
-  if(hasNeg&&!hasPos){
-    modeles.push(`Des difficultés persistent : ${negStr}. Une remobilisation est nécessaire pour progresser.`);
-    modeles.push(`${il} doit travailler sur le ${negStr}. Le potentiel est là, mais les résultats ne suivent pas encore.`);
-  }
-  if(hasComp&&hasPos)
-    modeles.push(`${il} présente une ${compStr} et fait preuve de ${posStr}. Très satisfaisant.`);
-  if(hasComp&&hasNeg)
-    modeles.push(`Le ${compStr} nuit au bon déroulement des séances. ${il} doit également progresser sur : ${negStr}.`);
-  if(hasComp&&!hasPos&&!hasNeg)
-    modeles.push(`${il} affiche une ${compStr} en cours d'EPS.${hasProg?" "+il+" est "+progStr+".":""}`);
-  if(hasProg&&!hasPos&&!hasNeg){
-    modeles.push(`${il} est ${progStr} ce trimestre. Encourageant, continuons dans cette voie.`);
-    modeles.push(`Des résultats ${progStr}. ${il} est sur la bonne voie.`);
-  }
-  if(!modeles.length)
-    modeles.push(`Profil varié : ${all.map(k=>accord(k,g)).join(", ")}. Des efforts sont à poursuivre.`);
-
-  let base=modeles[Math.floor(Math.random()*modeles.length)];
-  if(hasLibre) base=base.replace(/\.$/,"")+`. À noter : ${libreStr}.`;
-  phrase=base;
+  phrase=choisirPhrases(sel, genre, ft);
 
   document.getElementById("result-zone").style.display="block";
   document.getElementById("ok-banner").style.display="none";

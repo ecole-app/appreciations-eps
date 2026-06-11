@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appréciations EPS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;padding:16px;font-size:15px}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:8px 18px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:14px;cursor:pointer;color:#666}
+.tab.active{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.section{display:none}.section.active{display:block}
+.card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:16px}
+.slabel{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.chip{padding:5px 12px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#555;user-select:none}
+.chip.pos.on{background:#EAF3DE;color:#3B6D11;border-color:#97C459}
+.chip.neg.on{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+.chip.comp.on{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
+.chip.prog.on{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+label{font-size:13px;color:#666;display:block;margin-bottom:5px}
+input[type=text],select{width:100%;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:8px;background:#fff;color:#1a1a1a}
+.genre-row{display:flex;gap:8px}
+.grb{padding:7px 16px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#666}
+.grb.on{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button.action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#1a1a1a}
+button.action:hover{background:#f0f0e8}
+button.action.primary{border-color:#999;background:#e8e8e0;font-weight:600}
+.result-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:14px;margin-top:12px}
+.result-text{font-size:14px;line-height:1.7;min-height:48px;white-space:pre-wrap;color:#1a1a1a}
+.hint{font-size:12px;color:#888;margin-top:6px}
+.loading{color:#888;font-style:italic}
+.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#f0f0e8;color:#666;border:1px solid #e0e0d8;display:inline-block}
+.sel-tags{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px;min-height:22px}
+hr{border:none;border-top:1px solid #e8e8e0;margin:14px 0}
+.eleve-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#fff;border:1px solid #e8e8e0;border-radius:8px;margin-bottom:8px}
+.eleve-info{flex:1;min-width:0}
+.eleve-nom{font-size:14px;font-weight:600}
+.eleve-meta{font-size:12px;color:#888;margin-top:2px}
+.eleve-phrase{font-size:13px;line-height:1.6;margin-top:6px}
+.icon-btn{padding:5px 10px;font-size:12px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;color:#666}
+.icon-btn:hover{background:#f0f0e8}
+.icon-btn.danger:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+.empty{font-size:13px;color:#888;font-style:italic;padding:12px 0}
+.filter-btn{padding:5px 12px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#666}
+.filter-btn.on{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.counter{font-size:12px;color:#888;margin-left:auto}
+.ok-banner{background:#EAF3DE;color:#3B6D11;border:1px solid #97C459;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px;display:none}
+.export-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px}
+h1{font-size:18px;font-weight:600;margin-bottom:20px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:12px;padding:24px;width:90%;max-width:420px}
+.modal h2{font-size:16px;font-weight:600;margin-bottom:8px}
+.modal p{font-size:13px;color:#666;margin-bottom:16px;line-height:1.5}
+.modal input{width:100%;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:8px;margin-bottom:12px}
+.err-msg{color:#A32D2D;font-size:12px;margin-top:6px;display:none}
+@media(max-width:500px){.row3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="modal-bg" id="api-modal">
+  <div class="modal">
+    <h2>🔑 Clé API Anthropic</h2>
+    <p>Pour générer les appréciations avec l'IA, saisis ta clé API Anthropic.<br>Elle sera stockée localement dans ton navigateur.</p>
+    <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." />
+    <div class="err-msg" id="api-err">Clé invalide. Vérifie et réessaie.</div>
+    <div style="display:flex;gap:8px">
+      <button class="action primary" style="flex:1" onclick="saveApiKey()">Enregistrer</button>
+      <button class="action" onclick="closeModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+  <h1>📋 Appréciations EPS</h1>
+  <button class="action" onclick="openModal()" style="font-size:12px;padding:6px 12px">🔑 Clé API</button>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
+  <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
+  <button class="tab" onclick="setTab('export')">↗ Export</button>
+</div>
+
+<div id="gen" class="section active">
+  <div class="card">
+    <div class="row3">
+      <div><label>Prénom</label><input type="text" id="prenom" placeholder="Ex: Lucas" /></div>
+      <div><label>Classe</label>
+        <select id="classe"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select>
+      </div>
+      <div><label>Genre</label>
+        <div class="genre-row">
+          <button class="grb on" id="gb-m" onclick="setG('M')">Garçon</button>
+          <button class="grb" id="gb-f" onclick="setG('F')">Fille</button>
+        </div>
+      </div>
+    </div>
+    <div class="slabel">Points positifs</div><div class="chips" id="cp-pos"></div>
+    <div class="slabel">Points à travailler</div><div class="chips" id="cp-neg"></div>
+    <div class="slabel">Comportement</div><div class="chips" id="cp-comp"></div>
+    <div class="slabel">Progression</div><div class="chips" id="cp-prog"></div>
+    <hr>
+    <div style="margin-bottom:12px">
+      <label>Mots libres <span style="font-weight:400;color:#888">(séparés par virgules)</span></label>
+      <input type="text" id="free" placeholder="Ex: badminton, manque de vitesse…" oninput="renderTags()" />
+    </div>
+    <div style="font-size:12px;color:#888;margin-bottom:4px">Mots-clés sélectionnés :</div>
+    <div class="sel-tags" id="sel-tags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
+    <div class="btn-row">
+      <button class="action primary" onclick="generer()">✦ Générer avec IA</button>
+      <button class="action" onclick="resetForm()">↺ Réinitialiser</button>
+    </div>
+    <div id="result-zone" style="display:none" class="result-box">
+      <div style="font-size:12px;color:#888;margin-bottom:6px" id="rlabel">Phrase générée</div>
+      <div id="rtext" class="result-text"></div>
+      <div class="hint" id="rhint"></div>
+      <div class="btn-row">
+        <button class="action primary" onclick="enregistrer()">💾 Enregistrer</button>
+        <button class="action" onclick="generer()">↺ Regénérer</button>
+        <button class="action" onclick="copierPhrase()">⎘ Copier</button>
+      </div>
+      <div class="ok-banner" id="ok-banner">✓ Enregistré !</div>
+    </div>
+  </div>
+</div>
+
+<div id="liste" class="section">
+  <div class="filter-row">
+    <button class="filter-btn on" onclick="filtrer('toutes',this)">Toutes</button>
+    <button class="filter-btn" onclick="filtrer('6e',this)">6e</button>
+    <button class="filter-btn" onclick="filtrer('5e',this)">5e</button>
+    <button class="filter-btn" onclick="filtrer('4e',this)">4e</button>
+    <button class="filter-btn" onclick="filtrer('3e',this)">3e</button>
+    <span class="counter" id="lcounter"></span>
+  </div>
+  <div id="elist"></div>
+</div>
+
+<div id="export" class="section">
+  <div class="filter-row">
+    <label style="font-size:13px;align-self:center;margin:0">Classe :</label>
+    <select id="ecl" onchange="renderExport()" style="width:auto;font-size:13px;padding:6px 10px">
+      <option value="toutes">Toutes</option>
+      <option>6e</option><option>5e</option><option>4e</option><option>3e</option>
+    </select>
+    <button class="action" style="margin-left:auto" onclick="copierExport()">⎘ Copier tout</button>
+  </div>
+  <div id="econtent" class="export-box">Aucune appréciation.</div>
+</div>
+
+<script>
+const CHIPS={
+  pos:[{k:"investi(e)",l:"investi(e)"},{k:"sérieux",l:"sérieux"},{k:"appliqué(e)",l:"appliqué(e)"},{k:"participation active",l:"participation active"},{k:"esprit d'équipe",l:"esprit d'équipe"},{k:"fair-play",l:"fair-play"},{k:"écoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},{k:"bon niveau technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}],
+  neg:[{k:"manque d'investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},{k:"manque de concentration",l:"manque de concentration"},{k:"difficultés techniques",l:"difficultés techniques"},{k:"en retrait",l:"en retrait"},{k:"irrégulier",l:"irrégulier"},{k:"efforts à fournir",l:"efforts à fournir"},{k:"perturbateur",l:"perturbateur"}],
+  comp:[{k:"attitude positive",l:"attitude positive"},{k:"respectueux",l:"respectueux"},{k:"agréable en cours",l:"agréable en cours"},{k:"comportement à améliorer",l:"comportement à améliorer"},{k:"ponctuel",l:"ponctualité"}],
+  prog:[{k:"en progrès",l:"en progrès"},{k:"progression constante",l:"progression constante"},{k:"potentiel à exploiter",l:"potentiel à exploiter"},{k:"résultats encourageants",l:"résultats encourageants"},{k:"trimestre en hausse",l:"trimestre en hausse"},{k:"acquis solides",l:"acquis solides"}]
+};
+
+const KEY_DB="eps_appr_v1";
+const KEY_API="eps_api_key";
+let genre="M",sel={},filtreCur="toutes",phrase="",prenomCur="",classeCur="";
+
+function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY_DB)||"[]");}catch(e){return[];}}
+function dbSave(d){localStorage.setItem(KEY_DB,JSON.stringify(d));}
+function getApiKey(){return localStorage.getItem(KEY_API)||"";}
+function saveApiKey(){
+  const k=document.getElementById("api-key-input").value.trim();
+  if(!k.startsWith("sk-")){document.getElementById("api-err").style.display="block";return;}
+  localStorage.setItem(KEY_API,k);
+  document.getElementById("api-err").style.display="none";
+  closeModal();
+}
+function openModal(){
+  document.getElementById("api-key-input").value=getApiKey();
+  document.getElementById("api-modal").classList.add("show");
+}
+function closeModal(){document.getElementById("api-modal").classList.remove("show");}
+
+function setG(g){
+  genre=g;
+  document.getElementById("gb-m").classList.toggle("on",g==="M");
+  document.getElementById("gb-f").classList.toggle("on",g==="F");
+}
+
+function renderChips(){
+  ["pos","neg","comp","prog"].forEach(cat=>{
+    document.getElementById("cp-"+cat).innerHTML=CHIPS[cat].map(c=>
+      `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k.replace(/'/g,"\\'")}','${cat}')">${c.l}</button>`
+    ).join("");
+  });
+  renderTags();
+}
+
+function tog(k,cat){if(sel[k])delete sel[k];else sel[k]=cat;renderChips();}
+
+function renderTags(){
+  const keys=Object.keys(sel);
+  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const all=[...keys,...ft];
+  document.getElementById("sel-tags").innerHTML=all.length
+    ?all.map(k=>`<span class="stag">${k}</span>`).join("")
+    :'<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';
+}
+
+async function generer(){
+  const apiKey=getApiKey();
+  if(!apiKey){openModal();return;}
+  const keys=Object.keys(sel);
+  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const all=[...keys,...ft];
+  if(!all.length){alert("Sélectionne au moins un mot-clé.");return;}
+
+  prenomCur=document.getElementById("prenom").value.trim();
+  classeCur=document.getElementById("classe").value;
+
+  const zone=document.getElementById("result-zone");
+  const rt=document.getElementById("rtext");
+  zone.style.display="block";
+  document.getElementById("ok-banner").style.display="none";
+  rt.innerHTML='<span class="loading">Génération en cours…</span>';
+  document.getElementById("rlabel").textContent=prenomCur?`Phrase pour ${prenomCur}`:"Phrase générée";
+  phrase="";
+
+  const prompt=`Tu es professeur d'EPS en collège français. À partir des mots-clés suivants, rédige UNE appréciation de bulletin scolaire (1 à 2 phrases max), professionnelle et bienveillante.\n\nMots-clés : ${all.join(", ")}\nGenre : ${genre==="F"?"féminin (elle/sa/une)":"masculin (il/son/un)"}\n${prenomCur?`Prénom : ${prenomCur} — NE PAS l'inclure dans la phrase.`:""}\n\nRègles :\n- Varie les débuts : "Élève…", "Bon trimestre…", "Des efforts…"\n- Intègre les mots-clés naturellement\n- Ton professionnel et bienveillant\n- Juste la phrase, sans guillemets ni introduction`;
+
+  try{
+    const resp=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key":apiKey,
+        "anthropic-version":"2023-06-01",
+        "anthropic-dangerous-direct-browser-access":"true"
+      },
+      body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:300,messages:[{role:"user",content:prompt}]})
+    });
+    if(!resp.ok){
+      const e=await resp.json();
+      if(e.error&&e.error.type==="authentication_error"){
+        rt.innerHTML='<span class="loading">Clé API invalide.</span>';
+        openModal();return;
+      }
+      throw new Error(e.error?.message||resp.status);
+    }
+    const data=await resp.json();
+    phrase=data.content[0].text.trim();
+    rt.textContent=phrase;
+    document.getElementById("rhint").textContent="Clique sur Enregistrer pour sauvegarder.";
+  }catch(e){
+    rt.innerHTML=`<span class="loading">Erreur : ${e.message}</span>`;
+  }
+}
+
+function enregistrer(){
+  if(!phrase)return;
+  const db=dbLoad();
+  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
+  dbSave(db);updateBadge();
+  const b=document.getElementById("ok-banner");
+  b.style.display="block";setTimeout(()=>b.style.display="none",2000);
+}
+
+function copierPhrase(){
+  navigator.clipboard.writeText(phrase).catch(()=>{
+    const ta=document.createElement("textarea");ta.value=phrase;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);
+  });
+}
+
+function resetForm(){
+  sel={};
+  document.getElementById("prenom").value="";
+  document.getElementById("free").value="";
+  document.getElementById("result-zone").style.display="none";
+  phrase="";renderChips();
+}
+
+function filtrer(f,btn){
+  filtreCur=f;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");renderListe();
+}
+
+function renderListe(){
+  const db=dbLoad();
+  const filtered=filtreCur==="toutes"?db:db.filter(e=>e.classe===filtreCur);
+  document.getElementById("lcounter").textContent=`${filtered.length} élève(s)`;
+  const el=document.getElementById("elist");
+  if(!filtered.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
+  el.innerHTML=filtered.map(e=>`
+    <div class="eleve-item">
+      <div class="eleve-info">
+        <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:13px;color:#888">${e.classe}</span></div>
+        <div class="eleve-meta">${e.date}</div>
+        <div class="eleve-phrase">${e.phrase}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <button class="icon-btn" onclick="cpItem(${e.id})">⎘</button>
+        <button class="icon-btn danger" onclick="delItem(${e.id})">🗑</button>
+      </div>
+    </div>`).join("");
+}
+
+function cpItem(id){const e=dbLoad().find(x=>x.id===id);if(e)navigator.clipboard.writeText(e.phrase).catch(()=>{});}
+
+function delItem(id){
+  if(!confirm("Supprimer ?"))return;
+  dbSave(dbLoad().filter(x=>x.id!==id));
+  updateBadge();renderListe();renderExport();
+}
+
+function renderExport(){
+  const f=document.getElementById("ecl").value;
+  const db=dbLoad();
+  const filtered=f==="toutes"?db:db.filter(e=>e.classe===f);
+  document.getElementById("econtent").textContent=filtered.length
+    ?filtered.map(e=>`${e.prenom} (${e.classe})\n${e.phrase}`).join("\n\n")
+    :"Aucune appréciation.";
+}
+
+function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(()=>{});}
+
+function updateBadge(){
+  const n=dbLoad().length;
+  document.getElementById("badge").textContent=n?`(${n})`:"";
+}
+
+function setTab(id){
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",["gen","liste","export"][i]===id));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if(id==="liste")renderListe();
+  if(id==="export")renderExport();
+}
+
+if(!getApiKey())openModal();
+renderChips();
+updateBadge();
+</script>
+</body>
+</html>

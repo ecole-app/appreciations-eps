@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appréciations Collège Luqman</title>
+<title>Appréciations EPS</title>
 <style>
 :root{--vert:#1a7a6e;--vert-dark:#145f55;--orange:#e8671a;--orange-light:#fef0e6;--bg:#f0f2f0;--card:#fff;--border:#dde8e6;--text:#1a1a1a;--muted:#5a7570}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -61,7 +61,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0}
 </style>
 </head>
 <body>
-<h1><span>📋</span>Appréciations Collège Luqman</h1>
+<h1>📋 Appréciations EPS</h1>
 <div class="tabs">
   <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
   <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
@@ -305,98 +305,168 @@ function choisirPhrases(sel, genre, libre){
   const comp = Object.entries(sel).filter(([k,v])=>v==="comp").map(([k])=>k);
   const prog = Object.entries(sel).filter(([k,v])=>v==="prog").map(([k])=>k);
 
+  const g = genre;
+  const f = g==="F";
+  const Il = f?"Elle":"Il";
+  const il = f?"elle":"il";
+  const son = f?"sa":"son";
+  const e = f?"e":"";
+  const ue = f?"ue":"u";
+
+  // Traduction des clés en expressions naturelles
+  const labelPos = {
+    "investi": f?"investie":"investi",
+    "sérieux": f?"sérieuse":"sérieux",
+    "appliqué": f?"appliquée":"appliqué",
+    "participation": "une participation active",
+    "equipe": "un bon esprit d'équipe",
+    "fairplay": "le fair-play",
+    "ecoute": "une bonne écoute des consignes",
+    "leadership": "un leadership naturel",
+    "technique": "un bon niveau technique",
+    "autonome": f?"autonome et responsable":"autonome et responsable"
+  };
+  const labelNeg = {
+    "investissement": "manque d'investissement",
+    "bavardage": "bavardage excessif",
+    "concentration": "manque de concentration",
+    "difficultes": "difficultés techniques persistantes",
+    "retrait": "tendance à rester en retrait",
+    "irregulier": f?"irrégularité dans l'effort":"irrégularité dans l'effort",
+    "efforts": "efforts insuffisants",
+    "perturbateur": f?"comportement perturbateur":"comportement perturbateur"
+  };
+  const labelComp = {
+    "attitude": "attitude positive",
+    "respectueux": f?"respectueuse":"respectueux",
+    "agreable": "agréable à encadrer",
+    "comportement": "comportement à revoir",
+    "ponctuel": f?"ponctuelle":"ponctuel"
+  };
+  const labelProg = {
+    "progres": "en progrès",
+    "progression": "une progression constante",
+    "potentiel": "un potentiel à exploiter",
+    "encourageant": "des résultats encourageants",
+    "hausse": "un trimestre en hausse",
+    "acquis": "des acquis solides"
+  };
+
+  const posLabels = pos.map(k=>labelPos[k]||k);
+  const negLabels = neg.map(k=>labelNeg[k]||k);
+  const compLabels = comp.map(k=>labelComp[k]||k);
+  const progLabels = prog.map(k=>labelProg[k]||k);
+
   const hasPos = pos.length>0, hasNeg = neg.length>0;
   const hasComp = comp.length>0, hasProg = prog.length>0;
 
-  let candidats = [];
+  // Construction dynamique de la phrase selon tous les éléments
+  let p1="", p2="";
 
-  // Profil très positif (3+ positifs ou leadership/technique)
-  if(hasPos && !hasNeg && (pos.length>=2 || pos.includes("leadership") || pos.includes("technique"))){
-    candidats = hasProg ? PHRASES.pos_prog : PHRASES.pos_fort;
+  if(hasPos && hasNeg){
+    // Phrase 1 : points positifs
+    if(posLabels.length===1){
+      p1 = `${Il} fait preuve de ${posLabels[0]}`;
+    } else {
+      const last = posLabels[posLabels.length-1];
+      const rest = posLabels.slice(0,-1).join(", ");
+      p1 = `${Il} se distingue par ${rest} et ${last}`;
+    }
+    if(hasComp && !comp.includes("comportement")){
+      p1 += `, ainsi qu'une ${compLabels[0]}`;
+    }
+    if(hasProg){
+      p1 += `. ${Il} affiche ${progLabels.join(" et ")}`;
+    }
+    p1 += ".";
+    // Phrase 2 : points négatifs
+    if(negLabels.length===1){
+      p2 = `Cependant, le ${negLabels[0]} reste un frein à sa progression et demande une attention particulière.`;
+    } else {
+      p2 = `Cependant, des efforts sont attendus sur : ${negLabels.join(", ")}.`;
+    }
   }
-  // Positif + progression
-  else if(hasPos && hasProg && !hasNeg){
-    candidats = PHRASES.pos_prog;
+  else if(hasPos && !hasNeg){
+    // Tout positif
+    const allPos = [...posLabels];
+    if(hasComp && !comp.includes("comportement")) allPos.push(...compLabels);
+    if(allPos.length===1){
+      p1 = `Élève ${allPos[0]}`;
+    } else if(allPos.length===2){
+      p1 = `${Il} fait preuve de ${allPos[0]} et de ${allPos[1]}`;
+    } else {
+      const last = allPos[allPos.length-1];
+      const rest = allPos.slice(0,-1).join(", ");
+      p1 = `${Il} se distingue par ${rest} et ${last}`;
+    }
+    if(hasProg){
+      p1 += `. ${Il} affiche ${progLabels.join(" et ")}`;
+    }
+    if(pos.length>=3 || pos.includes("leadership") || pos.includes("technique")){
+      p1 += ". Excellent trimestre, félicitations.";
+    } else if(hasProg){
+      p1 += ". Continuons dans cette dynamique.";
+    } else {
+      p1 += ". Bon trimestre.";
+    }
+    p2="";
   }
-  // Positif + bavardage
-  else if(hasPos && neg.includes("bavardage")){
-    candidats = PHRASES.pos_neg_bavardage;
+  else if(!hasPos && hasNeg){
+    if(neg.includes("perturbateur")){
+      p1 = `Le comportement perturbateur de ${il} nuit au bon déroulement des séances.`;
+      p2 = `Une attitude plus respectueuse est indispensable.`;
+    } else if(negLabels.length===1){
+      p1 = `${Il} présente un ${negLabels[0]} qui pénalise ses résultats.`;
+      p2 = `Une remobilisation sérieuse est attendue.`;
+    } else {
+      p1 = `Des difficultés persistent : ${negLabels.join(", ")}.`;
+      p2 = `Une remobilisation est nécessaire pour progresser.`;
+    }
+    if(hasProg && prog.includes("potentiel")){
+      p2 += ` Le potentiel est là.`;
+    }
   }
-  // Positif + manque de concentration
-  else if(hasPos && neg.includes("concentration")){
-    candidats = PHRASES.pos_neg_concentration;
+  else if(!hasPos && !hasNeg && hasComp){
+    if(comp.includes("comportement")){
+      p1 = `Le comportement de ${il} est à revoir en cours d'EPS.`;
+      p2 = `Des efforts de respect et d'implication sont attendus.`;
+    } else {
+      p1 = `${Il} fait preuve de ${compLabels.join(", ")}, ce qui est appréciable.`;
+      if(hasProg) p2 = `${Il} affiche ${progLabels.join(" et ")}. Continuons.`;
+    }
   }
-  // Positif + manque investissement
-  else if(hasPos && neg.includes("investissement")){
-    candidats = PHRASES.pos_neg_investissement;
+  else if(!hasPos && !hasNeg && hasProg){
+    if(prog.includes("potentiel")){
+      p1 = `${Il} dispose d'un réel potentiel qui reste à exploiter.`;
+      p2 = `Avec plus d'implication, les résultats pourraient être bien meilleurs.`;
+    } else if(progLabels.length===1){
+      p1 = `${Il} est ${progLabels[0]} ce trimestre.`;
+      p2 = `Ces efforts méritent d'être soulignés, continuons dans cette voie.`;
+    } else {
+      p1 = `${Il} affiche ${progLabels.join(" et ")} ce trimestre.`;
+      p2 = `Ces progrès sont encourageants, il faut maintenir l'effort.`;
+    }
   }
-  // Positif + en retrait
-  else if(hasPos && neg.includes("retrait")){
-    candidats = PHRASES.pos_neg_retrait;
-  }
-  // Négatif dominant — bavardage
-  else if(!hasPos && neg.includes("bavardage")){
-    candidats = PHRASES.neg_bavardage;
-  }
-  // Négatif dominant — perturbateur
-  else if(!hasPos && neg.includes("perturbateur")){
-    candidats = PHRASES.neg_perturbateur;
-  }
-  // Négatif dominant — investissement
-  else if(!hasPos && neg.includes("investissement")){
-    candidats = PHRASES.neg_investissement;
-  }
-  // Négatif dominant — concentration
-  else if(!hasPos && neg.includes("concentration")){
-    candidats = PHRASES.neg_concentration;
-  }
-  // Négatif dominant — irrégulier
-  else if(!hasPos && neg.includes("irregulier")){
-    candidats = PHRASES.neg_irregulier;
-  }
-  // Négatif dominant — difficultés
-  else if(!hasPos && neg.includes("difficultes")){
-    candidats = PHRASES.neg_difficultes;
-  }
-  // Comportement positif
-  else if(hasComp && comp.includes("attitude") || comp.includes("respectueux") || comp.includes("agreable")){
-    candidats = hasPos ? PHRASES.pos_fort : PHRASES.comp_positif;
-  }
-  // Comportement à améliorer
-  else if(hasComp && comp.includes("comportement")){
-    candidats = PHRASES.comp_ameliorer;
-  }
-  // Potentiel à exploiter
-  else if(prog.includes("potentiel") && !hasPos){
-    candidats = PHRASES.potentiel;
-  }
-  // Progression seule
-  else if(hasProg && !hasNeg){
-    candidats = PHRASES.prog_seul;
-  }
-  // Défaut
   else {
-    candidats = PHRASES.defaut;
+    p1 = `Élève qui s'investit dans les activités proposées.`;
+    p2 = `Des marges de progression existent.`;
   }
 
-  let phrase = appliquer(pick(candidats), genre);
+  let phrase = [p1, p2].filter(Boolean).join(" ");
 
-  // Intégrer les mots libres naturellement en fin de phrase
+  // Intégrer les mots libres
   if(libre.length){
     const ctx = libre.join(", ");
-    // Détecter si c'est un sport/activité ou une remarque
     const sports = ["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","musculation","vélo","cross"];
     const profils = ["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclus","inclusion","phobie","anxieux","anxieuse"];
-    const isSport = libre.some(m => sports.some(s => m.toLowerCase().includes(s)));
-    const isProfil = libre.some(m => profils.some(p => m.toLowerCase().includes(p)));
-
+    const isSport = libre.some(m=>sports.some(s=>m.toLowerCase().includes(s)));
+    const isProfil = libre.some(m=>profils.some(p=>m.toLowerCase().includes(p)));
     if(isSport){
       phrase = phrase.replace(/\.$/, "") + `, notamment en ${ctx}.`;
     } else if(isProfil){
-      phrase = phrase.replace(/\.$/, "") + ` Profil particulier à prendre en compte : ${ctx}.`;
+      phrase = phrase.replace(/\.$/, "") + ` Profil ${ctx} pris en compte.`;
     } else {
-      // Contexte générique — s'intègre en fin de phrase
-      phrase = phrase.replace(/\.$/, "") + `. ${ctx.charAt(0).toUpperCase() + ctx.slice(1)}.`;
+      phrase = phrase.replace(/\.$/, "") + `. ${ctx.charAt(0).toUpperCase()+ctx.slice(1)}.`;
     }
   }
 

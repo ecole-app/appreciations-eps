@@ -381,9 +381,23 @@ function choisirPhrases(sel, genre, libre){
 
   let phrase = appliquer(pick(candidats), genre);
 
-  // Ajouter mots libres en fin de phrase si présents
+  // Intégrer les mots libres naturellement en fin de phrase
   if(libre.length){
-    phrase = phrase.replace(/\.$/, "") + `. À noter : ${libre.join(", ")}.`;
+    const ctx = libre.join(", ");
+    // Détecter si c'est un sport/activité ou une remarque
+    const sports = ["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","musculation","vélo","cross"];
+    const profils = ["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclus","inclusion","phobie","anxieux","anxieuse"];
+    const isSport = libre.some(m => sports.some(s => m.toLowerCase().includes(s)));
+    const isProfil = libre.some(m => profils.some(p => m.toLowerCase().includes(p)));
+
+    if(isSport){
+      phrase = phrase.replace(/\.$/, "") + `, notamment en ${ctx}.`;
+    } else if(isProfil){
+      phrase = phrase.replace(/\.$/, "") + ` Profil particulier à prendre en compte : ${ctx}.`;
+    } else {
+      // Contexte générique — s'intègre en fin de phrase
+      phrase = phrase.replace(/\.$/, "") + `. ${ctx.charAt(0).toUpperCase() + ctx.slice(1)}.`;
+    }
   }
 
   return phrase;

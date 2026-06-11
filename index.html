@@ -32,7 +32,6 @@ button.action.primary{border-color:#999;background:#e8e8e0;font-weight:600}
 .result-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:14px;margin-top:12px}
 .result-text{font-size:14px;line-height:1.7;min-height:48px;white-space:pre-wrap;color:#1a1a1a}
 .hint{font-size:12px;color:#888;margin-top:6px}
-.loading{color:#888;font-style:italic}
 .stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#f0f0e8;color:#666;border:1px solid #e0e0d8;display:inline-block}
 .sel-tags{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px;min-height:22px}
 hr{border:none;border-top:1px solid #e8e8e0;margin:14px 0}
@@ -50,38 +49,13 @@ hr{border:none;border-top:1px solid #e8e8e0;margin:14px 0}
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
 .counter{font-size:12px;color:#888;margin-left:auto}
 .ok-banner{background:#EAF3DE;color:#3B6D11;border:1px solid #97C459;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px;display:none}
-.export-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px}
+.export-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px;color:#1a1a1a}
 h1{font-size:18px;font-weight:600;margin-bottom:20px}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
-.modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:12px;padding:24px;width:90%;max-width:420px}
-.modal h2{font-size:16px;font-weight:600;margin-bottom:8px}
-.modal p{font-size:13px;color:#666;margin-bottom:16px;line-height:1.5}
-.modal input{width:100%;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:8px;margin-bottom:12px}
-.err-msg{color:#A32D2D;font-size:12px;margin-top:6px;display:none}
 @media(max-width:500px){.row3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="modal-bg" id="api-modal">
-  <div class="modal">
-    <h2>🔑 Clé API Anthropic</h2>
-    <p>Pour générer les appréciations avec l'IA, saisis ta clé API Anthropic.<br>Elle sera stockée localement dans ton navigateur.</p>
-    <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." />
-    <div class="err-msg" id="api-err">Clé invalide. Vérifie et réessaie.</div>
-    <div style="display:flex;gap:8px">
-      <button class="action primary" style="flex:1" onclick="saveApiKey()">Enregistrer</button>
-      <button class="action" onclick="closeModal()">Annuler</button>
-    </div>
-  </div>
-</div>
-
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px">
-  <h1>📋 Appréciations EPS</h1>
-  <button class="action" onclick="openModal()" style="font-size:12px;padding:6px 12px">🔑 Clé API</button>
-</div>
-
+<h1>📋 Appréciations EPS</h1>
 <div class="tabs">
   <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
   <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
@@ -114,7 +88,7 @@ h1{font-size:18px;font-weight:600;margin-bottom:20px}
     <div style="font-size:12px;color:#888;margin-bottom:4px">Mots-clés sélectionnés :</div>
     <div class="sel-tags" id="sel-tags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
     <div class="btn-row">
-      <button class="action primary" onclick="generer()">✦ Générer avec IA</button>
+      <button class="action primary" onclick="generer()">⚡ Générer</button>
       <button class="action" onclick="resetForm()">↺ Réinitialiser</button>
     </div>
     <div id="result-zone" style="display:none" class="result-box">
@@ -164,24 +138,10 @@ const CHIPS={
 };
 
 const KEY_DB="eps_appr_v1";
-const KEY_API="eps_api_key";
 let genre="M",sel={},filtreCur="toutes",phrase="",prenomCur="",classeCur="";
 
 function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY_DB)||"[]");}catch(e){return[];}}
 function dbSave(d){localStorage.setItem(KEY_DB,JSON.stringify(d));}
-function getApiKey(){return localStorage.getItem(KEY_API)||"";}
-function saveApiKey(){
-  const k=document.getElementById("api-key-input").value.trim();
-  if(!k.startsWith("sk-")){document.getElementById("api-err").style.display="block";return;}
-  localStorage.setItem(KEY_API,k);
-  document.getElementById("api-err").style.display="none";
-  closeModal();
-}
-function openModal(){
-  document.getElementById("api-key-input").value=getApiKey();
-  document.getElementById("api-modal").classList.add("show");
-}
-function closeModal(){document.getElementById("api-modal").classList.remove("show");}
 
 function setG(g){
   genre=g;
@@ -209,9 +169,16 @@ function renderTags(){
     :'<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';
 }
 
-async function generer(){
-  const apiKey=getApiKey();
-  if(!apiKey){openModal();return;}
+function accord(mot,g){
+  if(g==="F"){
+    const m={"sérieux":"sérieuse","irrégulier":"irrégulière","respectueux":"respectueuse","perturbateur":"perturbatrice","ponctuel":"ponctuelle","appliqué(e)":"appliquée","investi(e)":"investie","autonome":"autonome"};
+    return m[mot]||mot;
+  }
+  const m={"appliqué(e)":"appliqué","investi(e)":"investi"};
+  return m[mot]||mot;
+}
+
+function generer(){
   const keys=Object.keys(sel);
   const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
   const all=[...keys,...ft];
@@ -220,42 +187,65 @@ async function generer(){
   prenomCur=document.getElementById("prenom").value.trim();
   classeCur=document.getElementById("classe").value;
 
-  const zone=document.getElementById("result-zone");
-  const rt=document.getElementById("rtext");
-  zone.style.display="block";
-  document.getElementById("ok-banner").style.display="none";
-  rt.innerHTML='<span class="loading">Génération en cours…</span>';
-  document.getElementById("rlabel").textContent=prenomCur?`Phrase pour ${prenomCur}`:"Phrase générée";
-  phrase="";
+  const cats={pos:[],neg:[],comp:[],prog:[],libre:[]};
+  keys.forEach(k=>{if(cats[sel[k]])cats[sel[k]].push(k);});
+  ft.forEach(k=>cats.libre.push(k));
 
-  const prompt=`Tu es professeur d'EPS en collège français. À partir des mots-clés suivants, rédige UNE appréciation de bulletin scolaire (1 à 2 phrases max), professionnelle et bienveillante.\n\nMots-clés : ${all.join(", ")}\nGenre : ${genre==="F"?"féminin (elle/sa/une)":"masculin (il/son/un)"}\n${prenomCur?`Prénom : ${prenomCur} — NE PAS l'inclure dans la phrase.`:""}\n\nRègles :\n- Varie les débuts : "Élève…", "Bon trimestre…", "Des efforts…"\n- Intègre les mots-clés naturellement\n- Ton professionnel et bienveillant\n- Juste la phrase, sans guillemets ni introduction`;
+  const g=genre;
+  const il=g==="F"?"Elle":"Il";
+  const son=g==="F"?"sa":"son";
+  const e=g==="F"?"e":"";
 
-  try{
-    const resp=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-api-key":apiKey,
-        "anthropic-version":"2023-06-01",
-        "anthropic-dangerous-direct-browser-access":"true"
-      },
-      body:JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:300,messages:[{role:"user",content:prompt}]})
-    });
-    if(!resp.ok){
-      const e=await resp.json();
-      if(e.error&&e.error.type==="authentication_error"){
-        rt.innerHTML='<span class="loading">Clé API invalide.</span>';
-        openModal();return;
-      }
-      throw new Error(e.error?.message||resp.status);
-    }
-    const data=await resp.json();
-    phrase=data.content[0].text.trim();
-    rt.textContent=phrase;
-    document.getElementById("rhint").textContent="Clique sur Enregistrer pour sauvegarder.";
-  }catch(e){
-    rt.innerHTML=`<span class="loading">Erreur : ${e.message}</span>`;
+  const posStr=cats.pos.map(k=>accord(k,g)).join(", ");
+  const negStr=cats.neg.map(k=>accord(k,g)).join(", ");
+  const compStr=cats.comp.map(k=>accord(k,g)).join(", ");
+  const progStr=cats.prog.map(k=>accord(k,g)).join(", ");
+  const libreStr=cats.libre.join(", ");
+
+  const hasPos=cats.pos.length>0, hasNeg=cats.neg.length>0;
+  const hasComp=cats.comp.length>0, hasProg=cats.prog.length>0;
+  const hasLibre=cats.libre.length>0;
+
+  const modeles=[];
+
+  if(hasPos&&hasProg){
+    modeles.push(`Élève ${posStr}. ${il} affiche ${progStr}, ce qui est encourageant.`);
+    modeles.push(`Bon trimestre : ${posStr} et ${progStr}. Continuons dans cette dynamique.`);
   }
+  if(hasPos&&hasNeg){
+    modeles.push(`${il} fait preuve de ${posStr}, mais le ${negStr} freine sa progression. Des efforts sont attendus.`);
+    modeles.push(`Des qualités réelles (${posStr}), mais il faudra travailler sur le ${negStr} pour progresser davantage.`);
+  }
+  if(hasPos&&!hasNeg&&!hasProg){
+    modeles.push(`Élève ${posStr}, agréable à encadrer. Bon trimestre.`);
+    modeles.push(`${il} se distingue par ${son} ${posStr}. Continuez ainsi.`);
+  }
+  if(hasNeg&&!hasPos){
+    modeles.push(`Des difficultés persistent : ${negStr}. Une remobilisation est nécessaire pour progresser.`);
+    modeles.push(`${il} doit travailler sur le ${negStr}. Le potentiel est là, mais les résultats ne suivent pas encore.`);
+  }
+  if(hasComp&&hasPos)
+    modeles.push(`${il} présente une ${compStr} et fait preuve de ${posStr}. Très satisfaisant.`);
+  if(hasComp&&hasNeg)
+    modeles.push(`Le ${compStr} nuit au bon déroulement des séances. ${il} doit également progresser sur : ${negStr}.`);
+  if(hasComp&&!hasPos&&!hasNeg)
+    modeles.push(`${il} affiche une ${compStr} en cours d'EPS.${hasProg?" "+il+" est "+progStr+".":""}`);
+  if(hasProg&&!hasPos&&!hasNeg){
+    modeles.push(`${il} est ${progStr} ce trimestre. Encourageant, continuons dans cette voie.`);
+    modeles.push(`Des résultats ${progStr}. ${il} est sur la bonne voie.`);
+  }
+  if(!modeles.length)
+    modeles.push(`Profil varié : ${all.map(k=>accord(k,g)).join(", ")}. Des efforts sont à poursuivre.`);
+
+  let base=modeles[Math.floor(Math.random()*modeles.length)];
+  if(hasLibre) base=base.replace(/\.$/,"")+`. À noter : ${libreStr}.`;
+  phrase=base;
+
+  document.getElementById("result-zone").style.display="block";
+  document.getElementById("ok-banner").style.display="none";
+  document.getElementById("rlabel").textContent=prenomCur?`Phrase pour ${prenomCur}`:"Phrase générée";
+  document.getElementById("rtext").textContent=phrase;
+  document.getElementById("rhint").textContent="Clique sur Enregistrer pour sauvegarder, ou Regénérer pour varier.";
 }
 
 function enregistrer(){
@@ -339,7 +329,6 @@ function setTab(id){
   if(id==="export")renderExport();
 }
 
-if(!getApiKey())openModal();
 renderChips();
 updateBadge();
 </script>

@@ -3,59 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appréciations Collège Luqman</title>
+<title>Appréciations EPS</title>
 <style>
+:root{--vert:#1a7a6e;--vert-dark:#145f55;--orange:#e8671a;--orange-light:#fef0e6;--bg:#f0f2f0;--card:#fff;--border:#dde8e6;--text:#1a1a1a;--muted:#5a7570}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;padding:16px;font-size:15px}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+.header{background:var(--vert);padding:16px 16px 14px;margin-bottom:0}
+.header h1{font-size:20px;font-weight:700;color:#fff;letter-spacing:.01em}
+.header h1 span{color:#f9c06a;margin-right:8px}
+.body{padding:16px}
 .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.tab{padding:8px 18px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:14px;cursor:pointer;color:#666}
-.tab.active{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.tab{padding:8px 18px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:14px;cursor:pointer;color:var(--muted)}
+.tab.active{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
 .section{display:none}.section.active{display:block}
-.card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:16px}
-.slabel{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+.slabel{font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
-.chip{padding:5px 12px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#555;user-select:none}
-.chip.pos.on{background:#EAF3DE;color:#3B6D11;border-color:#97C459}
+.chip{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted);user-select:none}
+.chip.pos.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
 .chip.neg.on{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.chip.comp.on{background:#FAEEDA;color:#854F0B;border-color:#EF9F27}
-.chip.prog.on{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5}
+.chip.comp.on{background:var(--orange-light);color:#7a3a0a;border-color:var(--orange)}
+.chip.prog.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
-label{font-size:13px;color:#666;display:block;margin-bottom:5px}
-input[type=text],select{width:100%;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:8px;background:#fff;color:#1a1a1a}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:5px}
+input[type=text],select{width:100%;font-size:14px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+input[type=text]:focus,select:focus{outline:none;border-color:var(--vert)}
 .genre-row{display:flex;gap:8px}
-.grb{padding:7px 16px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#666}
-.grb.on{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.grb{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
+.grb.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-button.action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#1a1a1a}
-button.action:hover{background:#f0f0e8}
-button.action.primary{border-color:#999;background:#e8e8e0;font-weight:600}
-.result-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:14px;margin-top:12px}
-.result-text{font-size:14px;line-height:1.7;min-height:48px;white-space:pre-wrap;color:#1a1a1a}
-.hint{font-size:12px;color:#888;margin-top:6px}
-.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#f0f0e8;color:#666;border:1px solid #e0e0d8;display:inline-block}
+button.action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--text)}
+button.action:hover{background:#f0f7f6;border-color:var(--vert)}
+button.action.primary{border-color:var(--orange);background:var(--orange);color:#fff;font-weight:600}
+button.action.primary:hover{background:#d45e15}
+.result-box{background:#f4faf9;border:1.5px solid var(--vert);border-radius:10px;padding:14px;margin-top:12px}
+.result-text{font-size:14px;line-height:1.7;min-height:48px;white-space:pre-wrap;color:var(--text)}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);display:inline-block}
 .sel-tags{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px;min-height:22px}
-hr{border:none;border-top:1px solid #e8e8e0;margin:14px 0}
-.eleve-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#fff;border:1px solid #e8e8e0;border-radius:8px;margin-bottom:8px}
+hr{border:none;border-top:1px solid var(--border);margin:14px 0}
+.eleve-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
 .eleve-info{flex:1;min-width:0}
-.eleve-nom{font-size:14px;font-weight:600}
-.eleve-meta{font-size:12px;color:#888;margin-top:2px}
+.eleve-nom{font-size:14px;font-weight:600;color:var(--vert-dark)}
+.eleve-meta{font-size:12px;color:var(--muted);margin-top:2px}
 .eleve-phrase{font-size:13px;line-height:1.6;margin-top:6px}
-.icon-btn{padding:5px 10px;font-size:12px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;color:#666}
-.icon-btn:hover{background:#f0f0e8}
+.icon-btn{padding:5px 10px;font-size:12px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--muted)}
+.icon-btn:hover{background:#f0f7f6}
 .icon-btn.danger:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.empty{font-size:13px;color:#888;font-style:italic;padding:12px 0}
-.filter-btn{padding:5px 12px;border-radius:99px;border:1px solid #ccc;background:#fff;font-size:13px;cursor:pointer;color:#666}
-.filter-btn.on{background:#e8e8e0;color:#1a1a1a;border-color:#999;font-weight:600}
+.empty{font-size:13px;color:var(--muted);font-style:italic;padding:12px 0}
+.filter-btn{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
+.filter-btn.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
-.counter{font-size:12px;color:#888;margin-left:auto}
-.ok-banner{background:#EAF3DE;color:#3B6D11;border:1px solid #97C459;border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px;display:none}
-.export-box{background:#f9f9f6;border:1px solid #ddd;border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px;color:#1a1a1a}
-h1{font-size:18px;font-weight:600;margin-bottom:20px}
+.counter{font-size:12px;color:var(--muted);margin-left:auto}
+.ok-banner{background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px;display:none}
+.export-box{background:#f4faf9;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px;color:var(--text)}
 @media(max-width:500px){.row3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<h1>📋 Appréciations Collège Luqman</h1>
+<h1>📋 Appréciations EPS</h1>
 <div class="tabs">
   <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
   <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
@@ -515,5 +521,5 @@ function setTab(id){
 renderChips();
 updateBadge();
 </script>
-</body>
+</div></body>
 </html>

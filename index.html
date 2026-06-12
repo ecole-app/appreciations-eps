@@ -527,7 +527,20 @@ function resetForm(){
   document.getElementById("prenom").value="";
   document.getElementById("free").value="";
   document.getElementById("result-zone").style.display="none";
-  phrase="";renderChips();
+  phrase="";function renderChips(){
+  ["gen","pos","neg","comp","prog"].forEach(cat=>{
+    const el=document.getElementById("cp-"+cat);
+    if(!el) return;
+    el.innerHTML=CHIPS[cat].map(c=>
+      `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k.replace(/'/g,"\\'")}','${cat}')">${c.l}</button>`
+    ).join("");
+  });
+  renderTags();
+}
+
+function tog(k,cat){if(sel[k])delete sel[k];else sel[k]=cat;renderChips();}
+
+renderChips();
 }
 
 function filtrer(f,btn){

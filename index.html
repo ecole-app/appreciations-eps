@@ -54,6 +54,7 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
 .fbtn{padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
 .fbtn.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
 .frow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.fsel{font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto}
 .counter{font-size:12px;color:var(--muted);margin-left:auto}
 .ok{background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);border-radius:8px;padding:8px 11px;font-size:13px;margin-top:9px;display:none}
 .ebox{background:#f4faf9;border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;line-height:1.85;white-space:pre-wrap;min-height:50px}
@@ -131,21 +132,20 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
     <span class="counter" id="lcounter"></span>
   </div>
   <div class="frow">
-    <label style="font-size:13px;align-self:center;margin:0">Matière :</label>
-    <select id="filtre-matiere" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
-      <option value="toutes">Toutes</option>
+    <select class="fsel" id="filtre-matiere" onchange="renderListe()">
+      <option value="toutes">Toutes matières</option>
       <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
       <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
     </select>
-    <select id="filtre-trim" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+    <select class="fsel" id="filtre-trim" onchange="renderListe()">
       <option value="tous">Tous trimestres</option>
       <option value="T1">T1 (sept–déc)</option>
       <option value="T2">T2 (jan–mars)</option>
       <option value="T3">T3 (avr–juin)</option>
     </select>
-    <select id="filtre-annee" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto" id="filtre-annee">
+    <select class="fsel" id="filtre-annee" onchange="renderListe()">
       <option value="toutes">Toutes années</option>
     </select>
   </div>
@@ -154,22 +154,22 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
 
 <!-- EXPORT -->
 <div id="export" class="section">
-  <div class="frow" style="flex-wrap:wrap">
-    <select id="ecl" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+  <div class="frow">
+    <select class="fsel" id="ecl" onchange="renderExport()">
       <option value="toutes">Toutes classes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option>
     </select>
-    <select id="ecl-mat" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+    <select class="fsel" id="ecl-mat" onchange="renderExport()">
       <option value="toutes">Toutes matières</option>
       <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
       <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
     </select>
-    <select id="ecl-trim" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+    <select class="fsel" id="ecl-trim" onchange="renderExport()">
       <option value="tous">Tous trimestres</option>
       <option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option>
     </select>
-    <select id="ecl-annee" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+    <select class="fsel" id="ecl-annee" onchange="renderExport()">
       <option value="toutes">Toutes années</option>
     </select>
     <button class="act" style="margin-left:auto" onclick="copierExport()">⎘ Copier</button>
@@ -177,13 +177,13 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
   <div id="econtent" class="ebox">Aucune appréciation.</div>
 </div>
 
-</div><!-- /body -->
+</div>
 
 <script>
-const M6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Arts Plastiques","Éducation Musicale","EPS"];
-const M5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
+var M6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Arts Plastiques","Éducation Musicale","EPS"];
+var M5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
 
-const CHIPS={
+var CHIPS={
   gen:[
     {k:"curieux",l:"curiosité intellectuelle"},{k:"rigoureux",l:"rigueur"},
     {k:"oral",l:"participation à l'oral"},{k:"ecrit",l:"travail écrit soigné"},
@@ -191,7 +191,7 @@ const CHIPS={
     {k:"autonomie_gen",l:"autonomie"},{k:"respect_gen",l:"respect des consignes"},
     {k:"entraide",l:"entraide"},{k:"creativite",l:"créativité"},
     {k:"perseverance",l:"persévérance"},{k:"assidu",l:"assiduité"},
-    {k:"esprit_critique",l:"esprit critique"},{k:"confiance",l:"manque de confiance en soi"}
+    {k:"esprit_critique",l:"esprit critique"}
   ],
   pos:[
     {k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},
@@ -218,16 +218,27 @@ const CHIPS={
   ]
 };
 
-const KEY="eps_v2";
-let genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
+var KEY="eps_v2";
+var genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
 
 function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return[];}}
 function dbSave(d){localStorage.setItem(KEY,JSON.stringify(d));}
 
+function getTrimAuto(){
+  var m=new Date().getMonth()+1;
+  if(m>=9) return "T1";
+  if(m<=3) return "T2";
+  return "T3";
+}
+function getAnnee(){
+  var now=new Date(), m=now.getMonth()+1, y=now.getFullYear();
+  return m>=9 ? y+"-"+(y+1) : (y-1)+"-"+y;
+}
+
 function updateMatieres(){
-  const cl=document.getElementById("classe").value;
-  const liste=cl==="6e"?M6:M5;
-  document.getElementById("matiere").innerHTML=liste.map(m=>`<option>${m}</option>`).join("");
+  var cl=document.getElementById("classe").value;
+  var liste=cl==="6e"?M6:M5;
+  document.getElementById("matiere").innerHTML=liste.map(function(m){return "<option>"+m+"</option>";}).join("");
 }
 
 function setG(g){
@@ -236,283 +247,267 @@ function setG(g){
   document.getElementById("gb-f").classList.toggle("on",g==="F");
 }
 
-function allChips(){return [...CHIPS.gen,...CHIPS.pos,...CHIPS.neg,...CHIPS.comp,...CHIPS.prog];}
+function allChips(){
+  var r=[];
+  Object.keys(CHIPS).forEach(function(c){r=r.concat(CHIPS[c]);});
+  return r;
+}
 
 function renderChips(){
-  Object.keys(CHIPS).forEach(cat=>{
-    const el=document.getElementById("cp-"+cat);
-    if(!el)return;
-    el.innerHTML=CHIPS[cat].map(c=>{
-      const on=sel[c.k]?'on':'';
-      return `<button class="chip ${cat} ${on}" onclick="tog('${c.k}','${cat}')">${c.l}</button>`;
-    }).join('');
+  Object.keys(CHIPS).forEach(function(cat){
+    var el=document.getElementById("cp-"+cat);
+    if(!el) return;
+    el.innerHTML=CHIPS[cat].map(function(c){
+      return '<button class="chip '+cat+' '+(sel[c.k]?"on":"")+'" onclick="tog(\''+c.k+'\',\''+cat+'\')">'+c.l+'</button>';
+    }).join("");
   });
   renderTags();
 }
 
 function tog(k,cat){
-  if(sel[k])delete sel[k]; else sel[k]=cat;
+  if(sel[k]) delete sel[k]; else sel[k]=cat;
   renderChips();
 }
 
 function renderTags(){
-  const keys=Object.keys(sel);
-  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
-  const all=[...keys,...ft];
-  const el=document.getElementById("sel-tags");
+  var keys=Object.keys(sel);
+  var fv=document.getElementById("free").value;
+  var ft=fv?fv.split(",").map(function(s){return s.trim();}).filter(Boolean):[];
+  var all=keys.concat(ft);
+  var el=document.getElementById("sel-tags");
   if(!all.length){el.innerHTML='<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';return;}
-  el.innerHTML=all.map(k=>{
-    const found=allChips().find(c=>c.k===k);
-    return `<span class="stag">${found?found.l:k}</span>`;
-  }).join('');
+  el.innerHTML=all.map(function(k){
+    var found=allChips().filter(function(c){return c.k===k;})[0];
+    return '<span class="stag">'+(found?found.l:k)+'</span>';
+  }).join("");
 }
 
 function joinList(arr){
-  if(!arr.length)return"";
-  if(arr.length===1)return arr[0];
+  if(!arr.length) return "";
+  if(arr.length===1) return arr[0];
   return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
 }
 
 function generer(){
-  const keys=Object.keys(sel);
-  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
+  var keys=Object.keys(sel);
+  var fv=document.getElementById("free").value;
+  var ft=fv?fv.split(",").map(function(s){return s.trim();}).filter(Boolean):[];
   if(!keys.length&&!ft.length){alert("Sélectionne au moins un mot-clé.");return;}
 
   prenomCur=document.getElementById("prenom").value.trim();
   classeCur=document.getElementById("classe").value;
   matiereCur=document.getElementById("matiere").value;
 
-  const f=genre==="F";
-  const Il=prenomCur||(f?"Elle":"Il");
-  const il=prenomCur||(f?"elle":"il");
-  const e=f?"e":"";
+  var f=genre==="F";
+  var Il=prenomCur||(f?"Elle":"Il");
+  var il=prenomCur||(f?"elle":"il");
 
-  const gen=keys.filter(k=>sel[k]==="gen");
-  const pos=keys.filter(k=>sel[k]==="pos");
-  const neg=keys.filter(k=>sel[k]==="neg");
-  const comp=keys.filter(k=>sel[k]==="comp");
-  const prog=keys.filter(k=>sel[k]==="prog");
+  var gen=keys.filter(function(k){return sel[k]==="gen";});
+  var pos=keys.filter(function(k){return sel[k]==="pos";});
+  var neg=keys.filter(function(k){return sel[k]==="neg";});
+  var comp=keys.filter(function(k){return sel[k]==="comp";});
+  var prog=keys.filter(function(k){return sel[k]==="prog";});
 
-  // Traductions en expressions naturelles
-  const T_ADJ_POS={"investi":f?"investie":"investi","serieux":f?"sérieuse":"sérieux","applique":f?"appliquée":"appliqué","autonome":"autonome","fairplay":"fair-play"};
-  const T_NOM_POS={"participation":"une participation active","equipe":"un esprit d'équipe","ecoute":"une bonne écoute","leadership":"un vrai leadership","technique":"un bon niveau technique"};
-  const T_GEN={"curieux":"une curiosité intellectuelle","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral","ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_gen":"des efforts constants","autonomie_gen":"de l'autonomie","respect_gen":"le respect des consignes","entraide":"un sens de l'entraide","creativite":"de la créativité","perseverance":"de la persévérance","assidu":"de l'assiduité","esprit_critique":"un esprit critique","confiance":"un manque de confiance en soi à travailler"};
-  const T_NEG={"investissement":"manque d'investissement","bavardage":"bavardage","concentration":"manque de concentration","difficultes":"difficultés techniques","retrait":"tendance à rester en retrait","irregulier":"irrégularité dans l'effort","efforts":"efforts insuffisants","perturbateur":"comportement perturbateur"};
-  const T_COMP_ADJ={"respectueux":f?"respectueuse":"respectueux","agreable":"agréable","ponctuel":f?"ponctuelle":"ponctuel"};
-  const T_COMP_NOM={"attitude":"une attitude positive"};
-  const T_PROG={"progres":"en progrès","progression":"une progression constante","potentiel":"un potentiel à exploiter","encourageant":"des résultats encourageants","hausse":"un trimestre en hausse","acquis":"des acquis solides"};
+  var T_ADJ_POS={"investi":f?"investie":"investi","serieux":f?"sérieuse":"sérieux","applique":f?"appliquée":"appliqué","autonome":"autonome","fairplay":"fair-play"};
+  var T_NOM_POS={"participation":"une participation active","equipe":"un esprit d'équipe","ecoute":"une bonne écoute","leadership":"un vrai leadership","technique":"un bon niveau technique"};
+  var T_GEN={"curieux":"une curiosité intellectuelle","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral","ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_gen":"des efforts constants","autonomie_gen":"de l'autonomie","respect_gen":"le respect des consignes","entraide":"un sens de l'entraide","creativite":"de la créativité","perseverance":"de la persévérance","assidu":"de l'assiduité","esprit_critique":"un esprit critique"};
+  var T_NEG={"investissement":"manque d'investissement","bavardage":"bavardage","concentration":"manque de concentration","difficultes":"difficultés techniques","retrait":"tendance à rester en retrait","irregulier":"irrégularité dans l'effort","efforts":"efforts insuffisants","perturbateur":"comportement perturbateur"};
+  var T_COMP_ADJ={"respectueux":f?"respectueuse":"respectueux","agreable":"agréable","ponctuel":f?"ponctuelle":"ponctuel"};
+  var T_COMP_NOM={"attitude":"une attitude positive"};
+  var T_PROG={"progres":"en progrès","progression":"une progression constante","potentiel":"un potentiel à exploiter","encourageant":"des résultats encourageants","hausse":"un trimestre en hausse","acquis":"des acquis solides"};
 
-  const adjPos=pos.filter(k=>T_ADJ_POS[k]).map(k=>T_ADJ_POS[k]);
-  const nomPos=pos.filter(k=>T_NOM_POS[k]).map(k=>T_NOM_POS[k]);
-  const nomGen=gen.map(k=>T_GEN[k]||k);
-  const adjComp=comp.filter(k=>T_COMP_ADJ[k]).map(k=>T_COMP_ADJ[k]);
-  const nomComp=comp.filter(k=>T_COMP_NOM[k]).map(k=>T_COMP_NOM[k]);
-  const negItems=neg.map(k=>T_NEG[k]||k);
-  const progItems=prog.map(k=>T_PROG[k]||k);
-  const compNegatif=comp.includes("comportement");
+  var adjPos=pos.filter(function(k){return T_ADJ_POS[k];}).map(function(k){return T_ADJ_POS[k];});
+  var nomPos=pos.filter(function(k){return T_NOM_POS[k];}).map(function(k){return T_NOM_POS[k];});
+  var nomGen=gen.map(function(k){return T_GEN[k]||k;});
+  var adjComp=comp.filter(function(k){return T_COMP_ADJ[k];}).map(function(k){return T_COMP_ADJ[k];});
+  var nomComp=comp.filter(function(k){return T_COMP_NOM[k];}).map(function(k){return T_COMP_NOM[k];});
+  var negItems=neg.map(function(k){return T_NEG[k]||k;});
+  var progItems=prog.map(function(k){return T_PROG[k]||k;});
+  var compNegatif=comp.indexOf("comportement")>=0;
 
-  const hasPos=pos.length>0||gen.length>0;
-  const hasNeg=neg.length>0;
-  const hasComp=comp.length>0;
-  const hasProg=prog.length>0;
+  var hasPos=pos.length>0||gen.length>0;
+  var hasNeg=neg.length>0;
+  var hasProg=prog.length>0;
 
   function buildPos(){
-    const adjs=[...adjPos,...adjComp];
-    const noms=[...nomPos,...nomComp,...nomGen];
-    if(adjs.length&&noms.length){
-      return `Élève ${joinList(adjs)}, ${il} fait preuve de ${joinList(noms)}.`;
-    }else if(adjs.length){
-      return `Élève ${joinList(adjs)}, ${il} s'investit avec sérieux.`;
-    }else if(noms.length){
-      return `${Il} fait preuve de ${joinList(noms)}.`;
-    }
-    return `${Il} s'investit de manière satisfaisante.`;
+    var adjs=adjPos.concat(adjComp);
+    var noms=nomPos.concat(nomComp).concat(nomGen);
+    if(adjs.length&&noms.length) return "Élève "+joinList(adjs)+", "+il+" fait preuve de "+joinList(noms)+".";
+    if(adjs.length) return "Élève "+joinList(adjs)+", "+il+" s'investit avec sérieux.";
+    if(noms.length) return Il+" fait preuve de "+joinList(noms)+".";
+    return Il+" s'investit de manière satisfaisante.";
   }
 
-  let p1="",p2="";
+  var p1="", p2="";
 
   if(hasPos&&hasNeg){
     p1=buildPos();
-    p2=negItems.length===1?`Cependant, le ${negItems[0]} reste un point à améliorer.`:`Des efforts sont à fournir sur : ${joinList(negItems)}.`;
-    if(hasProg&&!prog.includes("potentiel")) p2+=` ${Il} affiche néanmoins ${joinList(progItems)}.`;
-  }else if(hasPos&&!hasNeg){
+    p2=negItems.length===1?"Cependant, le "+negItems[0]+" reste un point à améliorer.":"Des efforts sont à fournir sur : "+joinList(negItems)+".";
+    if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
+  } else if(hasPos&&!hasNeg){
     p1=buildPos();
     if(hasProg){
-      p2=`${Il} affiche ${joinList(progItems)}. ${(pos.length+gen.length)>=3?"Excellent trimestre !":"Continuons dans cette dynamique."}`;
-    }else{
+      p2=Il+" affiche "+joinList(progItems)+". "+((pos.length+gen.length)>=3?"Excellent trimestre !":"Continuons dans cette dynamique.");
+    } else {
       p2=(pos.length+gen.length)>=3?"Excellent trimestre, félicitations.":"Bon trimestre.";
     }
-  }else if(!hasPos&&hasNeg){
-    if(neg.includes("perturbateur")){
-      p1=`Le comportement perturbateur de ${il} nuit au bon déroulement des cours.`;
-      p2=`Une attitude plus respectueuse est indispensable.`;
-    }else if(negItems.length===1){
-      p1=`${Il} présente un ${negItems[0]} qui pénalise ses résultats.`;
-      p2=`Une remobilisation est attendue.`;
-    }else{
-      p1=`Des points à améliorer : ${joinList(negItems)}.`;
-      p2=`Un effort sérieux est nécessaire pour progresser.`;
+  } else if(!hasPos&&hasNeg){
+    if(neg.indexOf("perturbateur")>=0){
+      p1="Le comportement perturbateur de "+il+" nuit au bon déroulement des cours.";
+      p2="Une attitude plus respectueuse est indispensable.";
+    } else if(negItems.length===1){
+      p1=Il+" présente un "+negItems[0]+" qui pénalise ses résultats.";
+      p2="Une remobilisation est attendue.";
+    } else {
+      p1="Des points à améliorer : "+joinList(negItems)+".";
+      p2="Un effort sérieux est nécessaire pour progresser.";
     }
-    if(prog.includes("potentiel")) p2+=` Le potentiel est là.`;
-  }else if(compNegatif&&!hasPos){
-    p1=`Le comportement de ${il} est à revoir.`;
-    p2=`Des efforts de respect et d'implication sont attendus.`;
-  }else if(hasProg&&!hasPos&&!hasNeg){
-    if(prog.includes("potentiel")){
-      p1=`${Il} dispose d'un réel potentiel qui reste à exploiter.`;
-      p2=`Avec plus d'implication, les résultats pourraient être bien meilleurs.`;
-    }else{
-      p1=`${Il} affiche ${joinList(progItems)} ce trimestre.`;
-      p2=`Ces efforts méritent d'être soulignés.`;
+    if(prog.indexOf("potentiel")>=0) p2+=" Le potentiel est là.";
+  } else if(compNegatif&&!hasPos){
+    p1="Le comportement de "+il+" est à revoir.";
+    p2="Des efforts de respect et d'implication sont attendus.";
+  } else if(hasProg&&!hasPos&&!hasNeg){
+    if(prog.indexOf("potentiel")>=0){
+      p1=Il+" dispose d'un réel potentiel qui reste à exploiter.";
+      p2="Avec plus d'implication, les résultats pourraient être bien meilleurs.";
+    } else {
+      p1=Il+" affiche "+joinList(progItems)+" ce trimestre.";
+      p2="Ces efforts méritent d'être soulignés.";
     }
-  }else{
-    p1=`${Il} participe aux activités proposées.`;
-    p2=`Des marges de progression existent.`;
-  }
-
-  // Mots libres
-  let extra="";
-  if(ft.length){
-    const ctx=ft.join(", ");
-    const sports=["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","vélo","cross","ping"];
-    const profils=["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclusion","phobie","anxieux","anxieuse","allophone"];
-    const isSport=ft.some(m=>sports.some(s=>m.toLowerCase().includes(s)));
-    const isProfil=ft.some(m=>profils.some(p=>m.toLowerCase().includes(p)));
-    if(isSport) extra=`, notamment en ${ctx}`;
-    else if(isProfil) extra=` Profil ${ctx} pris en compte.`;
-    else extra=` ${ctx.charAt(0).toUpperCase()+ctx.slice(1)}.`;
+  } else {
+    p1=Il+" participe aux activités proposées.";
+    p2="Des marges de progression existent.";
   }
 
   phrase=[p1,p2].filter(Boolean).join(" ");
-  if(extra&&extra.startsWith(",")) phrase=phrase.replace(/\.$/,"")+extra+".";
-  else if(extra) phrase+=extra;
+
+  if(ft.length){
+    var ctx=ft.join(", ");
+    var sports=["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","vélo","cross","ping"];
+    var profils=["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclusion","phobie","anxieux","anxieuse","allophone"];
+    var isSport=ft.some(function(m){return sports.some(function(s){return m.toLowerCase().indexOf(s)>=0;});});
+    var isProfil=ft.some(function(m){return profils.some(function(p){return m.toLowerCase().indexOf(p)>=0;});});
+    if(isSport) phrase=phrase.replace(/\.$/,"")+", notamment en "+ctx+".";
+    else if(isProfil) phrase=phrase.replace(/\.$/,"")+" Profil "+ctx+" pris en compte.";
+    else phrase=phrase.replace(/\.$/,"")+". "+ctx.charAt(0).toUpperCase()+ctx.slice(1)+".";
+  }
 
   document.getElementById("result-zone").style.display="block";
   document.getElementById("ok-banner").style.display="none";
-  document.getElementById("rlabel").textContent=prenomCur?`Phrase pour ${prenomCur}`:"Phrase générée";
+  document.getElementById("rlabel").textContent=prenomCur?"Phrase pour "+prenomCur:"Phrase générée";
   document.getElementById("rtext").textContent=phrase;
   document.getElementById("rhint").textContent="Enregistrer pour sauvegarder, Regénérer pour varier.";
 }
 
-function getTrimestre(){
-  const m=new Date().getMonth()+1; // 1-12
-  if(m>=9||m<=12&&m>=9) return "T1"; // sept-déc
-  if(m<=3) return "T1"; // jan partiel (avant conseil)
-  if(m>=1&&m<=3) return "T2"; // jan-mars
-  if(m>=4&&m<=6) return "T3"; // avril-juin
-  return "T2";
+function populateAnnees(){
+  var db=dbLoad();
+  var annees=[];
+  db.forEach(function(e){if(e.annee&&annees.indexOf(e.annee)<0)annees.push(e.annee);});
+  annees.sort().reverse();
+  ["filtre-annee","ecl-annee"].forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML='<option value="toutes">Toutes années</option>'+annees.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join("");
+  });
 }
-function getTrimAuto(){
-  const m=new Date().getMonth()+1;
-  if(m>=9) return "T1";
-  if(m<=3) return "T2";
-  if(m<=6) return "T3";
-  return "T2";
-}
-function getAnnee(){
-  const now=new Date();
-  const m=now.getMonth()+1;
-  const y=now.getFullYear();
-  // Année scolaire : si sept ou +, c'est y/y+1, sinon y-1/y
-  if(m>=9) return `${y}-${y+1}`;
-  return `${y-1}-${y}`;
-}
+
 function enregistrer(){
   if(!phrase)return;
-  const db=dbLoad();
-  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR"),trimestre:getTrimAuto(),annee:getAnnee()});
-  dbSave(db);updateBadge();populateAnnees();
-  const b=document.getElementById("ok-banner");
-  b.style.display="block";setTimeout(()=>b.style.display="none",2000);
+  var db=dbLoad();
+  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre:genre,phrase:phrase,date:new Date().toLocaleDateString("fr-FR"),trimestre:getTrimAuto(),annee:getAnnee()});
+  dbSave(db);
+  updateBadge();
+  populateAnnees();
+  var b=document.getElementById("ok-banner");
+  b.style.display="block";
+  setTimeout(function(){b.style.display="none";},2000);
 }
 
 function copierPhrase(){
-  navigator.clipboard.writeText(phrase).catch(()=>{const t=document.createElement("textarea");t.value=phrase;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);});
+  navigator.clipboard.writeText(phrase).catch(function(){
+    var t=document.createElement("textarea");t.value=phrase;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);
+  });
 }
 
 function resetForm(){
-  sel={};document.getElementById("prenom").value="";document.getElementById("free").value="";
-  document.getElementById("result-zone").style.display="none";phrase="";renderChips();
+  sel={};
+  document.getElementById("prenom").value="";
+  document.getElementById("free").value="";
+  document.getElementById("result-zone").style.display="none";
+  phrase="";
+  renderChips();
 }
 
 function filtrer(f,btn){
   filtreCur=f;
-  document.querySelectorAll(".fbtn").forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");renderListe();
+  document.querySelectorAll(".fbtn").forEach(function(b){b.classList.remove("on");});
+  btn.classList.add("on");
+  renderListe();
 }
 
-function populateAnnees(){
-  const db=dbLoad();
-  const annees=[...new Set(db.map(e=>e.annee||"—"))].sort().reverse();
-  ["filtre-annee","ecl-annee"].forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const cur=el.value;
-    el.innerHTML='<option value="toutes">Toutes années</option>'+annees.map(a=>`<option value="${a}">${a}</option>`).join("");
-    if(cur) el.value=cur;
-  });
-}
 function renderListe(){
-  let db=dbLoad();
-  const fm=document.getElementById("filtre-matiere")?.value||"toutes";
-  const ft=document.getElementById("filtre-trim")?.value||"tous";
-  const fa=document.getElementById("filtre-annee")?.value||"toutes";
-  if(filtreCur!=="toutes") db=db.filter(e=>e.classe===filtreCur);
-  if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
-  if(ft!=="tous") db=db.filter(e=>(e.trimestre||"T1")===ft);
-  if(fa!=="toutes") db=db.filter(e=>(e.annee||"—")===fa);
-  document.getElementById("lcounter").textContent=`${db.length} élève(s)`;
-  const el=document.getElementById("elist");
+  var db=dbLoad();
+  var fm=document.getElementById("filtre-matiere").value;
+  var ft=document.getElementById("filtre-trim").value;
+  var fa=document.getElementById("filtre-annee").value;
+  if(filtreCur!=="toutes") db=db.filter(function(e){return e.classe===filtreCur;});
+  if(fm!=="toutes") db=db.filter(function(e){return e.matiere===fm;});
+  if(ft!=="tous") db=db.filter(function(e){return (e.trimestre||"T1")===ft;});
+  if(fa!=="toutes") db=db.filter(function(e){return (e.annee||"")===fa;});
+  document.getElementById("lcounter").textContent=db.length+" élève(s)";
+  var el=document.getElementById("elist");
   if(!db.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
-  el.innerHTML=db.map(e=>`
-    <div class="eleve-item">
-      <div class="eleve-info">
-        <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:12px;color:var(--muted)">${e.classe}</span></div>
-        <div class="eleve-meta">${e.trimestre||""} ${e.annee||""} · ${e.matiere||""} · ${e.date}</div>
-        <div class="eleve-phrase">${e.phrase}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
-        <button class="ibtn" onclick="cpItem(${e.id})">⎘</button>
-        <button class="ibtn danger" onclick="delItem(${e.id})">🗑</button>
-      </div>
-    </div>`).join("");
+  el.innerHTML=db.map(function(e){
+    return '<div class="eleve-item"><div class="eleve-info"><div class="eleve-nom">'+e.prenom+' <span style="font-weight:400;font-size:12px;color:var(--muted)">'+e.classe+'</span></div><div class="eleve-meta">'+(e.trimestre||"")+" "+(e.annee||"")+" · "+(e.matiere||"")+" · "+e.date+'</div><div class="eleve-phrase">'+e.phrase+'</div></div><div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0"><button class="ibtn" onclick="cpItem('+e.id+')">⎘</button><button class="ibtn danger" onclick="delItem('+e.id+')">🗑</button></div></div>';
+  }).join("");
 }
 
-function cpItem(id){const e=dbLoad().find(x=>x.id===id);if(e)navigator.clipboard.writeText(e.phrase).catch(()=>{});}
-function delItem(id){if(!confirm("Supprimer ?"))return;dbSave(dbLoad().filter(x=>x.id!==id));updateBadge();renderListe();renderExport();}
+function cpItem(id){var e=dbLoad().filter(function(x){return x.id===id;})[0];if(e)navigator.clipboard.writeText(e.phrase).catch(function(){});}
+
+function delItem(id){
+  if(!confirm("Supprimer ?"))return;
+  dbSave(dbLoad().filter(function(x){return x.id!==id;}));
+  updateBadge();renderListe();renderExport();
+}
 
 function renderExport(){
-  const fc=document.getElementById("ecl").value;
-  const fm=document.getElementById("ecl-mat").value;
-  const ft=document.getElementById("ecl-trim")?.value||"tous";
-  const fa=document.getElementById("ecl-annee")?.value||"toutes";
-  let db=dbLoad();
-  if(fc!=="toutes") db=db.filter(e=>e.classe===fc);
-  if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
-  if(ft!=="tous") db=db.filter(e=>(e.trimestre||"T1")===ft);
-  if(fa!=="toutes") db=db.filter(e=>(e.annee||"—")===fa);
-  document.getElementById("econtent").textContent=db.length
-    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""}${e.trimestre?" · "+e.trimestre:""}${e.annee?" "+e.annee:""})
-${e.phrase}`).join("
-
-")   :"Aucune appréciation.";
+  var fc=document.getElementById("ecl").value;
+  var fm=document.getElementById("ecl-mat").value;
+  var ft=document.getElementById("ecl-trim").value;
+  var fa=document.getElementById("ecl-annee").value;
+  var db=dbLoad();
+  if(fc!=="toutes") db=db.filter(function(e){return e.classe===fc;});
+  if(fm!=="toutes") db=db.filter(function(e){return e.matiere===fm;});
+  if(ft!=="tous") db=db.filter(function(e){return (e.trimestre||"T1")===ft;});
+  if(fa!=="toutes") db=db.filter(function(e){return (e.annee||"")===fa;});
+  var el=document.getElementById("econtent");
+  if(!db.length){el.textContent="Aucune appréciation.";return;}
+  el.textContent=db.map(function(e){
+    var meta=e.prenom+" ("+e.classe+(e.matiere?" · "+e.matiere:"")+(e.trimestre?" · "+e.trimestre:"")+(e.annee?" "+e.annee:"")+")";
+    return meta+"\n"+e.phrase;
+  }).join("\n\n");
 }
 
-function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(()=>{});}
-function updateBadge(){const n=dbLoad().length;document.getElementById("badge").textContent=n?`(${n})`:""; }
+function copierExport(){
+  navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(function(){});
+}
+
+function updateBadge(){
+  var n=dbLoad().length;
+  document.getElementById("badge").textContent=n?"("+n+")":"";
+}
 
 function setTab(id){
-  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",["gen","liste","export"][i]===id));
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(function(t,i){t.classList.toggle("active",["gen","liste","export"][i]===id);});
+  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
   document.getElementById(id).classList.add("active");
-  if(id==="liste")renderListe();
-  if(id==="export")renderExport();
+  if(id==="liste"){populateAnnees();renderListe();}
+  if(id==="export"){populateAnnees();renderExport();}
 }
 
 updateMatieres();
 renderChips();
 updateBadge();
-populateAnnees();
 </script>
 </body>
 </html>

@@ -3,595 +3,445 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appréciations EPS</title>
+<title>Appréciations Collège Luqman</title>
 <style>
-:root{--vert:#1a7a6e;--vert-dark:#145f55;--orange:#e8671a;--orange-light:#fef0e6;--bg:#f0f2f0;--card:#fff;--border:#dde8e6;--text:#1a1a1a;--muted:#5a7570}
+:root{--vert:#1a7a6e;--vert-dark:#145f55;--orange:#e8671a;--bg:#f0f2f0;--card:#fff;--border:#dde8e6;--text:#1a1a1a;--muted:#5a7570}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
-.header{background:var(--vert);padding:16px 16px 14px;margin-bottom:0}
-.header h1{font-size:20px;font-weight:700;color:#fff;letter-spacing:.01em}
-.header h1 span{color:#f9c06a;margin-right:8px}
-.body{padding:16px}
-.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.tab{padding:8px 18px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:14px;cursor:pointer;color:var(--muted)}
+.header{background:var(--vert);padding:14px 16px}
+.header h1{font-size:19px;font-weight:700;color:#fff}
+.body{padding:14px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:14px;cursor:pointer;color:var(--muted);flex:1;text-align:center}
 .tab.active{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
 .section{display:none}.section.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
-.slabel{font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
-.chip{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted);user-select:none}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
+.slabel{font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 7px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2px}
+.chip{padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted);user-select:none;display:inline-block}
+.chip.gen.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
 .chip.pos.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
 .chip.neg.on{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.chip.comp.on{background:var(--orange-light);color:#7a3a0a;border-color:var(--orange)}
+.chip.comp.on{background:#fef0e6;color:#7a3a0a;border-color:var(--orange)}
 .chip.prog.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
-label{font-size:13px;color:var(--muted);display:block;margin-bottom:5px}
-input[type=text],select{width:100%;font-size:14px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
-input[type=text]:focus,select:focus{outline:none;border-color:var(--vert)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+input,select{width:100%;font-size:14px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+input:focus,select:focus{outline:none;border-color:var(--vert)}
 .genre-row{display:flex;gap:8px}
-.grb{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
+.grb{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
 .grb.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-button.action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--text)}
-button.action:hover{background:#f0f7f6;border-color:var(--vert)}
-button.action.primary{border-color:var(--orange);background:var(--orange);color:#fff;font-weight:600}
-button.action.primary:hover{background:#d45e15}
-.result-box{background:#f4faf9;border:1.5px solid var(--vert);border-radius:10px;padding:14px;margin-top:12px}
-.result-text{font-size:14px;line-height:1.7;min-height:48px;white-space:pre-wrap;color:var(--text)}
-.hint{font-size:12px;color:var(--muted);margin-top:6px}
-.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);display:inline-block}
-.sel-tags{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px;min-height:22px}
-hr{border:none;border-top:1px solid var(--border);margin:14px 0}
-.eleve-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button.act{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--text)}
+button.act:hover{background:#f0f7f6}
+button.act.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:600}
+button.act.primary:hover{background:#d45e15}
+.result-box{background:#f4faf9;border:1.5px solid var(--vert);border-radius:10px;padding:13px;margin-top:10px}
+.result-text{font-size:14px;line-height:1.75;min-height:44px;white-space:pre-wrap}
+.hint{font-size:12px;color:var(--muted);margin-top:5px}
+.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);display:inline-block;margin:2px}
+.sel-tags{display:flex;flex-wrap:wrap;margin:6px 0 2px;min-height:20px}
+hr{border:none;border-top:1px solid var(--border);margin:12px 0}
+.eleve-item{display:flex;align-items:flex-start;gap:8px;padding:10px 11px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
 .eleve-info{flex:1;min-width:0}
 .eleve-nom{font-size:14px;font-weight:600;color:var(--vert-dark)}
 .eleve-meta{font-size:12px;color:var(--muted);margin-top:2px}
-.eleve-phrase{font-size:13px;line-height:1.6;margin-top:6px}
-.icon-btn{padding:5px 10px;font-size:12px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--muted)}
-.icon-btn:hover{background:#f0f7f6}
-.icon-btn.danger:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.empty{font-size:13px;color:var(--muted);font-style:italic;padding:12px 0}
-.filter-btn{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
-.filter-btn.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.eleve-phrase{font-size:13px;line-height:1.55;margin-top:5px}
+.ibtn{padding:5px 9px;font-size:12px;border-radius:7px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--muted)}
+.ibtn:hover{background:#f0f7f6}
+.ibtn.danger:hover{background:#FCEBEB;color:#A32D2D}
+.empty{font-size:13px;color:var(--muted);font-style:italic;padding:10px 0}
+.fbtn{padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
+.fbtn.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
+.frow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
 .counter{font-size:12px;color:var(--muted);margin-left:auto}
-.ok-banner{background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);border-radius:8px;padding:8px 12px;font-size:13px;margin-top:10px;display:none}
-.export-box{background:#f4faf9;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;line-height:1.9;white-space:pre-wrap;min-height:60px;color:var(--text)}
-@media(max-width:500px){.row3{grid-template-columns:1fr}}
+.ok{background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);border-radius:8px;padding:8px 11px;font-size:13px;margin-top:9px;display:none}
+.ebox{background:#f4faf9;border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;line-height:1.85;white-space:pre-wrap;min-height:50px}
+@media(max-width:400px){.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<h1>📋 Appréciations EPS</h1>
+<div class="header"><h1>📋 Appréciations Collège Luqman</h1></div>
+<div class="body">
+
 <div class="tabs">
   <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
   <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
   <button class="tab" onclick="setTab('export')">↗ Export</button>
 </div>
 
+<!-- GÉNÉRER -->
 <div id="gen" class="section active">
-  <div class="card">
-    <div class="row3">
-      <div><label>Prénom</label><input type="text" id="prenom" placeholder="Ex: Lucas" /></div>
-      <div><label>Classe</label>
-        <select id="classe"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select>
-      </div>
-      <div><label>Genre</label>
-        <div class="genre-row">
-          <button class="grb on" id="gb-m" onclick="setG('M')">Garçon</button>
-          <button class="grb" id="gb-f" onclick="setG('F')">Fille</button>
-        </div>
-      </div>
-    </div>
-    <div class="slabel">Général — toutes matières</div><div class="chips" id="cp-gen"></div>
-    <div class="slabel">Points positifs EPS</div><div class="chips" id="cp-pos"></div>
-    <div class="slabel">Points à travailler</div><div class="chips" id="cp-neg"></div>
-    <div class="slabel">Comportement</div><div class="chips" id="cp-comp"></div>
-    <div class="slabel">Progression</div><div class="chips" id="cp-prog"></div>
-    <hr>
-    <div style="margin-bottom:12px">
-      <label>Mots libres <span style="font-weight:400;color:#888">(séparés par virgules)</span></label>
-      <input type="text" id="free" placeholder="Ex: badminton, manque de vitesse…" oninput="renderTags()" />
-    </div>
-    <div style="font-size:12px;color:#888;margin-bottom:4px">Mots-clés sélectionnés :</div>
-    <div class="sel-tags" id="sel-tags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
+<div class="card">
+  <div class="grid2">
+    <div><label>Prénom</label><input type="text" id="prenom" placeholder="Ex: Lucas"></div>
+    <div><label>Classe</label><select id="classe" onchange="updateMatieres()"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select></div>
+  </div>
+  <div class="grid2">
+    <div><label>Matière</label><select id="matiere"></select></div>
+    <div><label>Genre</label><div class="genre-row"><button class="grb on" id="gb-m" onclick="setG('M')">Garçon</button><button class="grb" id="gb-f" onclick="setG('F')">Fille</button></div></div>
+  </div>
+
+  <div class="slabel">Général — toutes matières</div>
+  <div class="chips" id="cp-gen"></div>
+  <div class="slabel">Points positifs EPS</div>
+  <div class="chips" id="cp-pos"></div>
+  <div class="slabel">Points à travailler</div>
+  <div class="chips" id="cp-neg"></div>
+  <div class="slabel">Comportement</div>
+  <div class="chips" id="cp-comp"></div>
+  <div class="slabel">Progression</div>
+  <div class="chips" id="cp-prog"></div>
+
+  <hr>
+  <div style="margin-bottom:10px">
+    <label>Mots libres <span style="font-weight:400;color:var(--muted)">(sport, contexte… séparés par virgules)</span></label>
+    <input type="text" id="free" placeholder="Ex: badminton, ULIS…" oninput="renderTags()">
+  </div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:3px">Mots-clés sélectionnés :</div>
+  <div class="sel-tags" id="sel-tags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
+
+  <div class="btn-row">
+    <button class="act primary" onclick="generer()">⚡ Générer</button>
+    <button class="act" onclick="resetForm()">↺ Réinitialiser</button>
+  </div>
+
+  <div id="result-zone" style="display:none" class="result-box">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:5px" id="rlabel">Phrase générée</div>
+    <div id="rtext" class="result-text"></div>
+    <div class="hint" id="rhint"></div>
     <div class="btn-row">
-      <button class="action primary" onclick="generer()">⚡ Générer</button>
-      <button class="action" onclick="resetForm()">↺ Réinitialiser</button>
+      <button class="act primary" onclick="enregistrer()">💾 Enregistrer</button>
+      <button class="act" onclick="generer()">↺ Regénérer</button>
+      <button class="act" onclick="copierPhrase()">⎘ Copier</button>
     </div>
-    <div id="result-zone" style="display:none" class="result-box">
-      <div style="font-size:12px;color:#888;margin-bottom:6px" id="rlabel">Phrase générée</div>
-      <div id="rtext" class="result-text"></div>
-      <div class="hint" id="rhint"></div>
-      <div class="btn-row">
-        <button class="action primary" onclick="enregistrer()">💾 Enregistrer</button>
-        <button class="action" onclick="generer()">↺ Regénérer</button>
-        <button class="action" onclick="copierPhrase()">⎘ Copier</button>
-      </div>
-      <div class="ok-banner" id="ok-banner">✓ Enregistré !</div>
-    </div>
+    <div class="ok" id="ok-banner">✓ Enregistré !</div>
   </div>
 </div>
+</div>
 
+<!-- ÉLÈVES -->
 <div id="liste" class="section">
-  <div class="filter-row">
-    <button class="filter-btn on" onclick="filtrer('toutes',this)">Toutes</button>
-    <button class="filter-btn" onclick="filtrer('6e',this)">6e</button>
-    <button class="filter-btn" onclick="filtrer('5e',this)">5e</button>
-    <button class="filter-btn" onclick="filtrer('4e',this)">4e</button>
-    <button class="filter-btn" onclick="filtrer('3e',this)">3e</button>
+  <div class="frow">
+    <button class="fbtn on" onclick="filtrer('toutes',this)">Toutes</button>
+    <button class="fbtn" onclick="filtrer('6e',this)">6e</button>
+    <button class="fbtn" onclick="filtrer('5e',this)">5e</button>
+    <button class="fbtn" onclick="filtrer('4e',this)">4e</button>
+    <button class="fbtn" onclick="filtrer('3e',this)">3e</button>
     <span class="counter" id="lcounter"></span>
+  </div>
+  <div class="frow">
+    <label style="font-size:13px;align-self:center;margin:0">Matière :</label>
+    <select id="filtre-matiere" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="toutes">Toutes</option>
+      <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
+      <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
+      <option>Physique-Chimie</option><option>Technologie</option>
+      <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
+    </select>
   </div>
   <div id="elist"></div>
 </div>
 
+<!-- EXPORT -->
 <div id="export" class="section">
-  <div class="filter-row">
+  <div class="frow">
     <label style="font-size:13px;align-self:center;margin:0">Classe :</label>
-    <select id="ecl" onchange="renderExport()" style="width:auto;font-size:13px;padding:6px 10px">
-      <option value="toutes">Toutes</option>
-      <option>6e</option><option>5e</option><option>4e</option><option>3e</option>
+    <select id="ecl" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="toutes">Toutes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option>
     </select>
-    <button class="action" style="margin-left:auto" onclick="copierExport()">⎘ Copier tout</button>
+    <label style="font-size:13px;align-self:center;margin:0 0 0 8px">Matière :</label>
+    <select id="ecl-mat" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="toutes">Toutes</option>
+      <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
+      <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
+      <option>Physique-Chimie</option><option>Technologie</option>
+      <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
+    </select>
+    <button class="act" style="margin-left:auto" onclick="copierExport()">⎘ Copier</button>
   </div>
-  <div id="econtent" class="export-box">Aucune appréciation.</div>
+  <div id="econtent" class="ebox">Aucune appréciation.</div>
 </div>
 
+</div><!-- /body -->
+
 <script>
+const M6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Arts Plastiques","Éducation Musicale","EPS"];
+const M5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
+
 const CHIPS={
   gen:[
-    {k:"curieux",l:"curiosité intellectuelle"},
-    {k:"rigoureux",l:"rigueur"},
-    {k:"oral",l:"participation à l'oral"},
-    {k:"ecrit",l:"qualité du travail écrit"},
-    {k:"methode",l:"bonne méthode de travail"},
-    {k:"efforts_gen",l:"efforts constants"},
-    {k:"autonomie_gen",l:"autonomie"},
-    {k:"respect_gen",l:"respect des règles"},
-    {k:"entraide",l:"entraide"},
-    {k:"creativite",l:"créativité"},
-    {k:"perseverance",l:"persévérance"},
-    {k:"assidu",l:"assiduité"},
-    {k:"prise_notes",l:"prise de notes"},
-    {k:"esprit_critique",l:"esprit critique"},
-    {k:"confiance",l:"confiance en soi"}
+    {k:"curieux",l:"curiosité intellectuelle"},{k:"rigoureux",l:"rigueur"},
+    {k:"oral",l:"participation à l'oral"},{k:"ecrit",l:"travail écrit soigné"},
+    {k:"methode",l:"bonne méthode"},{k:"efforts_gen",l:"efforts constants"},
+    {k:"autonomie_gen",l:"autonomie"},{k:"respect_gen",l:"respect des consignes"},
+    {k:"entraide",l:"entraide"},{k:"creativite",l:"créativité"},
+    {k:"perseverance",l:"persévérance"},{k:"assidu",l:"assiduité"},
+    {k:"esprit_critique",l:"esprit critique"},{k:"confiance",l:"manque de confiance en soi"}
   ],
   pos:[
-    {k:"investi",l:"investi(e)"},
-    {k:"sérieux",l:"sérieux/sérieuse"},
-    {k:"appliqué",l:"appliqué(e)"},
-    {k:"participation",l:"participation active"},
-    {k:"equipe",l:"esprit d'équipe"},
-    {k:"fairplay",l:"fair-play"},
-    {k:"ecoute",l:"écoute des consignes"},
-    {k:"leadership",l:"leadership"},
-    {k:"technique",l:"bon niveau technique"},
-    {k:"autonome",l:"autonomie"}
+    {k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},
+    {k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},
+    {k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},
+    {k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},
+    {k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}
   ],
   neg:[
-    {k:"investissement",l:"manque d'investissement"},
-    {k:"bavardage",l:"bavardage"},
-    {k:"concentration",l:"manque de concentration"},
-    {k:"difficultes",l:"difficultés techniques"},
-    {k:"retrait",l:"en retrait"},
-    {k:"irregulier",l:"irrégulier(e)"},
-    {k:"efforts",l:"efforts à fournir"},
-    {k:"perturbateur",l:"perturbateur/trice"}
+    {k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},
+    {k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},
+    {k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},
+    {k:"efforts",l:"efforts à fournir"},{k:"perturbateur",l:"perturbateur/trice"}
   ],
   comp:[
-    {k:"attitude",l:"attitude positive"},
-    {k:"respectueux",l:"respectueux/euse"},
-    {k:"agreable",l:"agréable en cours"},
-    {k:"comportement",l:"comportement à améliorer"},
+    {k:"attitude",l:"attitude positive"},{k:"respectueux",l:"respectueux/euse"},
+    {k:"agreable",l:"agréable en cours"},{k:"comportement",l:"comportement à améliorer"},
     {k:"ponctuel",l:"ponctuel(le)"}
   ],
   prog:[
-    {k:"progres",l:"en progrès"},
-    {k:"progression",l:"progression constante"},
-    {k:"potentiel",l:"potentiel à exploiter"},
-    {k:"encourageant",l:"résultats encourageants"},
-    {k:"hausse",l:"trimestre en hausse"},
-    {k:"acquis",l:"acquis solides"}
+    {k:"progres",l:"en progrès"},{k:"progression",l:"progression constante"},
+    {k:"potentiel",l:"potentiel à exploiter"},{k:"encourageant",l:"résultats encourageants"},
+    {k:"hausse",l:"trimestre en hausse"},{k:"acquis",l:"acquis solides"}
   ]
 };
 
-// Phrases complètes par profil — chaque entrée est une phrase prête à l'emploi
-// Variables : {il} {elle} {Il} {Elle} {son} {sa} {e} {ue}
-const PHRASES = {
-  // Très positif
-  pos_fort: [
-    "Élève très {investi_e}, {il} fait preuve d'un excellent {esprit_equipe} et d'une {ecoute} exemplaire. Félicitations pour ce trimestre.",
-    "Très bonne participation, {il} s'implique avec sérieux et montre un {leadership} naturel apprécié. Continuez ainsi.",
-    "Élève {applique_e} et {autonome}, {il} progresse régulièrement et constitue un atout pour le groupe.",
-    "Bon trimestre. {Il} s'investit pleinement, fait preuve de {fairplay} et d'une belle motivation. Bravo.",
-    "{Il} se distingue par {son} sérieux, {son} écoute et {son} implication constante. Excellent travail.",
-  ],
-  // Positif avec progression
-  pos_prog: [
-    "Élève sérieux{e} et {investi_e} qui affiche une {progression} régulière. Les efforts payent, continuons dans cette dynamique.",
-    "Bon trimestre en progression. {Il} s'implique avec sérieux et les résultats sont {encourageants}. Bravo.",
-    "{Il} est {investi_e} et motivé{e} ; la {progression} constatée ce trimestre est encourageante. À poursuivre.",
-    "Les acquis se consolident grâce à un travail sérieux et régulier. Trimestre positif et {encourageant}.",
-  ],
-  // Positif avec points à améliorer
-  pos_neg_bavardage: [
-    "Élève {investi_e} qui possède de réelles qualités, mais dont le {bavardage} nuit parfois au bon déroulement des séances. Des efforts sont attendus sur ce point.",
-    "{Il} fait preuve de {participation} et d'implication, cependant le {bavardage} reste un frein à sa concentration. À corriger.",
-  ],
-  pos_neg_concentration: [
-    "Des qualités certaines, mais le {manque_concentration} empêche {il} de donner le meilleur de {lui_elle_meme}. Un effort de rigueur est attendu.",
-    "Élève {investi_e} mais qui manque parfois de concentration. Avec plus de régularité, les résultats seront au rendez-vous.",
-  ],
-  pos_neg_investissement: [
-    "{Il} dispose de bonnes capacités mais l'investissement en séance reste insuffisant. {Il} doit se remobiliser pour progresser.",
-    "Du potentiel, mais un {manque_investissement} qui pénalise les résultats. Des efforts supplémentaires sont nécessaires.",
-  ],
-  pos_neg_retrait: [
-    "Élève discret{e} qui possède des qualités mais reste trop {en_retrait} lors des activités. Une plus grande implication est attendue.",
-    "{Il} doit prendre davantage de place dans les activités collectives. {Son} attitude réservée freine sa progression.",
-  ],
-  // Négatif dominant
-  neg_bavardage: [
-    "Le {bavardage} répété perturbe le bon déroulement des séances et nuit à la concentration de la classe. Un effort sérieux est indispensable.",
-    "{Il} doit impérativement réduire les bavardages en cours d'EPS, ce comportement freine sa progression et celle du groupe.",
-  ],
-  neg_investissement: [
-    "L'investissement en séance est insuffisant. {Il} doit se remobiliser et fournir davantage d'efforts pour progresser.",
-    "Des difficultés persistantes liées à un manque d'implication. Une véritable remobilisation est nécessaire ce trimestre.",
-  ],
-  neg_concentration: [
-    "{Il} manque de concentration en cours, ce qui impacte directement ses résultats. Des efforts de régularité sont attendus.",
-    "Des lacunes dues à un manque de concentration récurrent. {Il} doit apprendre à mieux se focaliser sur les objectifs des séances.",
-  ],
-  neg_perturbateur: [
-    "Le comportement perturbateur de {il} nuit au bon déroulement des cours. Une attitude plus respectueuse est indispensable.",
-    "{Il} perturbe régulièrement les séances. Ce comportement est inacceptable et doit changer rapidement.",
-  ],
-  neg_irregulier: [
-    "Des résultats irréguliers qui ne reflètent pas le potentiel réel de {il}. Plus de régularité dans l'effort est attendu.",
-    "L'irrégularité dans l'implication pénalise les résultats. {Il} doit s'investir de façon plus constante.",
-  ],
-  neg_difficultes: [
-    "{Il} rencontre des difficultés techniques persistantes. Un travail plus régulier et une meilleure écoute des consignes permettraient de progresser.",
-    "Des difficultés techniques à surmonter. {Il} doit persévérer et s'appuyer davantage sur les conseils dispensés en cours.",
-  ],
-  // Comportement positif
-  comp_positif: [
-    "{Il} fait preuve d'une attitude exemplaire en cours d'EPS : respectueux{se}, ponctuel{le} et toujours de bonne volonté.",
-    "Comportement très satisfaisant. {Il} est {agreable} et contribue positivement à l'ambiance de la classe.",
-    "Élève {respectueux_se} et {ponctuele} dont l'attitude positive est appréciée. Bon trimestre.",
-  ],
-  // Comportement à améliorer
-  comp_ameliorer: [
-    "Le comportement de {il} est à revoir : des efforts de respect et d'implication sont indispensables pour progresser.",
-    "{Il} doit travailler sur {son} comportement en cours, qui reste en-deçà de ce qui est attendu à ce niveau.",
-  ],
-  // Progression seule
-  prog_seul: [
-    "Trimestre en progression. {Il} fait des efforts qui commencent à porter leurs fruits. Continuons dans cette direction.",
-    "{Il} progresse à {son} rythme et les résultats s'améliorent. Ces efforts méritent d'être soulignés.",
-    "Des acquis solides qui témoignent d'un travail régulier. {Il} est sur la bonne voie.",
-    "Trimestre en hausse, les progrès sont visibles. {Il} doit maintenir cet effort pour consolider ses acquis.",
-  ],
-  // Potentiel non exploité
-  potentiel: [
-    "{Il} dispose d'un réel potentiel qui reste à exploiter. Avec plus d'implication, les résultats pourraient être bien meilleurs.",
-    "Du potentiel, mais des efforts insuffisants. {Il} doit se donner les moyens de progresser.",
-  ],
-  // Par défaut
-  defaut: [
-    "Trimestre correct. {Il} participe aux activités et s'implique de façon globalement satisfaisante.",
-    "Élève qui s'investit dans les activités proposées. Des marges de progression existent.",
-    "Participation correcte aux activités. {Il} doit poursuivre ses efforts pour progresser.",
-  ]
-};
+const KEY="eps_v2";
+let genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
 
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return[];}}
+function dbSave(d){localStorage.setItem(KEY,JSON.stringify(d));}
 
-function appliquer(phrase, g){
-  const f = g==="F";
-  return phrase
-    .replace(/\{il\}/g, f?"elle":"il")
-    .replace(/\{Il\}/g, f?"Elle":"Il")
-    .replace(/\{son\}/g, f?"sa":"son")
-    .replace(/\{Son\}/g, f?"Sa":"Son")
-    .replace(/\{lui_elle_meme\}/g, f?"elle-même":"lui-même")
-    .replace(/\{e\}/g, f?"e":"")
-    .replace(/\{ue\}/g, f?"ue":"u")
-    .replace(/\{investi_e\}/g, f?"investie":"investi")
-    .replace(/\{applique_e\}/g, f?"appliquée":"appliqué")
-    .replace(/\{autonome\}/g, "autonome")
-    .replace(/\{respectueux_se\}/g, f?"respectueuse":"respectueux")
-    .replace(/\{ponctuele\}/g, f?"ponctuelle":"ponctuel")
-    .replace(/\{agreable\}/g, "agréable")
-    .replace(/\{esprit_equipe\}/g, "esprit d'équipe")
-    .replace(/\{ecoute\}/g, "écoute")
-    .replace(/\{fairplay\}/g, "fair-play")
-    .replace(/\{leadership\}/g, "leadership")
-    .replace(/\{participation\}/g, "participation active")
-    .replace(/\{bavardage\}/g, "bavardage")
-    .replace(/\{manque_concentration\}/g, "manque de concentration")
-    .replace(/\{manque_investissement\}/g, "manque d'investissement")
-    .replace(/\{en_retrait\}/g, "en retrait")
-    .replace(/\{progression\}/g, "progression")
-    .replace(/\{encourageant\}/g, f?"encourageante":"encourageant")
-    .replace(/\{encourageants\}/g, "encourageants");
+function updateMatieres(){
+  const cl=document.getElementById("classe").value;
+  const liste=cl==="6e"?M6:M5;
+  document.getElementById("matiere").innerHTML=liste.map(m=>`<option>${m}</option>`).join("");
 }
 
-function choisirPhrases(sel, genre, libre){
-  const gen = Object.entries(sel).filter(([k,v])=>v==="gen").map(([k])=>k);
-  const pos = Object.entries(sel).filter(([k,v])=>v==="pos").map(([k])=>k);
-  const neg = Object.entries(sel).filter(([k,v])=>v==="neg").map(([k])=>k);
-  const comp = Object.entries(sel).filter(([k,v])=>v==="comp").map(([k])=>k);
-  const prog = Object.entries(sel).filter(([k,v])=>v==="prog").map(([k])=>k);
+function setG(g){
+  genre=g;
+  document.getElementById("gb-m").classList.toggle("on",g==="M");
+  document.getElementById("gb-f").classList.toggle("on",g==="F");
+}
 
-  const f = genre==="F";
-  const Il = prenomCur ? prenomCur : (f?"Elle":"Il");
-  const il = prenomCur ? prenomCur : (f?"elle":"il");
-  const e = f?"e":"";
+function allChips(){return [...CHIPS.gen,...CHIPS.pos,...CHIPS.neg,...CHIPS.comp,...CHIPS.prog];}
 
-  // Adjectifs qualificatifs (s'accordent directement)
-  const ADJ_POS = {
-    "investi": f?"investie":"investi",
-    "sérieux": f?"sérieuse":"sérieux",
-    "appliqué": f?"appliquée":"appliqué",
-    "autonome": "autonome",
-    "fairplay": "fair-play",
-  };
-  // Groupes nominaux (ont besoin d'un article)
-  const NOM_POS = {
-    "participation": "une participation active",
-    "equipe": "un bon esprit d'équipe",
-    "ecoute": "une bonne écoute des consignes",
-    "leadership": "un vrai leadership",
-    "technique": "un bon niveau technique",
-  };
-  const ADJ_COMP = {
-    "respectueux": f?"respectueuse":"respectueux",
-    "agreable": f?"agréable":"agréable",
-    "ponctuel": f?"ponctuelle":"ponctuel",
-  };
-  const NOM_COMP = {
-    "attitude": "une attitude positive",
-    "comportement": null, // négatif, traité séparément
-  };
-  const NOM_NEG = {
-    "investissement": "manque d'investissement",
-    "bavardage": "bavardage",
-    "concentration": "manque de concentration",
-    "difficultes": "difficultés techniques persistantes",
-    "retrait": "tendance à rester en retrait",
-    "irregulier": "irrégularité dans l'effort",
-    "efforts": "efforts insuffisants",
-    "perturbateur": "comportement perturbateur",
-  };
-  const NOM_PROG = {
-    "progres": "en progrès",
-    "progression": "une progression constante",
-    "potentiel": "un potentiel à exploiter",
-    "encourageant": "des résultats encourageants",
-    "hausse": "un trimestre en hausse",
-    "acquis": "des acquis solides",
-  };
-  const NOM_GEN = {
-    "curieux": f?"une vraie curiosité intellectuelle":"une vraie curiosité intellectuelle",
-    "rigoureux": f?"de la rigueur":"de la rigueur",
-    "oral": "une bonne participation à l'oral",
-    "ecrit": "un travail écrit soigné",
-    "methode": "une bonne méthode de travail",
-    "efforts_gen": "des efforts constants",
-    "autonomie_gen": "de l'autonomie",
-    "respect_gen": "le respect des consignes",
-    "entraide": "un beau sens de l'entraide",
-    "creativite": f?"de la créativité":"de la créativité",
-    "perseverance": f?"de la persévérance":"de la persévérance",
-    "assidu": f?"de l'assiduité":"de l'assiduité",
-    "prise_notes": "un soin dans la prise de notes",
-    "esprit_critique": "un bon esprit critique",
-    "confiance": "un manque de confiance en soi à travailler",
-  };
+function renderChips(){
+  Object.keys(CHIPS).forEach(cat=>{
+    const el=document.getElementById("cp-"+cat);
+    if(!el)return;
+    el.innerHTML=CHIPS[cat].map(c=>{
+      const on=sel[c.k]?'on':'';
+      return `<button class="chip ${cat} ${on}" onclick="tog('${c.k}','${cat}')">${c.l}</button>`;
+    }).join('');
+  });
+  renderTags();
+}
 
-  // Construire les listes d'éléments positifs
-  const adjPos = pos.filter(k=>ADJ_POS[k]).map(k=>ADJ_POS[k]);
-  const nomPos = pos.filter(k=>NOM_POS[k]).map(k=>NOM_POS[k]);
-  const nomGen = gen.map(k=>NOM_GEN[k]||k);
-  const adjComp = comp.filter(k=>ADJ_COMP[k]).map(k=>ADJ_COMP[k]);
-  const nomComp = comp.filter(k=>NOM_COMP[k]!==undefined && NOM_COMP[k]!==null).map(k=>NOM_COMP[k]);
-  const negItems = neg.map(k=>NOM_NEG[k]||k);
-  const progItems = prog.map(k=>NOM_PROG[k]||k);
+function tog(k,cat){
+  if(sel[k])delete sel[k]; else sel[k]=cat;
+  renderChips();
+}
 
-  const hasPos = pos.length>0 || gen.length>0;
-  const hasNeg = neg.length>0;
-  const hasComp = comp.length>0;
-  const hasProg = prog.length>0;
-  const compNegatif = comp.includes("comportement");
+function renderTags(){
+  const keys=Object.keys(sel);
+  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const all=[...keys,...ft];
+  const el=document.getElementById("sel-tags");
+  if(!all.length){el.innerHTML='<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';return;}
+  el.innerHTML=all.map(k=>{
+    const found=allChips().find(c=>c.k===k);
+    return `<span class="stag">${found?found.l:k}</span>`;
+  }).join('');
+}
 
-  function joinList(arr){
-    if(!arr.length) return "";
-    if(arr.length===1) return arr[0];
-    return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
-  }
+function joinList(arr){
+  if(!arr.length)return"";
+  if(arr.length===1)return arr[0];
+  return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
+}
 
-  function buildPosSentence(){
-    // Séparer adjectifs et groupes nominaux
-    const adjs = [...adjPos, ...adjComp];
-    const noms = [...nomPos, ...nomComp, ...nomGen];
+function generer(){
+  const keys=Object.keys(sel);
+  const ft=document.getElementById("free").value.split(",").map(s=>s.trim()).filter(Boolean);
+  if(!keys.length&&!ft.length){alert("Sélectionne au moins un mot-clé.");return;}
 
-    if(adjs.length && noms.length){
-      // "Élève sérieux et appliqué, Il fait preuve d'une participation active et d'un bon esprit d'équipe."
-      const adjStr = joinList(adjs);
-      const nomStr = noms.length===1 ? noms[0] : noms.map((n,i)=>i===0?n:"de "+n.replace(/^(un|une|des|de la|de l'|du)\s/,'')).join(", ");
-      return `Élève ${adjStr}, ${il} fait preuve de ${joinList(noms)}.`;
-    } else if(adjs.length && !noms.length){
-      return `Élève ${joinList(adjs)}, ${il} s'investit avec sérieux et constance.`;
-    } else if(!adjs.length && noms.length){
+  prenomCur=document.getElementById("prenom").value.trim();
+  classeCur=document.getElementById("classe").value;
+  matiereCur=document.getElementById("matiere").value;
+
+  const f=genre==="F";
+  const Il=prenomCur||(f?"Elle":"Il");
+  const il=prenomCur||(f?"elle":"il");
+  const e=f?"e":"";
+
+  const gen=keys.filter(k=>sel[k]==="gen");
+  const pos=keys.filter(k=>sel[k]==="pos");
+  const neg=keys.filter(k=>sel[k]==="neg");
+  const comp=keys.filter(k=>sel[k]==="comp");
+  const prog=keys.filter(k=>sel[k]==="prog");
+
+  // Traductions en expressions naturelles
+  const T_ADJ_POS={"investi":f?"investie":"investi","serieux":f?"sérieuse":"sérieux","applique":f?"appliquée":"appliqué","autonome":"autonome","fairplay":"fair-play"};
+  const T_NOM_POS={"participation":"une participation active","equipe":"un esprit d'équipe","ecoute":"une bonne écoute","leadership":"un vrai leadership","technique":"un bon niveau technique"};
+  const T_GEN={"curieux":"une curiosité intellectuelle","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral","ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_gen":"des efforts constants","autonomie_gen":"de l'autonomie","respect_gen":"le respect des consignes","entraide":"un sens de l'entraide","creativite":"de la créativité","perseverance":"de la persévérance","assidu":"de l'assiduité","esprit_critique":"un esprit critique","confiance":"un manque de confiance en soi à travailler"};
+  const T_NEG={"investissement":"manque d'investissement","bavardage":"bavardage","concentration":"manque de concentration","difficultes":"difficultés techniques","retrait":"tendance à rester en retrait","irregulier":"irrégularité dans l'effort","efforts":"efforts insuffisants","perturbateur":"comportement perturbateur"};
+  const T_COMP_ADJ={"respectueux":f?"respectueuse":"respectueux","agreable":"agréable","ponctuel":f?"ponctuelle":"ponctuel"};
+  const T_COMP_NOM={"attitude":"une attitude positive"};
+  const T_PROG={"progres":"en progrès","progression":"une progression constante","potentiel":"un potentiel à exploiter","encourageant":"des résultats encourageants","hausse":"un trimestre en hausse","acquis":"des acquis solides"};
+
+  const adjPos=pos.filter(k=>T_ADJ_POS[k]).map(k=>T_ADJ_POS[k]);
+  const nomPos=pos.filter(k=>T_NOM_POS[k]).map(k=>T_NOM_POS[k]);
+  const nomGen=gen.map(k=>T_GEN[k]||k);
+  const adjComp=comp.filter(k=>T_COMP_ADJ[k]).map(k=>T_COMP_ADJ[k]);
+  const nomComp=comp.filter(k=>T_COMP_NOM[k]).map(k=>T_COMP_NOM[k]);
+  const negItems=neg.map(k=>T_NEG[k]||k);
+  const progItems=prog.map(k=>T_PROG[k]||k);
+  const compNegatif=comp.includes("comportement");
+
+  const hasPos=pos.length>0||gen.length>0;
+  const hasNeg=neg.length>0;
+  const hasComp=comp.length>0;
+  const hasProg=prog.length>0;
+
+  function buildPos(){
+    const adjs=[...adjPos,...adjComp];
+    const noms=[...nomPos,...nomComp,...nomGen];
+    if(adjs.length&&noms.length){
+      return `Élève ${joinList(adjs)}, ${il} fait preuve de ${joinList(noms)}.`;
+    }else if(adjs.length){
+      return `Élève ${joinList(adjs)}, ${il} s'investit avec sérieux.`;
+    }else if(noms.length){
       return `${Il} fait preuve de ${joinList(noms)}.`;
     }
     return `${Il} s'investit de manière satisfaisante.`;
   }
 
-  let p1="", p2="";
+  let p1="",p2="";
 
-  if(hasPos && hasNeg){
-    p1 = buildPosSentence();
-    if(negItems.length===1){
-      p2 = `Cependant, le ${negItems[0]} reste un point à améliorer.`;
-    } else {
-      p2 = `Des efforts restent à fournir sur : ${joinList(negItems)}.`;
-    }
-    if(hasProg && !prog.includes("potentiel")){
-      p2 += ` ${Il} affiche néanmoins ${joinList(progItems)}.`;
-    }
-  }
-  else if(hasPos && !hasNeg){
-    p1 = buildPosSentence();
+  if(hasPos&&hasNeg){
+    p1=buildPos();
+    p2=negItems.length===1?`Cependant, le ${negItems[0]} reste un point à améliorer.`:`Des efforts sont à fournir sur : ${joinList(negItems)}.`;
+    if(hasProg&&!prog.includes("potentiel")) p2+=` ${Il} affiche néanmoins ${joinList(progItems)}.`;
+  }else if(hasPos&&!hasNeg){
+    p1=buildPos();
     if(hasProg){
-      const progStr = joinList(progItems);
-      if(prog.includes("acquis") || prog.includes("hausse") || prog.includes("progression")){
-        p2 = `${Il} affiche ${progStr}. Excellent trimestre !`;
-      } else {
-        p2 = `${Il} affiche ${progStr}. Continuons dans cette dynamique.`;
-      }
-    } else {
-      const nbPos = pos.length + gen.length + comp.filter(k=>k!=="comportement").length;
-      p2 = nbPos >= 3 ? "Excellent trimestre, félicitations." : "Bon trimestre.";
+      p2=`${Il} affiche ${joinList(progItems)}. ${(pos.length+gen.length)>=3?"Excellent trimestre !":"Continuons dans cette dynamique."}`;
+    }else{
+      p2=(pos.length+gen.length)>=3?"Excellent trimestre, félicitations.":"Bon trimestre.";
     }
-  }
-  else if(!hasPos && hasNeg){
+  }else if(!hasPos&&hasNeg){
     if(neg.includes("perturbateur")){
-      p1 = `Le comportement perturbateur de ${il} nuit au bon déroulement des séances.`;
-      p2 = `Une attitude plus respectueuse est indispensable.`;
-    } else if(negItems.length===1){
-      p1 = `${Il} présente un ${negItems[0]} qui pénalise ses résultats.`;
-      p2 = `Une remobilisation est attendue.`;
-    } else {
-      p1 = `Des points à améliorer : ${joinList(negItems)}.`;
-      p2 = `Une remobilisation sérieuse est nécessaire pour progresser.`;
+      p1=`Le comportement perturbateur de ${il} nuit au bon déroulement des cours.`;
+      p2=`Une attitude plus respectueuse est indispensable.`;
+    }else if(negItems.length===1){
+      p1=`${Il} présente un ${negItems[0]} qui pénalise ses résultats.`;
+      p2=`Une remobilisation est attendue.`;
+    }else{
+      p1=`Des points à améliorer : ${joinList(negItems)}.`;
+      p2=`Un effort sérieux est nécessaire pour progresser.`;
     }
+    if(prog.includes("potentiel")) p2+=` Le potentiel est là.`;
+  }else if(compNegatif&&!hasPos){
+    p1=`Le comportement de ${il} est à revoir.`;
+    p2=`Des efforts de respect et d'implication sont attendus.`;
+  }else if(hasProg&&!hasPos&&!hasNeg){
     if(prog.includes("potentiel")){
-      p2 += ` Le potentiel est là, il faut s'en saisir.`;
+      p1=`${Il} dispose d'un réel potentiel qui reste à exploiter.`;
+      p2=`Avec plus d'implication, les résultats pourraient être bien meilleurs.`;
+    }else{
+      p1=`${Il} affiche ${joinList(progItems)} ce trimestre.`;
+      p2=`Ces efforts méritent d'être soulignés.`;
     }
+  }else{
+    p1=`${Il} participe aux activités proposées.`;
+    p2=`Des marges de progression existent.`;
   }
-  else if(compNegatif && !hasPos){
-    p1 = `Le comportement de ${il} est à revoir.`;
-    p2 = `Des efforts de respect et d'implication sont attendus.`;
-  }
-  else if(hasProg && !hasPos && !hasNeg){
-    if(prog.includes("potentiel")){
-      p1 = `${Il} dispose d'un réel potentiel qui reste à exploiter.`;
-      p2 = `Avec plus d'implication, les résultats pourraient être bien meilleurs.`;
-    } else {
-      p1 = `${Il} affiche ${joinList(progItems)} ce trimestre.`;
-      p2 = `Ces efforts méritent d'être soulignés. Continuons dans cette voie.`;
-    }
-  }
-  else {
-    p1 = `${Il} s'investit dans les activités proposées.`;
-    p2 = `Des marges de progression existent.`;
-  }
-
-  let phrase = [p1,p2].filter(Boolean).join(" ");
 
   // Mots libres
-  if(libre.length){
-    const ctx = libre.join(", ");
-    const sports = ["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","musculation","vélo","cross","ping","pong"];
-    const profils = ["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclus","inclusion","phobie","anxieux","anxieuse","allophone"];
-    const isSport = libre.some(m=>sports.some(s=>m.toLowerCase().includes(s)));
-    const isProfil = libre.some(m=>profils.some(p=>m.toLowerCase().includes(p)));
-    if(isSport) phrase = phrase.replace(/\.$/, "")+`, notamment en ${ctx}.`;
-    else if(isProfil) phrase = phrase.replace(/\.$/, "")+` Profil ${ctx} pris en compte.`;
-    else phrase = phrase.replace(/\.$/, "")+`. ${ctx.charAt(0).toUpperCase()+ctx.slice(1)}.`;
+  let extra="";
+  if(ft.length){
+    const ctx=ft.join(", ");
+    const sports=["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","vélo","cross","ping"];
+    const profils=["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclusion","phobie","anxieux","anxieuse","allophone"];
+    const isSport=ft.some(m=>sports.some(s=>m.toLowerCase().includes(s)));
+    const isProfil=ft.some(m=>profils.some(p=>m.toLowerCase().includes(p)));
+    if(isSport) extra=`, notamment en ${ctx}`;
+    else if(isProfil) extra=` Profil ${ctx} pris en compte.`;
+    else extra=` ${ctx.charAt(0).toUpperCase()+ctx.slice(1)}.`;
   }
 
-  return phrase;
-}
+  phrase=[p1,p2].filter(Boolean).join(" ");
+  if(extra&&extra.startsWith(",")) phrase=phrase.replace(/\.$/,"")+extra+".";
+  else if(extra) phrase+=extra;
 
+  document.getElementById("result-zone").style.display="block";
+  document.getElementById("ok-banner").style.display="none";
+  document.getElementById("rlabel").textContent=prenomCur?`Phrase pour ${prenomCur}`:"Phrase générée";
+  document.getElementById("rtext").textContent=phrase;
+  document.getElementById("rhint").textContent="Enregistrer pour sauvegarder, Regénérer pour varier.";
+}
 
 function enregistrer(){
   if(!phrase)return;
   const db=dbLoad();
-  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
+  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
   dbSave(db);updateBadge();
   const b=document.getElementById("ok-banner");
   b.style.display="block";setTimeout(()=>b.style.display="none",2000);
 }
 
 function copierPhrase(){
-  navigator.clipboard.writeText(phrase).catch(()=>{
-    const ta=document.createElement("textarea");ta.value=phrase;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);
-  });
+  navigator.clipboard.writeText(phrase).catch(()=>{const t=document.createElement("textarea");t.value=phrase;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);});
 }
 
 function resetForm(){
-  sel={};
-  document.getElementById("prenom").value="";
-  document.getElementById("free").value="";
-  document.getElementById("result-zone").style.display="none";
-  phrase="";function renderChips(){
-  ["gen","pos","neg","comp","prog"].forEach(cat=>{
-    const el=document.getElementById("cp-"+cat);
-    if(!el) return;
-    el.innerHTML=CHIPS[cat].map(c=>
-      `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k.replace(/'/g,"\\'")}','${cat}')">${c.l}</button>`
-    ).join("");
-  });
-  renderTags();
-}
-
-function tog(k,cat){if(sel[k])delete sel[k];else sel[k]=cat;renderChips();}
-
-renderChips();
+  sel={};document.getElementById("prenom").value="";document.getElementById("free").value="";
+  document.getElementById("result-zone").style.display="none";phrase="";renderChips();
 }
 
 function filtrer(f,btn){
   filtreCur=f;
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("on"));
+  document.querySelectorAll(".fbtn").forEach(b=>b.classList.remove("on"));
   btn.classList.add("on");renderListe();
 }
 
 function renderListe(){
-  const db=dbLoad();
-  const filtered=filtreCur==="toutes"?db:db.filter(e=>e.classe===filtreCur);
-  document.getElementById("lcounter").textContent=`${filtered.length} élève(s)`;
+  let db=dbLoad();
+  const fm=document.getElementById("filtre-matiere")?.value||"toutes";
+  if(filtreCur!=="toutes") db=db.filter(e=>e.classe===filtreCur);
+  if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
+  document.getElementById("lcounter").textContent=`${db.length} élève(s)`;
   const el=document.getElementById("elist");
-  if(!filtered.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
-  el.innerHTML=filtered.map(e=>`
+  if(!db.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
+  el.innerHTML=db.map(e=>`
     <div class="eleve-item">
       <div class="eleve-info">
-        <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:13px;color:#888">${e.classe}</span></div>
-        <div class="eleve-meta">${e.date}</div>
+        <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:12px;color:var(--muted)">${e.classe}</span></div>
+        <div class="eleve-meta">${e.matiere||""} · ${e.date}</div>
         <div class="eleve-phrase">${e.phrase}</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-        <button class="icon-btn" onclick="cpItem(${e.id})">⎘</button>
-        <button class="icon-btn danger" onclick="delItem(${e.id})">🗑</button>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
+        <button class="ibtn" onclick="cpItem(${e.id})">⎘</button>
+        <button class="ibtn danger" onclick="delItem(${e.id})">🗑</button>
       </div>
     </div>`).join("");
 }
 
 function cpItem(id){const e=dbLoad().find(x=>x.id===id);if(e)navigator.clipboard.writeText(e.phrase).catch(()=>{});}
-
-function delItem(id){
-  if(!confirm("Supprimer ?"))return;
-  dbSave(dbLoad().filter(x=>x.id!==id));
-  updateBadge();renderListe();renderExport();
-}
+function delItem(id){if(!confirm("Supprimer ?"))return;dbSave(dbLoad().filter(x=>x.id!==id));updateBadge();renderListe();renderExport();}
 
 function renderExport(){
-  const f=document.getElementById("ecl").value;
-  const db=dbLoad();
-  const filtered=f==="toutes"?db:db.filter(e=>e.classe===f);
-  document.getElementById("econtent").textContent=filtered.length
-    ?filtered.map(e=>`${e.prenom} (${e.classe})\n${e.phrase}`).join("\n\n")
+  const fc=document.getElementById("ecl").value;
+  const fm=document.getElementById("ecl-mat").value;
+  let db=dbLoad();
+  if(fc!=="toutes") db=db.filter(e=>e.classe===fc);
+  if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
+  document.getElementById("econtent").textContent=db.length
+    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""})\n${e.phrase}`).join("\n\n")
     :"Aucune appréciation.";
 }
 
 function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(()=>{});}
-
-function updateBadge(){
-  const n=dbLoad().length;
-  document.getElementById("badge").textContent=n?`(${n})`:"";
-}
+function updateBadge(){const n=dbLoad().length;document.getElementById("badge").textContent=n?`(${n})`:""; }
 
 function setTab(id){
   document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",["gen","liste","export"][i]===id));
@@ -601,8 +451,9 @@ function setTab(id){
   if(id==="export")renderExport();
 }
 
+updateMatieres();
 renderChips();
 updateBadge();
 </script>
-</div></body>
+</body>
 </html>

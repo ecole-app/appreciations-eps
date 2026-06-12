@@ -139,24 +139,38 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
     </select>
+    <select id="filtre-trim" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="tous">Tous trimestres</option>
+      <option value="T1">T1 (sept–déc)</option>
+      <option value="T2">T2 (jan–mars)</option>
+      <option value="T3">T3 (avr–juin)</option>
+    </select>
+    <select id="filtre-annee" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto" id="filtre-annee">
+      <option value="toutes">Toutes années</option>
+    </select>
   </div>
   <div id="elist"></div>
 </div>
 
 <!-- EXPORT -->
 <div id="export" class="section">
-  <div class="frow">
-    <label style="font-size:13px;align-self:center;margin:0">Classe :</label>
+  <div class="frow" style="flex-wrap:wrap">
     <select id="ecl" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
-      <option value="toutes">Toutes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option>
+      <option value="toutes">Toutes classes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option>
     </select>
-    <label style="font-size:13px;align-self:center;margin:0 0 0 8px">Matière :</label>
     <select id="ecl-mat" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
-      <option value="toutes">Toutes</option>
+      <option value="toutes">Toutes matières</option>
       <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
       <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
+    </select>
+    <select id="ecl-trim" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="tous">Tous trimestres</option>
+      <option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option>
+    </select>
+    <select id="ecl-annee" onchange="renderExport()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto">
+      <option value="toutes">Toutes années</option>
     </select>
     <button class="act" style="margin-left:auto" onclick="copierExport()">⎘ Copier</button>
   </div>
@@ -380,11 +394,34 @@ function generer(){
   document.getElementById("rhint").textContent="Enregistrer pour sauvegarder, Regénérer pour varier.";
 }
 
+function getTrimestre(){
+  const m=new Date().getMonth()+1; // 1-12
+  if(m>=9||m<=12&&m>=9) return "T1"; // sept-déc
+  if(m<=3) return "T1"; // jan partiel (avant conseil)
+  if(m>=1&&m<=3) return "T2"; // jan-mars
+  if(m>=4&&m<=6) return "T3"; // avril-juin
+  return "T2";
+}
+function getTrimAuto(){
+  const m=new Date().getMonth()+1;
+  if(m>=9) return "T1";
+  if(m<=3) return "T2";
+  if(m<=6) return "T3";
+  return "T2";
+}
+function getAnnee(){
+  const now=new Date();
+  const m=now.getMonth()+1;
+  const y=now.getFullYear();
+  // Année scolaire : si sept ou +, c'est y/y+1, sinon y-1/y
+  if(m>=9) return `${y}-${y+1}`;
+  return `${y-1}-${y}`;
+}
 function enregistrer(){
   if(!phrase)return;
   const db=dbLoad();
-  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
-  dbSave(db);updateBadge();
+  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR"),trimestre:getTrimAuto(),annee:getAnnee()});
+  dbSave(db);updateBadge();populateAnnees();
   const b=document.getElementById("ok-banner");
   b.style.display="block";setTimeout(()=>b.style.display="none",2000);
 }
@@ -404,11 +441,26 @@ function filtrer(f,btn){
   btn.classList.add("on");renderListe();
 }
 
+function populateAnnees(){
+  const db=dbLoad();
+  const annees=[...new Set(db.map(e=>e.annee||"—"))].sort().reverse();
+  ["filtre-annee","ecl-annee"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const cur=el.value;
+    el.innerHTML='<option value="toutes">Toutes années</option>'+annees.map(a=>`<option value="${a}">${a}</option>`).join("");
+    if(cur) el.value=cur;
+  });
+}
 function renderListe(){
   let db=dbLoad();
   const fm=document.getElementById("filtre-matiere")?.value||"toutes";
+  const ft=document.getElementById("filtre-trim")?.value||"tous";
+  const fa=document.getElementById("filtre-annee")?.value||"toutes";
   if(filtreCur!=="toutes") db=db.filter(e=>e.classe===filtreCur);
   if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
+  if(ft!=="tous") db=db.filter(e=>(e.trimestre||"T1")===ft);
+  if(fa!=="toutes") db=db.filter(e=>(e.annee||"—")===fa);
   document.getElementById("lcounter").textContent=`${db.length} élève(s)`;
   const el=document.getElementById("elist");
   if(!db.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
@@ -416,7 +468,7 @@ function renderListe(){
     <div class="eleve-item">
       <div class="eleve-info">
         <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:12px;color:var(--muted)">${e.classe}</span></div>
-        <div class="eleve-meta">${e.matiere||""} · ${e.date}</div>
+        <div class="eleve-meta">${e.trimestre||""} ${e.annee||""} · ${e.matiere||""} · ${e.date}</div>
         <div class="eleve-phrase">${e.phrase}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">
@@ -432,12 +484,15 @@ function delItem(id){if(!confirm("Supprimer ?"))return;dbSave(dbLoad().filter(x=
 function renderExport(){
   const fc=document.getElementById("ecl").value;
   const fm=document.getElementById("ecl-mat").value;
+  const ft=document.getElementById("ecl-trim")?.value||"tous";
+  const fa=document.getElementById("ecl-annee")?.value||"toutes";
   let db=dbLoad();
   if(fc!=="toutes") db=db.filter(e=>e.classe===fc);
   if(fm!=="toutes") db=db.filter(e=>e.matiere===fm);
+  if(ft!=="tous") db=db.filter(e=>(e.trimestre||"T1")===ft);
+  if(fa!=="toutes") db=db.filter(e=>(e.annee||"—")===fa);
   document.getElementById("econtent").textContent=db.length
-    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""})\n${e.phrase}`).join("\n\n")
-    :"Aucune appréciation.";
+    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""}${e.trimestre?" · "+e.trimestre:""}${e.annee?" "+e.annee:""})\\n${e.phrase}`).join("\\n\\n")   :"Aucune appréciation.";
 }
 
 function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(()=>{});}
@@ -454,6 +509,7 @@ function setTab(id){
 updateMatieres();
 renderChips();
 updateBadge();
+populateAnnees();
 </script>
 </body>
 </html>

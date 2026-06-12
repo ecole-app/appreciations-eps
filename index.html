@@ -113,7 +113,7 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
     <div class="hint" id="rhint"></div>
     <div class="btn-row">
       <button class="act primary" onclick="enregistrer()">💾 Enregistrer</button>
-      <button class="act" onclick="generer()">↺ Regénérer</button>
+      <button class="act" onclick="regenerer()">↺ Regénérer</button>
       <button class="act" onclick="copierPhrase()">⎘ Copier</button>
     </div>
     <div class="ok" id="ok-banner">✓ Enregistré !</div>
@@ -421,6 +421,7 @@ function updateChipsParMatiere(){
 }
 
 var KEY="eps_v2";
+var regenCount=0;
 var genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
 
 function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return[];}}
@@ -491,6 +492,11 @@ function joinList(arr){
   return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
 }
 
+function regenerer(){
+  regenCount++;
+  generer();
+}
+
 function generer(){
   var keys=Object.keys(sel);
   var fv=document.getElementById("free").value;
@@ -549,21 +555,32 @@ function generer(){
     if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
   } else if(hasPos&&!hasNeg){
     p1=buildPos();
+    var conclu=["Bon trimestre.","Continuons dans cette dynamique.","Félicitations !","À poursuivre."];
+    var concluBien=["Excellent trimestre, félicitations.","Très bon trimestre !","Bravo pour ce travail.","Des résultats à la hauteur de l'investissement."];
     if(hasProg){
-      p2=Il+" affiche "+joinList(progItems)+". "+((pos.length+gen.length)>=3?"Excellent trimestre !":"Continuons dans cette dynamique.");
+      var fin=(pos.length+gen.length)>=3?concluBien[regenCount%concluBien.length]:conclu[regenCount%conclu.length];
+      p2=Il+" affiche "+joinList(progItems)+". "+fin;
     } else {
-      p2=(pos.length+gen.length)>=3?"Excellent trimestre, félicitations.":"Bon trimestre.";
+      p2=(pos.length+gen.length)>=3?concluBien[regenCount%concluBien.length]:conclu[regenCount%conclu.length];
     }
   } else if(!hasPos&&hasNeg){
+    var phrases_neg_gen=[
+      [Il+" présente "+joinList(negItems)+" qui pénalise ses résultats.","Une remobilisation sérieuse est attendue."],
+      ["Des points à améliorer : "+joinList(negItems)+".","Un effort régulier est nécessaire pour progresser."],
+      ["Des difficultés persistent : "+joinList(negItems)+".","Une plus grande implication est indispensable."],
+      [Il+" doit travailler sur : "+joinList(negItems)+".","Des efforts constants permettront de progresser."]
+    ];
     if(neg.indexOf("perturbateur")>=0){
-      p1="Le comportement perturbateur de "+il+" nuit au bon déroulement des cours.";
-      p2="Une attitude plus respectueuse est indispensable.";
-    } else if(negItems.length===1){
-      p1=Il+" présente un "+negItems[0]+" qui pénalise ses résultats.";
-      p2="Une remobilisation est attendue.";
+      var perts=[
+        ["Le comportement perturbateur de "+il+" nuit au bon déroulement des cours.","Une attitude plus respectueuse est indispensable."],
+        [Il+" perturbe régulièrement le cours.","Un changement d'attitude est attendu."],
+        ["Le comportement de "+il+" est problématique.","Des efforts de respect envers le groupe sont nécessaires."]
+      ];
+      var pp=perts[regenCount%perts.length];
+      p1=pp[0];p2=pp[1];
     } else {
-      p1="Des points à améliorer : "+joinList(negItems)+".";
-      p2="Un effort sérieux est nécessaire pour progresser.";
+      var np=phrases_neg_gen[regenCount%phrases_neg_gen.length];
+      p1=np[0];p2=np[1];
     }
     if(prog.indexOf("potentiel")>=0) p2+=" Le potentiel est là.";
   } else if(compNegatif&&!hasPos){
@@ -604,7 +621,7 @@ function generer(){
     var nomStr=nomAll.length?joinList(nomAll):"";
     var negStr=negItems.length?joinList(negItems):"";
     var templates=hasNeg?matData.phrases_neg:matData.phrases_pos;
-    var tpl=templates[Math.floor(Math.random()*templates.length)];
+    var tpl=templates[regenCount % templates.length];
     var mat_phrase=tpl
       .replace("{Il}",Il).replace("{il}",il)
       .replace("{adj}",adjStr||"sérieux")

@@ -82,7 +82,8 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0}
         </div>
       </div>
     </div>
-    <div class="slabel">Points positifs</div><div class="chips" id="cp-pos"></div>
+    <div class="slabel">Général — toutes matières</div><div class="chips" id="cp-gen"></div>
+    <div class="slabel">Points positifs EPS</div><div class="chips" id="cp-pos"></div>
     <div class="slabel">Points à travailler</div><div class="chips" id="cp-neg"></div>
     <div class="slabel">Comportement</div><div class="chips" id="cp-comp"></div>
     <div class="slabel">Progression</div><div class="chips" id="cp-prog"></div>
@@ -137,6 +138,23 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0}
 
 <script>
 const CHIPS={
+  gen:[
+    {k:"curieux",l:"curiosité intellectuelle"},
+    {k:"rigoureux",l:"rigueur"},
+    {k:"oral",l:"participation à l'oral"},
+    {k:"ecrit",l:"qualité du travail écrit"},
+    {k:"methode",l:"bonne méthode de travail"},
+    {k:"efforts_gen",l:"efforts constants"},
+    {k:"autonomie_gen",l:"autonomie"},
+    {k:"respect_gen",l:"respect des règles"},
+    {k:"entraide",l:"entraide"},
+    {k:"creativite",l:"créativité"},
+    {k:"perseverance",l:"persévérance"},
+    {k:"assidu",l:"assiduité"},
+    {k:"prise_notes",l:"prise de notes"},
+    {k:"esprit_critique",l:"esprit critique"},
+    {k:"confiance",l:"confiance en soi"}
+  ],
   pos:[
     {k:"investi",l:"investi(e)"},
     {k:"sérieux",l:"sérieux/sérieuse"},
@@ -300,6 +318,7 @@ function appliquer(phrase, g){
 }
 
 function choisirPhrases(sel, genre, libre){
+  const gen = Object.entries(sel).filter(([k,v])=>v==="gen").map(([k])=>k);
   const pos = Object.entries(sel).filter(([k,v])=>v==="pos").map(([k])=>k);
   const neg = Object.entries(sel).filter(([k,v])=>v==="neg").map(([k])=>k);
   const comp = Object.entries(sel).filter(([k,v])=>v==="comp").map(([k])=>k);
@@ -307,14 +326,30 @@ function choisirPhrases(sel, genre, libre){
 
   const g = genre;
   const f = g==="F";
-  const prenom = prenomCur && prenomCur.trim() ? prenomCur.trim() : null;
-  const Il = prenom ? prenom : (f?"Elle":"Il");
-  const il = prenom ? prenom : (f?"elle":"il");
-  const son = prenom ? `de ${prenom}` : (f?"sa":"son");
+  const Il = f?"Elle":"Il";
+  const il = f?"elle":"il";
+  const son = f?"sa":"son";
   const e = f?"e":"";
   const ue = f?"ue":"u";
 
   // Traduction des clés en expressions naturelles
+  const labelGen = {
+    "curieux": f?"curieuse et investie intellectuellement":"curieux et investi intellectuellement",
+    "rigoureux": f?"rigoureuse":"rigoureux",
+    "oral": "participation active à l'oral",
+    "ecrit": "qualité du travail écrit",
+    "methode": "bonne méthode de travail",
+    "efforts_gen": "efforts constants",
+    "autonomie_gen": f?"autonome et organisée":"autonome et organisé",
+    "respect_gen": "respect des consignes et du cadre",
+    "entraide": "sens de l'entraide",
+    "creativite": f?"créative":"créatif",
+    "perseverance": f?"persévérante":"persévérant",
+    "assidu": f?"assidue":"assidu",
+    "prise_notes": "soin apporté à la prise de notes",
+    "esprit_critique": "esprit critique",
+    "confiance": f?"manque de confiance en elle à travailler":"manque de confiance en lui à travailler"
+  };
   const labelPos = {
     "investi": f?"investie":"investi",
     "sérieux": f?"sérieuse":"sérieux",
@@ -353,12 +388,13 @@ function choisirPhrases(sel, genre, libre){
     "acquis": "des acquis solides"
   };
 
-  const posLabels = pos.map(k=>labelPos[k]||k);
+  const genLabels = gen.map(k=>labelGen[k]||k);
+  const posLabels = [...genLabels, ...pos.map(k=>labelPos[k]||k)];
   const negLabels = neg.map(k=>labelNeg[k]||k);
   const compLabels = comp.map(k=>labelComp[k]||k);
   const progLabels = prog.map(k=>labelProg[k]||k);
 
-  const hasPos = pos.length>0, hasNeg = neg.length>0;
+  const hasPos = pos.length>0 || gen.length>0, hasNeg = neg.length>0;
   const hasComp = comp.length>0, hasProg = prog.length>0;
 
   // Construction dynamique de la phrase selon tous les éléments
@@ -487,7 +523,7 @@ function setG(g){
 }
 
 function renderChips(){
-  ["pos","neg","comp","prog"].forEach(cat=>{
+  ["gen","pos","neg","comp","prog"].forEach(cat=>{
     document.getElementById("cp-"+cat).innerHTML=CHIPS[cat].map(c=>
       `<button class="chip ${cat} ${sel[c.k]?"on":""}" onclick="tog('${c.k}','${cat}')">${c.l}</button>`
     ).join("");

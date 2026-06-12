@@ -307,9 +307,10 @@ function choisirPhrases(sel, genre, libre){
 
   const g = genre;
   const f = g==="F";
-  const Il = f?"Elle":"Il";
-  const il = f?"elle":"il";
-  const son = f?"sa":"son";
+  const prenom = prenomCur && prenomCur.trim() ? prenomCur.trim() : null;
+  const Il = prenom ? prenom : (f?"Elle":"Il");
+  const il = prenom ? prenom : (f?"elle":"il");
+  const son = prenom ? `de ${prenom}` : (f?"sa":"son");
   const e = f?"e":"";
   const ue = f?"ue":"u";
 

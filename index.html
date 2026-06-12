@@ -492,7 +492,10 @@ function renderExport(){
   if(ft!=="tous") db=db.filter(e=>(e.trimestre||"T1")===ft);
   if(fa!=="toutes") db=db.filter(e=>(e.annee||"—")===fa);
   document.getElementById("econtent").textContent=db.length
-    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""}${e.trimestre?" · "+e.trimestre:""}${e.annee?" "+e.annee:""})\\n${e.phrase}`).join("\\n\\n")   :"Aucune appréciation.";
+    ?db.map(e=>`${e.prenom} (${e.classe}${e.matiere?" · "+e.matiere:""}${e.trimestre?" · "+e.trimestre:""}${e.annee?" "+e.annee:""})
+${e.phrase}`).join("
+
+")   :"Aucune appréciation.";
 }
 
 function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(()=>{});}

@@ -70,10 +70,15 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0}
 
 <div id="gen" class="section active">
   <div class="card">
-    <div class="row3">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
       <div><label>Prénom</label><input type="text" id="prenom" placeholder="Ex: Lucas" /></div>
       <div><label>Classe</label>
-        <select id="classe"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select>
+        <select id="classe" onchange="updateMatieres()"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div><label>Matière</label>
+        <select id="matiere" style="width:100%"></select>
       </div>
       <div><label>Genre</label>
         <div class="genre-row">
@@ -113,12 +118,18 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 
 <div id="liste" class="section">
-  <div class="filter-row">
+  <div class="filter-row" style="flex-wrap:wrap">
     <button class="filter-btn on" onclick="filtrer('toutes',this)">Toutes</button>
     <button class="filter-btn" onclick="filtrer('6e',this)">6e</button>
     <button class="filter-btn" onclick="filtrer('5e',this)">5e</button>
     <button class="filter-btn" onclick="filtrer('4e',this)">4e</button>
     <button class="filter-btn" onclick="filtrer('3e',this)">3e</button>
+  </div>
+  <div class="filter-row" style="margin-bottom:12px">
+    <label style="font-size:13px;align-self:center;margin:0">Matière :</label>
+    <select id="filtre-matiere" onchange="renderListe()" style="font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff">
+      <option value="toutes">Toutes</option><option value="Anglais">Anglais</option><option value="Arabe">Arabe</option><option value="Arts Plastiques">Arts Plastiques</option><option value="EPS">EPS</option><option value="Espagnol">Espagnol</option><option value="Français">Français</option><option value="Histoire-Géo/EMC">Histoire-Géo/EMC</option><option value="Maths">Maths</option><option value="Physique-Chimie">Physique-Chimie</option><option value="SVT">SVT</option><option value="Technologie">Technologie</option><option value="Éducation Musicale">Éducation Musicale</option>
+    </select>
     <span class="counter" id="lcounter"></span>
   </div>
   <div id="elist"></div>
@@ -561,7 +572,8 @@ function generer(){
 function enregistrer(){
   if(!phrase)return;
   const db=dbLoad();
-  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
+  const matiereCur=document.getElementById("matiere").value;
+  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre,phrase,date:new Date().toLocaleDateString("fr-FR")});
   dbSave(db);updateBadge();
   const b=document.getElementById("ok-banner");
   b.style.display="block";setTimeout(()=>b.style.display="none",2000);
@@ -589,7 +601,9 @@ function filtrer(f,btn){
 
 function renderListe(){
   const db=dbLoad();
-  const filtered=filtreCur==="toutes"?db:db.filter(e=>e.classe===filtreCur);
+  const fm=document.getElementById("filtre-matiere")?.value||"toutes";
+  let filtered=filtreCur==="toutes"?db:db.filter(e=>e.classe===filtreCur);
+  if(fm!=="toutes") filtered=filtered.filter(e=>e.matiere===fm);
   document.getElementById("lcounter").textContent=`${filtered.length} élève(s)`;
   const el=document.getElementById("elist");
   if(!filtered.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
@@ -597,7 +611,7 @@ function renderListe(){
     <div class="eleve-item">
       <div class="eleve-info">
         <div class="eleve-nom">${e.prenom} <span style="font-weight:400;font-size:13px;color:#888">${e.classe}</span></div>
-        <div class="eleve-meta">${e.date}</div>
+        <div class="eleve-meta">${e.matiere||""} · ${e.date}</div>
         <div class="eleve-phrase">${e.phrase}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
@@ -639,8 +653,17 @@ function setTab(id){
   if(id==="export")renderExport();
 }
 
+function updateMatieres(){
+  const cl=document.getElementById("classe").value;
+  const m6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Arts Plastiques","Éducation Musicale","EPS"];
+  const m5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
+  const liste=cl==="6e"?m6:m5;
+  const sel=document.getElementById("matiere");
+  sel.innerHTML=liste.map(m=>`<option value="${m}">${m}</option>`).join("");
+}
 renderChips();
 updateBadge();
+updateMatieres();
 </script>
 </div></body>
 </html>

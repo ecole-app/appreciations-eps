@@ -85,9 +85,9 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
 
   <div class="slabel">Général — toutes matières</div>
   <div class="chips" id="cp-gen"></div>
-  <div class="slabel">Points positifs EPS</div>
+  <div class="slabel" id="label-pos">Points positifs</div>
   <div class="chips" id="cp-pos"></div>
-  <div class="slabel">Points à travailler</div>
+  <div class="slabel" id="label-neg">Points à travailler</div>
   <div class="chips" id="cp-neg"></div>
   <div class="slabel">Comportement</div>
   <div class="chips" id="cp-comp"></div>
@@ -413,6 +413,10 @@ function updateChipsParMatiere(){
       if(!valid) delete sel[k];
     }
   });
+  var lp=document.getElementById("label-pos");
+  var ln=document.getElementById("label-neg");
+  if(lp) lp.textContent="Points positifs — "+mat;
+  if(ln) ln.textContent="Points à travailler — "+mat;
   renderChips();
 }
 

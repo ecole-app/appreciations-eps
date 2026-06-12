@@ -79,7 +79,7 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
     <div><label>Classe</label><select id="classe" onchange="updateMatieres()"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select></div>
   </div>
   <div class="grid2">
-    <div><label>Matière</label><select id="matiere"></select></div>
+    <div><label>Matière</label><select id="matiere" onchange="updateChipsParMatiere()"></select></div>
     <div><label>Genre</label><div class="genre-row"><button class="grb on" id="gb-m" onclick="setG('M')">Garçon</button><button class="grb" id="gb-f" onclick="setG('F')">Fille</button></div></div>
   </div>
 
@@ -183,40 +183,238 @@ hr{border:none;border-top:1px solid var(--border);margin:12px 0}
 var M6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Physique-Chimie","Arts Plastiques","Éducation Musicale","EPS"];
 var M5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
 
-var CHIPS={
-  gen:[
-    {k:"curieux",l:"curiosité intellectuelle"},{k:"rigoureux",l:"rigueur"},
-    {k:"oral",l:"participation à l'oral"},{k:"ecrit",l:"travail écrit soigné"},
-    {k:"methode",l:"bonne méthode"},{k:"efforts_gen",l:"efforts constants"},
-    {k:"autonomie_gen",l:"autonomie"},{k:"respect_gen",l:"respect des consignes"},
-    {k:"entraide",l:"entraide"},{k:"creativite",l:"créativité"},
-    {k:"perseverance",l:"persévérance"},{k:"assidu",l:"assiduité"},
-    {k:"esprit_critique",l:"esprit critique"}
-  ],
-  pos:[
-    {k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},
-    {k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},
-    {k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},
-    {k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},
-    {k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}
-  ],
-  neg:[
-    {k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},
-    {k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},
-    {k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},
-    {k:"efforts",l:"efforts à fournir"},{k:"perturbateur",l:"perturbateur/trice"}
-  ],
-  comp:[
-    {k:"attitude",l:"attitude positive"},{k:"respectueux",l:"respectueux/euse"},
-    {k:"agreable",l:"agréable en cours"},{k:"comportement",l:"comportement à améliorer"},
-    {k:"ponctuel",l:"ponctuel(le)"}
-  ],
-  prog:[
-    {k:"progres",l:"en progrès"},{k:"progression",l:"progression constante"},
-    {k:"potentiel",l:"potentiel à exploiter"},{k:"encourageant",l:"résultats encourageants"},
-    {k:"hausse",l:"trimestre en hausse"},{k:"acquis",l:"acquis solides"}
-  ]
+// Chips généraux (toujours présents)
+var CHIPS_GEN=[
+  {k:"curieux",l:"curiosité"},{k:"rigoureux",l:"rigueur"},
+  {k:"oral",l:"participation à l'oral"},{k:"ecrit",l:"travail écrit soigné"},
+  {k:"methode",l:"bonne méthode"},{k:"efforts_gen",l:"efforts constants"},
+  {k:"autonomie_gen",l:"autonomie"},{k:"respect_gen",l:"respect des consignes"},
+  {k:"entraide",l:"entraide"},{k:"creativite",l:"créativité"},
+  {k:"perseverance",l:"persévérance"},{k:"assidu",l:"assiduité"},
+  {k:"esprit_critique",l:"esprit critique"}
+];
+
+var CHIPS_COMP=[
+  {k:"attitude",l:"attitude positive"},{k:"respectueux",l:"respectueux/euse"},
+  {k:"agreable",l:"agréable en cours"},{k:"comportement",l:"comportement à améliorer"},
+  {k:"ponctuel",l:"ponctuel(le)"}
+];
+
+var CHIPS_PROG=[
+  {k:"progres",l:"en progrès"},{k:"progression",l:"progression constante"},
+  {k:"potentiel",l:"potentiel à exploiter"},{k:"encourageant",l:"résultats encourageants"},
+  {k:"hausse",l:"trimestre en hausse"},{k:"acquis",l:"acquis solides"}
+];
+
+// Chips spécifiques par matière
+var CHIPS_PAR_MATIERE={
+  "EPS":{
+    pos:[
+      {k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},
+      {k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},
+      {k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},
+      {k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},
+      {k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}
+    ],
+    neg:[
+      {k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},
+      {k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},
+      {k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},
+      {k:"efforts",l:"efforts à fournir"},{k:"perturbateur",l:"perturbateur/trice"}
+    ],
+    phrases_pos:["Élève {adj} qui s'investit pleinement dans les activités proposées.","Bon trimestre en EPS : {nom} témoignent d'une belle implication.","En EPS, {Il} fait preuve de {nom}. {adj2}"],
+    phrases_neg:["En EPS, {neg} restent des points à travailler pour progresser.","Des efforts sont attendus : {neg} pénalisent les résultats en EPS."]
+  },
+  "Français":{
+    pos:[
+      {k:"expression_ecrite",l:"expression écrite"},{k:"expression_orale",l:"expression orale"},
+      {k:"lecture",l:"lecture fluide"},{k:"orthographe",l:"orthographe"},
+      {k:"vocabulaire",l:"richesse du vocabulaire"},{k:"analyse",l:"capacité d'analyse"},
+      {k:"redaction",l:"qualité de rédaction"},{k:"grammaire",l:"maîtrise grammaticale"},
+      {k:"imagination",l:"imagination"},{k:"participation_fr",l:"participation active"}
+    ],
+    neg:[
+      {k:"orthographe_neg",l:"orthographe à améliorer"},{k:"expression_neg",l:"expression à développer"},
+      {k:"lecture_neg",l:"lecture à travailler"},{k:"grammaire_neg",l:"lacunes grammaticales"},
+      {k:"participation_neg",l:"manque de participation"},{k:"redaction_neg",l:"rédaction insuffisante"},
+      {k:"concentration_fr",l:"manque de concentration"},{k:"bavardage_fr",l:"bavardage"}
+    ],
+    phrases_pos:["En français, {Il} se distingue par {nom}. Très bon trimestre.","Élève {adj} en français, {il} produit des travaux de qualité.","Bon travail en français : {nom} sont des atouts réels à consolider."],
+    phrases_neg:["En français, {neg} nécessitent un travail régulier et approfondi.","Des progrès sont attendus en français, notamment sur {neg}."]
+  },
+  "Maths":{
+    pos:[
+      {k:"calcul",l:"calcul"},{k:"raisonnement",l:"raisonnement logique"},
+      {k:"geometrie",l:"géométrie"},{k:"problemes",l:"résolution de problèmes"},
+      {k:"rigueur_m",l:"rigueur"},{k:"rapidite",l:"rapidité d'exécution"},
+      {k:"algebre",l:"algèbre"},{k:"methodologie",l:"méthodologie"},
+      {k:"participation_m",l:"participation active"},{k:"abstraction",l:"capacité d'abstraction"}
+    ],
+    neg:[
+      {k:"calcul_neg",l:"calcul à renforcer"},{k:"raisonnement_neg",l:"raisonnement à structurer"},
+      {k:"lacunes",l:"lacunes à combler"},{k:"methode_neg",l:"manque de méthode"},
+      {k:"concentration_m",l:"manque de concentration"},{k:"travail_maison",l:"travail à la maison insuffisant"},
+      {k:"abstraction_neg",l:"difficultés d'abstraction"},{k:"participation_m_neg",l:"manque de participation"}
+    ],
+    phrases_pos:["En mathématiques, {Il} fait preuve de {nom}. Les résultats sont à la hauteur.","Bon trimestre en maths : {adj}, {il} progresse avec régularité.","Élève {adj} en mathématiques, {il} maîtrise bien {nom}."],
+    phrases_neg:["En mathématiques, {neg} sont des points à travailler prioritairement.","Des efforts réguliers sont nécessaires en maths, notamment sur {neg}."]
+  },
+  "Anglais":{
+    pos:[
+      {k:"comprehension_orale",l:"compréhension orale"},{k:"expression_orale_ang",l:"expression orale"},
+      {k:"comprehension_ecrite",l:"compréhension écrite"},{k:"expression_ecrite_ang",l:"expression écrite"},
+      {k:"vocabulaire_ang",l:"vocabulaire"},{k:"prononciation",l:"prononciation"},
+      {k:"grammaire_ang",l:"grammaire"},{k:"participation_ang",l:"participation active"},
+      {k:"aisance",l:"aisance à l'oral"},{k:"memorisation",l:"mémorisation du vocabulaire"}
+    ],
+    neg:[
+      {k:"vocabulaire_neg",l:"vocabulaire à enrichir"},{k:"grammaire_neg_ang",l:"grammaire à consolider"},
+      {k:"oral_neg",l:"expression orale timide"},{k:"participation_ang_neg",l:"manque de participation"},
+      {k:"prononciation_neg",l:"prononciation à travailler"},{k:"memorisation_neg",l:"mémorisation insuffisante"},
+      {k:"ecrit_neg_ang",l:"expression écrite à développer"}
+    ],
+    phrases_pos:["En anglais, {Il} se montre {adj} et fait preuve de {nom}. Très bien.","Bon trimestre en anglais : {nom} sont des points forts à valoriser.","Élève {adj} en anglais, {il} s'implique et progresse régulièrement."],
+    phrases_neg:["En anglais, des efforts sont à fournir sur {neg}.","Des progrès sont attendus en anglais, notamment sur {neg}."]
+  },
+  "Arabe":{
+    pos:[
+      {k:"lecture_ar",l:"lecture"},{k:"ecriture_ar",l:"écriture"},
+      {k:"comprehension_ar",l:"compréhension"},{k:"expression_ar",l:"expression"},
+      {k:"vocabulaire_ar",l:"vocabulaire"},{k:"participation_ar",l:"participation active"},
+      {k:"memorisation_ar",l:"mémorisation"},{k:"calligraphie",l:"calligraphie"}
+    ],
+    neg:[
+      {k:"lecture_neg_ar",l:"lecture à améliorer"},{k:"ecriture_neg_ar",l:"écriture à travailler"},
+      {k:"vocabulaire_neg_ar",l:"vocabulaire insuffisant"},{k:"participation_neg_ar",l:"manque de participation"},
+      {k:"memorisation_neg_ar",l:"mémorisation à renforcer"}
+    ],
+    phrases_pos:["En arabe, {Il} fait preuve de {nom}. Bon trimestre.","Élève {adj} en arabe, {il} s'investit avec sérieux.","Bon travail en arabe : {nom} témoignent d'un réel engagement."],
+    phrases_neg:["En arabe, des efforts sont nécessaires sur {neg}.","Des progrès sont attendus en arabe, notamment sur {neg}."]
+  },
+  "Espagnol":{
+    pos:[
+      {k:"comprehension_esp",l:"compréhension"},{k:"expression_esp",l:"expression orale"},
+      {k:"vocabulaire_esp",l:"vocabulaire"},{k:"grammaire_esp",l:"grammaire"},
+      {k:"participation_esp",l:"participation active"},{k:"prononciation_esp",l:"prononciation"},
+      {k:"aisance_esp",l:"aisance à l'oral"},{k:"ecrit_esp",l:"expression écrite"}
+    ],
+    neg:[
+      {k:"vocabulaire_neg_esp",l:"vocabulaire à enrichir"},{k:"grammaire_neg_esp",l:"grammaire à revoir"},
+      {k:"oral_neg_esp",l:"expression orale à développer"},{k:"participation_neg_esp",l:"manque de participation"},
+      {k:"ecrit_neg_esp",l:"expression écrite insuffisante"}
+    ],
+    phrases_pos:["En espagnol, {Il} se montre {adj} et progresse bien. {nom} sont des atouts.","Bon trimestre en espagnol : {il} fait preuve de {nom}.","Élève {adj} en espagnol, {il} s'implique avec enthousiasme."],
+    phrases_neg:["En espagnol, des efforts sont attendus sur {neg}.","Des progrès sont nécessaires en espagnol, notamment sur {neg}."]
+  },
+  "Histoire-Géo/EMC":{
+    pos:[
+      {k:"connaissance",l:"solides connaissances"},{k:"analyse_hg",l:"capacité d'analyse"},
+      {k:"redaction_hg",l:"qualité de rédaction"},{k:"participation_hg",l:"participation active"},
+      {k:"carte",l:"lecture de cartes"},{k:"esprit_critique_hg",l:"esprit critique"},
+      {k:"memorisation_hg",l:"mémorisation des repères"},{k:"citoyennete",l:"sens civique"}
+    ],
+    neg:[
+      {k:"connaissance_neg",l:"connaissances à consolider"},{k:"analyse_neg_hg",l:"analyse à développer"},
+      {k:"redaction_neg_hg",l:"rédaction à améliorer"},{k:"participation_neg_hg",l:"manque de participation"},
+      {k:"memorisation_neg_hg",l:"mémorisation insuffisante"},{k:"concentration_hg",l:"manque de concentration"}
+    ],
+    phrases_pos:["En histoire-géographie, {Il} fait preuve de {nom}. Très bon trimestre.","Élève {adj} en HG/EMC, {il} s'investit avec sérieux et montre {nom}.","Bon trimestre en histoire-géo : {nom} sont des points forts à valoriser."],
+    phrases_neg:["En histoire-géographie, des efforts sont attendus sur {neg}.","Des progrès sont nécessaires en HG, notamment sur {neg}."]
+  },
+  "SVT":{
+    pos:[
+      {k:"observation",l:"sens de l'observation"},{k:"experimentation",l:"démarche expérimentale"},
+      {k:"redaction_svt",l:"qualité des comptes-rendus"},{k:"participation_svt",l:"participation active"},
+      {k:"raisonnement_svt",l:"raisonnement scientifique"},{k:"memorisation_svt",l:"mémorisation du cours"},
+      {k:"soin",l:"soin du travail"},{k:"curiosite_svt",l:"curiosité scientifique"}
+    ],
+    neg:[
+      {k:"memorisation_neg_svt",l:"mémorisation à renforcer"},{k:"redaction_neg_svt",l:"comptes-rendus à améliorer"},
+      {k:"participation_neg_svt",l:"manque de participation"},{k:"soin_neg",l:"manque de soin"},
+      {k:"raisonnement_neg_svt",l:"raisonnement à structurer"},{k:"concentration_svt",l:"manque de concentration"}
+    ],
+    phrases_pos:["En SVT, {Il} fait preuve de {nom}. Très satisfaisant.","Élève {adj} en SVT, {il} s'investit avec curiosité et rigueur.","Bon trimestre en SVT : {nom} témoignent d'un réel engagement scientifique."],
+    phrases_neg:["En SVT, des efforts sont attendus sur {neg}.","Des progrès sont nécessaires en SVT, notamment sur {neg}."]
+  },
+  "Physique-Chimie":{
+    pos:[
+      {k:"manipulation",l:"habileté en manipulation"},{k:"raisonnement_pc",l:"raisonnement scientifique"},
+      {k:"rigueur_pc",l:"rigueur"},{k:"participation_pc",l:"participation active"},
+      {k:"calcul_pc",l:"calcul"},{k:"redaction_pc",l:"qualité des comptes-rendus"},
+      {k:"curiosite_pc",l:"curiosité scientifique"},{k:"methode_pc",l:"méthodologie"}
+    ],
+    neg:[
+      {k:"calcul_neg_pc",l:"calcul à renforcer"},{k:"methode_neg_pc",l:"méthode à acquérir"},
+      {k:"participation_neg_pc",l:"manque de participation"},{k:"manipulation_neg",l:"manipulation à améliorer"},
+      {k:"memorisation_neg_pc",l:"mémorisation insuffisante"},{k:"concentration_pc",l:"manque de concentration"}
+    ],
+    phrases_pos:["En physique-chimie, {Il} fait preuve de {nom}. Bon trimestre.","Élève {adj} en physique-chimie, {il} s'investit avec sérieux.","Bon trimestre en physique-chimie : {nom} sont des atouts réels."],
+    phrases_neg:["En physique-chimie, des efforts sont attendus sur {neg}.","Des progrès sont nécessaires en physique-chimie, notamment sur {neg}."]
+  },
+  "Technologie":{
+    pos:[
+      {k:"conception",l:"sens de la conception"},{k:"fabrication",l:"habileté en fabrication"},
+      {k:"numerique",l:"maîtrise du numérique"},{k:"creativity_techno",l:"créativité"},
+      {k:"participation_techno",l:"participation active"},{k:"methode_techno",l:"méthodologie"},
+      {k:"soin_techno",l:"soin du travail"},{k:"autonomie_techno",l:"autonomie"}
+    ],
+    neg:[
+      {k:"soin_neg_techno",l:"soin à améliorer"},{k:"methode_neg_techno",l:"méthode à structurer"},
+      {k:"participation_neg_techno",l:"manque de participation"},{k:"autonomie_neg_techno",l:"manque d'autonomie"},
+      {k:"concentration_techno",l:"manque de concentration"}
+    ],
+    phrases_pos:["En technologie, {Il} fait preuve de {nom}. Très satisfaisant.","Élève {adj} en technologie, {il} s'implique avec créativité et rigueur.","Bon trimestre en technologie : {nom} sont des points forts."],
+    phrases_neg:["En technologie, des efforts sont attendus sur {neg}.","Des progrès sont nécessaires en technologie, notamment sur {neg}."]
+  },
+  "Arts Plastiques":{
+    pos:[
+      {k:"creativite_ap",l:"créativité"},{k:"technique_ap",l:"maîtrise technique"},
+      {k:"imagination_ap",l:"imagination"},{k:"soin_ap",l:"soin du travail"},
+      {k:"participation_ap",l:"participation active"},{k:"originalite",l:"originalité"},
+      {k:"sensibilite",l:"sensibilité artistique"},{k:"autonomie_ap",l:"autonomie"}
+    ],
+    neg:[
+      {k:"soin_neg_ap",l:"soin à améliorer"},{k:"implication_neg_ap",l:"implication insuffisante"},
+      {k:"technique_neg_ap",l:"technique à développer"},{k:"participation_neg_ap",l:"manque de participation"},
+      {k:"finition",l:"finitions à soigner"}
+    ],
+    phrases_pos:["En arts plastiques, {Il} fait preuve de {nom}. Un réel plaisir à encadrer.","Élève {adj} en arts plastiques, {il} exprime sa {nom} avec talent.","Bon trimestre en arts plastiques : {nom} témoignent d'un bel engagement artistique."],
+    phrases_neg:["En arts plastiques, des efforts sont attendus sur {neg}.","Des progrès sont souhaités en arts plastiques, notamment sur {neg}."]
+  },
+  "Éducation Musicale":{
+    pos:[
+      {k:"ecoute_mus",l:"écoute musicale"},{k:"chant",l:"qualité vocale"},
+      {k:"rythme",l:"sens du rythme"},{k:"participation_mus",l:"participation active"},
+      {k:"sensibilite_mus",l:"sensibilité musicale"},{k:"memorisation_mus",l:"mémorisation"},
+      {k:"engagement_mus",l:"engagement"},{k:"technique_mus",l:"maîtrise technique"}
+    ],
+    neg:[
+      {k:"participation_neg_mus",l:"manque de participation"},{k:"ecoute_neg_mus",l:"écoute à améliorer"},
+      {k:"memorisation_neg_mus",l:"mémorisation insuffisante"},{k:"engagement_neg_mus",l:"manque d'engagement"},
+      {k:"tenue_neg",l:"tenue en cours à améliorer"}
+    ],
+    phrases_pos:["En éducation musicale, {Il} fait preuve de {nom}. Très satisfaisant.","Élève {adj} en musique, {il} s'investit avec plaisir et montre {nom}.","Bon trimestre en éducation musicale : {nom} sont des atouts à valoriser."],
+    phrases_neg:["En éducation musicale, des efforts sont attendus sur {neg}.","Des progrès sont souhaités en musique, notamment sur {neg}."]
+  }
 };
+
+// Chips courants (mis à jour selon matière)
+var CHIPS={gen:CHIPS_GEN,pos:[],neg:[],comp:CHIPS_COMP,prog:CHIPS_PROG};
+
+function updateChipsParMatiere(){
+  var mat=document.getElementById("matiere").value;
+  var data=CHIPS_PAR_MATIERE[mat]||CHIPS_PAR_MATIERE["EPS"];
+  CHIPS.pos=data.pos;
+  CHIPS.neg=data.neg;
+  // Vider les sélections pos/neg qui ne sont plus valides
+  Object.keys(sel).forEach(function(k){
+    if(sel[k]==="pos"||sel[k]==="neg"){
+      var valid=CHIPS.pos.concat(CHIPS.neg).some(function(c){return c.k===k;});
+      if(!valid) delete sel[k];
+    }
+  });
+  renderChips();
+}
 
 var KEY="eps_v2";
 var genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
@@ -239,6 +437,7 @@ function updateMatieres(){
   var cl=document.getElementById("classe").value;
   var liste=cl==="6e"?M6:M5;
   document.getElementById("matiere").innerHTML=liste.map(function(m){return "<option>"+m+"</option>";}).join("");
+  updateChipsParMatiere();
 }
 
 function setG(g){
@@ -390,6 +589,31 @@ function generer(){
     if(isSport) phrase=phrase.replace(/\.$/,"")+", notamment en "+ctx+".";
     else if(isProfil) phrase=phrase.replace(/\.$/,"")+" Profil "+ctx+" pris en compte.";
     else phrase=phrase.replace(/\.$/,"")+". "+ctx.charAt(0).toUpperCase()+ctx.slice(1)+".";
+  }
+
+  // Intégrer des formulations spécifiques à la matière si possible
+  var matData=CHIPS_PAR_MATIERE[matiereCur]||null;
+  if(matData&&(hasPos||hasNeg)){
+    var adjAll=adjPos.concat(adjComp);
+    var nomAll=nomPos.concat(nomComp).concat(nomGen);
+    var adjStr=adjAll.length?joinList(adjAll):"";
+    var nomStr=nomAll.length?joinList(nomAll):"";
+    var negStr=negItems.length?joinList(negItems):"";
+    var templates=hasNeg?matData.phrases_neg:matData.phrases_pos;
+    var tpl=templates[Math.floor(Math.random()*templates.length)];
+    var mat_phrase=tpl
+      .replace("{Il}",Il).replace("{il}",il)
+      .replace("{adj}",adjStr||"sérieux")
+      .replace("{adj2}",adjStr?"Félicitations.":"Bon trimestre.")
+      .replace("{nom}",nomStr||adjStr||"sérieux")
+      .replace("{neg}",negStr||"certains points");
+    // Garder p2 si négatif+positif
+    if(hasPos&&hasNeg){
+      phrase=mat_phrase+" "+p2;
+    } else {
+      phrase=mat_phrase;
+      if(hasProg&&!hasNeg) phrase+=" "+Il+" affiche "+joinList(progItems)+".";
+    }
   }
 
   document.getElementById("result-zone").style.display="block";

@@ -252,7 +252,13 @@ var CHIPS_PAR_MATIERE={
     neg:[{k:"participation_neg_mus",l:"participation"},{k:"ecoute_neg_mus",l:"écoute"},{k:"memorisation_neg_mus",l:"mémorisation"},{k:"engagement_neg_mus",l:"engagement"},{k:"tenue_neg",l:"tenue en cours"}]
   }
 };
-var CHIPS={gen:CHIPS_GEN,pos:[],neg:[],comp:CHIPS_COMP,prog:CHIPS_PROG};
+var CHIPS={
+  gen:CHIPS_GEN,
+  pos:[{k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},{k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},{k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},{k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},{k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}],
+  neg:[{k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},{k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},{k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},{k:"efforts",l:"efforts insuffisants"},{k:"perturbateur",l:"perturbateur/trice"}],
+  comp:CHIPS_COMP,
+  prog:CHIPS_PROG
+};
 
 var KEY="eps_v2";
 var genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";

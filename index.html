@@ -551,7 +551,8 @@ function generer(){
 
   if(hasPos&&hasNeg){
     p1=buildPos();
-    p2=negItems.length===1?"Cependant, le "+negItems[0]+" reste un point à améliorer.":"Des efforts sont à fournir sur : "+joinList(negItems)+".";
+    var neg2=["Cependant, "+joinList(negItems)+" reste"+( negItems.length>1?"nt":"")+" un point à travailler.","Des efforts sont à fournir sur : "+joinList(negItems)+".","Il faudra cependant progresser sur : "+joinList(negItems)+".","Un travail reste à fournir sur : "+joinList(negItems)+"."];
+    p2=neg2[regenCount%neg2.length];
     if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
   } else if(hasPos&&!hasNeg){
     p1=buildPos();
@@ -612,30 +613,33 @@ function generer(){
     else phrase=phrase.replace(/\.$/,"")+". "+ctx.charAt(0).toUpperCase()+ctx.slice(1)+".";
   }
 
-  // Intégrer des formulations spécifiques à la matière si possible
+  // Reformuler avec le contexte de la matière
   var matData=CHIPS_PAR_MATIERE[matiereCur]||null;
-  if(matData&&(hasPos||hasNeg)){
+  if(matData&&!hasNeg&&hasPos){
+    // Positif seul : utiliser le template de la matière
     var adjAll=adjPos.concat(adjComp);
     var nomAll=nomPos.concat(nomComp).concat(nomGen);
-    var adjStr=adjAll.length?joinList(adjAll):"";
-    var nomStr=nomAll.length?joinList(nomAll):"";
-    var negStr=negItems.length?joinList(negItems):"";
-    var templates=hasNeg?matData.phrases_neg:matData.phrases_pos;
+    var adjStr=adjAll.length?joinList(adjAll):"sérieux";
+    var nomStr=nomAll.length?joinList(nomAll):adjStr;
+    var templates=matData.phrases_pos;
     var tpl=templates[regenCount % templates.length];
-    var mat_phrase=tpl
+    phrase=tpl
       .replace("{Il}",Il).replace("{il}",il)
-      .replace("{adj}",adjStr||"sérieux")
-      .replace("{adj2}",adjStr?"Félicitations.":"Bon trimestre.")
-      .replace("{nom}",nomStr||adjStr||"sérieux")
-      .replace("{neg}",negStr||"certains points");
-    // Garder p2 si négatif+positif
-    if(hasPos&&hasNeg){
-      phrase=mat_phrase+" "+p2;
-    } else {
-      phrase=mat_phrase;
-      if(hasProg&&!hasNeg) phrase+=" "+Il+" affiche "+joinList(progItems)+".";
-    }
+      .replace("{adj}",adjStr)
+      .replace("{adj2}",adjAll.length>=2?"Félicitations.":"Bon trimestre.")
+      .replace("{nom}",nomStr);
+    if(hasProg) phrase+=" "+Il+" affiche "+joinList(progItems)+".";
+  } else if(matData&&hasNeg&&!hasPos){
+    // Négatif seul : utiliser le template négatif de la matière
+    var negStr=joinList(negItems);
+    var templates=matData.phrases_neg;
+    var tpl=templates[regenCount % templates.length];
+    phrase=tpl
+      .replace("{Il}",Il).replace("{il}",il)
+      .replace("{neg}",negStr);
+    if(prog.indexOf("potentiel")>=0) phrase+=" Le potentiel est là.";
   }
+  // Si pos+neg : on garde la phrase construite dynamiquement (p1+p2) — plus propre
 
   document.getElementById("result-zone").style.display="block";
   document.getElementById("ok-banner").style.display="none";

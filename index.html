@@ -469,14 +469,35 @@ function genPhrase(keys, ft, f, Il, il, mat, regen){
   var hasProg=prog.length>0;
   var compNeg=comp.indexOf("comportement")>=0;
 
-  // ── Construire la partie positive ──
+  // ── Construire la partie positive (structures variées) ──
   function buildPosPart(){
+    var a=joinAdjs(adjList);
+    var n=joinNoms(nomList);
     if(adjList.length&&nomList.length){
-      return "Élève "+joinAdjs(adjList)+", "+il+" fait preuve de "+joinNoms(nomList);
+      var structs=[
+        "Élève "+a+", "+il+" fait preuve de "+n,
+        Il+" se montre "+a+" et témoigne de "+n,
+        Il+" s'investit avec sérieux : "+a+", "+il+" fait preuve de "+n,
+        "Bon trimestre : "+il+" est "+a+" et fait preuve de "+n,
+        Il+" affiche un profil encourageant — "+a+" et doté"+( f?"e":"")+" de "+n
+      ];
+      return structs[regen%structs.length];
     } else if(adjList.length){
-      return "Élève "+joinAdjs(adjList);
+      var structs=[
+        "Élève "+a,
+        Il+" se montre "+a+" en cours",
+        Il+" fait preuve d'un investissement "+a,
+        "Bon trimestre : "+il+" est "+a
+      ];
+      return structs[regen%structs.length];
     } else if(nomList.length){
-      return Il+" fait preuve de "+joinNoms(nomList);
+      var structs=[
+        Il+" fait preuve de "+n,
+        "On retient de ce trimestre "+n,
+        Il+" se distingue par "+n,
+        "Bon travail : "+il+" témoigne de "+n
+      ];
+      return structs[regen%structs.length];
     }
     return Il+" s'investit de manière satisfaisante";
   }

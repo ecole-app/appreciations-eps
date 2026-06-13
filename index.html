@@ -525,7 +525,7 @@ function generer(){
     "investissement": ["l'investissement en cours doit progresser","un manque d'investissement pénalise les résultats","l'implication en séance doit s'améliorer"],
     "bavardage": ["le bavardage perturbe encore le bon déroulement des cours","les bavardages nuisent à la concentration de la classe","le bavardage est un frein à la progression"],
     "concentration": ["la concentration doit être renforcée","un manque de concentration nuit aux résultats","la régularité dans l'attention est à améliorer"],
-    "difficultes": ["des lacunes sont à combler pour progresser","des notions fondamentales restent à consolider","les bases doivent être renforcées"],
+    "difficultes": ["des lacunes techniques sont à combler","des notions fondamentales restent à consolider","les bases techniques doivent être renforcées"],
     "retrait": ["une plus grande participation est attendue","un manque d'implication dans les activités est à noter","il faudra davantage s'impliquer"],
     "irregulier": ["la régularité dans l'effort est à améliorer","des résultats irréguliers qui ne reflètent pas le potentiel réel","l'investissement manque de constance"],
     "efforts": ["davantage d'efforts sont nécessaires pour progresser","l'effort fourni est encore insuffisant","une remobilisation est attendue"],
@@ -549,12 +549,27 @@ function generer(){
   var hasNeg=neg.length>0;
   var hasProg=prog.length>0;
 
+  function fixDe(str){
+    // "de une" → "d'une", "de un" → "d'un"
+    return str.replace(/de (un|une|un)/g, function(m,p1){return "d'"+p1;});
+  }
+  function joinNoms(noms){
+    // Construire "d'une bonne écoute, d'une attitude positive et d'un bon niveau technique"
+    if(!noms.length) return "";
+    if(noms.length===1) return noms[0];
+    var parts=noms.map(function(n,i){
+      if(i===0) return n;
+      // Remplacer "une " → "d'une ", "un " → "d'un ", "de " → "de ", "des " → "des "
+      return n.replace(/^(une?) /,function(m,p1){return "d'"+p1+" ";}).replace(/^(des) /,"de $1 ");
+    });
+    return parts.slice(0,-1).join(", ")+" et "+parts[parts.length-1];
+  }
   function buildPos(){
     var adjs=adjPos.concat(adjComp);
     var noms=nomPos.concat(nomComp).concat(nomGen);
-    if(adjs.length&&noms.length) return "Élève "+joinList(adjs)+", "+il+" fait preuve de "+joinList(noms)+".";
+    if(adjs.length&&noms.length) return "Élève "+joinList(adjs)+", "+il+" fait preuve de "+joinNoms(noms)+".";
     if(adjs.length) return "Élève "+joinList(adjs)+", "+il+" s'investit avec sérieux.";
-    if(noms.length) return Il+" fait preuve de "+joinList(noms)+".";
+    if(noms.length) return Il+" fait preuve de "+joinNoms(noms)+".";
     return Il+" s'investit de manière satisfaisante.";
   }
 
@@ -568,11 +583,9 @@ function generer(){
       if(opts) return opts[regenCount%opts.length];
       return T_NEG[k]||k;
     });
-    if(negPhrases.length===1){
-      p2="Cependant, "+negPhrases[0]+".";
-    } else {
-      p2="Cependant, "+negPhrases.slice(0,-1).join(", ")+" et "+negPhrases[negPhrases.length-1]+".";
-    }
+    var negJoined=negPhrases.length===1?negPhrases[0]:negPhrases.slice(0,-1).join(", ")+" et "+negPhrases[negPhrases.length-1];
+    var intro=["Cependant, ","Il faudra néanmoins veiller à ce que ","Un point d'attention : ","À travailler : "];
+    p2=intro[regenCount%intro.length]+negJoined+".";
     if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
   } else if(hasPos&&!hasNeg){
     p1=buildPos();

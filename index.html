@@ -5,577 +5,564 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciations Collège Luqman</title>
 <style>
-:root{--vert:#1a7a6e;--vert-dark:#145f55;--orange:#e8671a;--bg:#f0f2f0;--card:#fff;--border:#dde8e6;--text:#1a1a1a;--muted:#5a7570}
+:root{--vert:#1a7a6e;--vd:#145f55;--ora:#e8671a;--bg:#f0f2f0;--card:#fff;--bor:#dde8e6;--txt:#1a1a1a;--mut:#5a7570}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
-.header{background:var(--vert);padding:14px 16px}
-.header h1{font-size:19px;font-weight:700;color:#fff}
-.body{padding:14px}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:15px}
+.hdr{background:var(--vert);padding:14px 16px}
+.hdr h1{font-size:19px;font-weight:700;color:#fff}
+.bod{padding:14px}
 .tabs{display:flex;gap:8px;margin-bottom:16px}
-.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:14px;cursor:pointer;color:var(--muted);flex:1;text-align:center}
-.tab.active{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
-.section{display:none}.section.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
-.slabel{font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 7px}
+.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--bor);background:var(--card);font-size:14px;cursor:pointer;color:var(--mut);flex:1;text-align:center}
+.tab.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:14px}
+.sl{font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 7px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2px}
-.chip{padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted);user-select:none;display:inline-block}
-.chip.gen.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
-.chip.pos.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
+.chip{padding:5px 11px;border-radius:99px;border:1.5px solid var(--bor);background:var(--card);font-size:13px;cursor:pointer;color:var(--mut);user-select:none}
+.chip.gen.on{background:#e6f4f1;color:var(--vd);border-color:var(--vert)}
+.chip.pos.on{background:#e6f4f1;color:var(--vd);border-color:var(--vert)}
 .chip.neg.on{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
-.chip.comp.on{background:#fef0e6;color:#7a3a0a;border-color:var(--orange)}
-.chip.prog.on{background:#e6f4f1;color:var(--vert-dark);border-color:var(--vert)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
-input,select{width:100%;font-size:14px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+.chip.comp.on{background:#fef0e6;color:#7a3a0a;border-color:var(--ora)}
+.chip.prog.on{background:#e6f4f1;color:var(--vd);border-color:var(--vert)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+label{font-size:13px;color:var(--mut);display:block;margin-bottom:4px}
+input,select{width:100%;font-size:14px;padding:8px 10px;border:1.5px solid var(--bor);border-radius:8px;background:var(--card);color:var(--txt)}
 input:focus,select:focus{outline:none;border-color:var(--vert)}
-.genre-row{display:flex;gap:8px}
-.grb{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
+.gr{display:flex;gap:8px}
+.grb{padding:7px 14px;border-radius:99px;border:1.5px solid var(--bor);background:var(--card);font-size:13px;cursor:pointer;color:var(--mut)}
 .grb.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-button.act{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--text)}
-button.act:hover{background:#f0f7f6}
-button.act.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:600}
-button.act.primary:hover{background:#d45e15}
-.result-box{background:#f4faf9;border:1.5px solid var(--vert);border-radius:10px;padding:13px;margin-top:10px}
-.result-text{font-size:14px;line-height:1.75;min-height:44px;white-space:pre-wrap}
-.hint{font-size:12px;color:var(--muted);margin-top:5px}
-.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);display:inline-block;margin:2px}
-.sel-tags{display:flex;flex-wrap:wrap;margin:6px 0 2px;min-height:20px}
-hr{border:none;border-top:1px solid var(--border);margin:12px 0}
-.eleve-item{display:flex;align-items:flex-start;gap:8px;padding:10px 11px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px}
-.eleve-info{flex:1;min-width:0}
-.eleve-nom{font-size:14px;font-weight:600;color:var(--vert-dark)}
-.eleve-meta{font-size:12px;color:var(--muted);margin-top:2px}
-.eleve-phrase{font-size:13px;line-height:1.55;margin-top:5px}
-.ibtn{padding:5px 9px;font-size:12px;border-radius:7px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--muted)}
-.ibtn:hover{background:#f0f7f6}
-.ibtn.danger:hover{background:#FCEBEB;color:#A32D2D}
-.empty{font-size:13px;color:var(--muted);font-style:italic;padding:10px 0}
-.fbtn{padding:5px 11px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);font-size:13px;cursor:pointer;color:var(--muted)}
-.fbtn.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
-.frow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
-.fsel{font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto}
-.counter{font-size:12px;color:var(--muted);margin-left:auto}
-.ok{background:#e6f4f1;color:var(--vert-dark);border:1px solid var(--vert);border-radius:8px;padding:8px 11px;font-size:13px;margin-top:9px;display:none}
-.ebox{background:#f4faf9;border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;line-height:1.85;white-space:pre-wrap;min-height:50px}
-@media(max-width:400px){.grid2{grid-template-columns:1fr}}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button.a{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;border:1.5px solid var(--bor);background:var(--card);font-size:13px;cursor:pointer;color:var(--txt)}
+button.a:hover{background:#f0f7f6}
+button.a.p{background:var(--ora);border-color:var(--ora);color:#fff;font-weight:600}
+button.a.p:hover{background:#d45e15}
+.rb{background:#f4faf9;border:1.5px solid var(--vert);border-radius:10px;padding:13px;margin-top:10px}
+.rt{font-size:14px;line-height:1.75;min-height:44px;white-space:pre-wrap}
+.hint{font-size:12px;color:var(--mut);margin-top:5px}
+.stag{font-size:12px;padding:2px 8px;border-radius:99px;background:#e6f4f1;color:var(--vd);border:1px solid var(--vert);display:inline-block;margin:2px}
+.stags{display:flex;flex-wrap:wrap;margin:6px 0 2px;min-height:20px}
+hr{border:none;border-top:1px solid var(--bor);margin:12px 0}
+.ei{display:flex;align-items:flex-start;gap:8px;padding:10px 11px;background:var(--card);border:1px solid var(--bor);border-radius:8px;margin-bottom:8px}
+.ein{flex:1;min-width:0}
+.en{font-size:14px;font-weight:600;color:var(--vd)}
+.em{font-size:12px;color:var(--mut);margin-top:2px}
+.ep{font-size:13px;line-height:1.55;margin-top:5px}
+.ib{padding:5px 9px;font-size:12px;border-radius:7px;border:1px solid var(--bor);background:var(--card);cursor:pointer;color:var(--mut)}
+.ib:hover{background:#f0f7f6}
+.ib.d:hover{background:#FCEBEB;color:#A32D2D}
+.emp{font-size:13px;color:var(--mut);font-style:italic;padding:10px 0}
+.fb{padding:5px 11px;border-radius:99px;border:1.5px solid var(--bor);background:var(--card);font-size:13px;cursor:pointer;color:var(--mut)}
+.fb.on{background:var(--vert);color:#fff;border-color:var(--vert);font-weight:600}
+.fr{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.fs{font-size:13px;padding:5px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:auto}
+.cnt{font-size:12px;color:var(--mut);margin-left:auto}
+.ok{background:#e6f4f1;color:var(--vd);border:1px solid var(--vert);border-radius:8px;padding:8px 11px;font-size:13px;margin-top:9px;display:none}
+.ebox{background:#f4faf9;border:1px solid var(--bor);border-radius:10px;padding:11px;font-size:13px;line-height:1.85;white-space:pre-wrap;min-height:50px}
+@media(max-width:400px){.g2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="header"><h1>📋 Appréciations Collège Luqman</h1></div>
-<div class="body">
-
+<div class="hdr"><h1>📋 Appréciations Collège Luqman</h1></div>
+<div class="bod">
 <div class="tabs">
-  <button class="tab active" onclick="setTab('gen')">✦ Générer</button>
-  <button class="tab" onclick="setTab('liste')">👥 Élèves <span id="badge"></span></button>
-  <button class="tab" onclick="setTab('export')">↗ Export</button>
+  <button class="tab on" onclick="setTab('gen')">✦ Générer</button>
+  <button class="tab" onclick="setTab('lst')">👥 Élèves <span id="bdg"></span></button>
+  <button class="tab" onclick="setTab('exp')">↗ Export</button>
 </div>
 
-<!-- GÉNÉRER -->
-<div id="gen" class="section active">
+<div id="gen" class="sec on">
 <div class="card">
-  <div class="grid2">
+  <div class="g2">
     <div><label>Prénom</label><input type="text" id="prenom" placeholder="Ex: Lucas"></div>
-    <div><label>Classe</label><select id="classe" onchange="updateMatieres()"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select></div>
+    <div><label>Classe</label><select id="classe" onchange="onClasse()"><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select></div>
   </div>
-  <div class="grid2">
-    <div><label>Matière</label><select id="matiere" onchange="updateChipsParMatiere()"><option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option><option>Histoire-Géo/EMC</option><option>SVT</option><option>Physique-Chimie</option><option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option></select></div>
-    <div><label>Genre</label><div class="genre-row"><button class="grb on" id="gb-m" onclick="setG('M')">Garçon</button><button class="grb" id="gb-f" onclick="setG('F')">Fille</button></div></div>
+  <div class="g2">
+    <div><label>Matière</label><select id="matiere" onchange="onMatiere()"></select></div>
+    <div><label>Genre</label><div class="gr"><button class="grb on" id="gm" onclick="setG('M')">Garçon</button><button class="grb" id="gf" onclick="setG('F')">Fille</button></div></div>
   </div>
-
-  <div class="slabel">Général — toutes matières</div>
-  <div class="chips" id="cp-gen"></div>
-  <div class="slabel" id="label-pos">Points positifs</div>
-  <div class="chips" id="cp-pos"></div>
-  <div class="slabel" id="label-neg">Points à travailler</div>
-  <div class="chips" id="cp-neg"></div>
-  <div class="slabel">Comportement</div>
-  <div class="chips" id="cp-comp"></div>
-  <div class="slabel">Progression</div>
-  <div class="chips" id="cp-prog"></div>
-
+  <div class="sl">Général — toutes matières</div><div class="chips" id="cp-gen"></div>
+  <div class="sl" id="lpos">Points positifs</div><div class="chips" id="cp-pos"></div>
+  <div class="sl" id="lneg">Points à travailler</div><div class="chips" id="cp-neg"></div>
+  <div class="sl">Comportement</div><div class="chips" id="cp-comp"></div>
+  <div class="sl">Progression</div><div class="chips" id="cp-prog"></div>
   <hr>
   <div style="margin-bottom:10px">
-    <label>Mots libres <span style="font-weight:400;color:var(--muted)">(sport, contexte… séparés par virgules)</span></label>
+    <label>Mots libres <span style="font-weight:400;color:var(--mut)">(sport, contexte… virgules)</span></label>
     <input type="text" id="free" placeholder="Ex: badminton, ULIS…" oninput="renderTags()">
   </div>
-  <div style="font-size:12px;color:var(--muted);margin-bottom:3px">Mots-clés sélectionnés :</div>
-  <div class="sel-tags" id="sel-tags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
-
-  <div class="btn-row">
-    <button class="act primary" onclick="generer()">⚡ Générer</button>
-    <button class="act" onclick="resetForm()">↺ Réinitialiser</button>
+  <div style="font-size:12px;color:var(--mut);margin-bottom:3px">Mots-clés sélectionnés :</div>
+  <div class="stags" id="stags"><span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span></div>
+  <div class="brow">
+    <button class="a p" onclick="generer()">⚡ Générer</button>
+    <button class="a" onclick="regenerer()">↺ Regénérer</button>
+    <button class="a" onclick="resetForm()">✕ Réinitialiser</button>
   </div>
-
-  <div id="result-zone" style="display:none" class="result-box">
-    <div style="font-size:12px;color:var(--muted);margin-bottom:5px" id="rlabel">Phrase générée</div>
-    <div id="rtext" class="result-text"></div>
-    <div class="hint" id="rhint"></div>
-    <div class="btn-row">
-      <button class="act primary" onclick="enregistrer()">💾 Enregistrer</button>
-      <button class="act" onclick="regenerer()">↺ Regénérer</button>
-      <button class="act" onclick="copierPhrase()">⎘ Copier</button>
+  <div id="rz" style="display:none" class="rb">
+    <div style="font-size:12px;color:var(--mut);margin-bottom:5px" id="rl">Phrase générée</div>
+    <div id="rt" class="rt"></div>
+    <div class="hint">Enregistrer pour sauvegarder.</div>
+    <div class="brow">
+      <button class="a p" onclick="enregistrer()">💾 Enregistrer</button>
+      <button class="a" onclick="copierPhrase()">⎘ Copier</button>
     </div>
-    <div class="ok" id="ok-banner">✓ Enregistré !</div>
+    <div class="ok" id="ok">✓ Enregistré !</div>
   </div>
 </div>
 </div>
 
-<!-- ÉLÈVES -->
-<div id="liste" class="section">
-  <div class="frow">
-    <button class="fbtn on" onclick="filtrer('toutes',this)">Toutes</button>
-    <button class="fbtn" onclick="filtrer('6e',this)">6e</button>
-    <button class="fbtn" onclick="filtrer('5e',this)">5e</button>
-    <button class="fbtn" onclick="filtrer('4e',this)">4e</button>
-    <button class="fbtn" onclick="filtrer('3e',this)">3e</button>
-    <span class="counter" id="lcounter"></span>
+<div id="lst" class="sec">
+  <div class="fr">
+    <button class="fb on" onclick="filtrer('toutes',this)">Toutes</button>
+    <button class="fb" onclick="filtrer('6e',this)">6e</button>
+    <button class="fb" onclick="filtrer('5e',this)">5e</button>
+    <button class="fb" onclick="filtrer('4e',this)">4e</button>
+    <button class="fb" onclick="filtrer('3e',this)">3e</button>
+    <span class="cnt" id="cnt"></span>
   </div>
-  <div class="frow">
-    <select class="fsel" id="filtre-matiere" onchange="renderListe()">
-      <option value="toutes">Toutes matières</option>
+  <div class="fr">
+    <select class="fs" id="fm" onchange="renderListe()">
+      <option value="t">Toutes matières</option>
       <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
       <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
     </select>
-    <select class="fsel" id="filtre-trim" onchange="renderListe()">
-      <option value="tous">Tous trimestres</option>
-      <option value="T1">T1 (sept–déc)</option>
-      <option value="T2">T2 (jan–mars)</option>
-      <option value="T3">T3 (avr–juin)</option>
+    <select class="fs" id="ft" onchange="renderListe()">
+      <option value="t">Tous trimestres</option>
+      <option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option>
     </select>
-    <select class="fsel" id="filtre-annee" onchange="renderListe()">
-      <option value="toutes">Toutes années</option>
-    </select>
+    <select class="fs" id="fa" onchange="renderListe()"><option value="t">Toutes années</option></select>
   </div>
   <div id="elist"></div>
 </div>
 
-<!-- EXPORT -->
-<div id="export" class="section">
-  <div class="frow">
-    <select class="fsel" id="ecl" onchange="renderExport()">
-      <option value="toutes">Toutes classes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option>
-    </select>
-    <select class="fsel" id="ecl-mat" onchange="renderExport()">
-      <option value="toutes">Toutes matières</option>
+<div id="exp" class="sec">
+  <div class="fr">
+    <select class="fs" id="ecl" onchange="renderExp()"><option value="t">Toutes classes</option><option>6e</option><option>5e</option><option>4e</option><option>3e</option></select>
+    <select class="fs" id="emat" onchange="renderExp()">
+      <option value="t">Toutes matières</option>
       <option>Français</option><option>Maths</option><option>Anglais</option><option>Arabe</option>
       <option>Espagnol</option><option>Histoire-Géo/EMC</option><option>SVT</option>
       <option>Physique-Chimie</option><option>Technologie</option>
       <option>Arts Plastiques</option><option>Éducation Musicale</option><option>EPS</option>
     </select>
-    <select class="fsel" id="ecl-trim" onchange="renderExport()">
-      <option value="tous">Tous trimestres</option>
-      <option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option>
-    </select>
-    <select class="fsel" id="ecl-annee" onchange="renderExport()">
-      <option value="toutes">Toutes années</option>
-    </select>
-    <button class="act" style="margin-left:auto" onclick="copierExport()">⎘ Copier</button>
+    <select class="fs" id="etr" onchange="renderExp()"><option value="t">Tous trimestres</option><option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option></select>
+    <select class="fs" id="ean" onchange="renderExp()"><option value="t">Toutes années</option></select>
+    <button class="a" style="margin-left:auto" onclick="copierExp()">⎘ Copier</button>
   </div>
-  <div id="econtent" class="ebox">Aucune appréciation.</div>
+  <div id="ecnt" class="ebox">Aucune appréciation.</div>
 </div>
-
 </div>
 
 <script>
+// ── DONNÉES ──────────────────────────────────────────────────────────────────
 var M6=["Français","Maths","Anglais","Arabe","Histoire-Géo/EMC","SVT","Physique-Chimie","Arts Plastiques","Éducation Musicale","EPS"];
 var M5=["Français","Maths","Anglais","Arabe","Espagnol","Histoire-Géo/EMC","SVT","Physique-Chimie","Technologie","Arts Plastiques","Éducation Musicale","EPS"];
 
-var CHIPS_GEN=[
-  {k:"curieux",l:"curiosité"},{k:"rigoureux",l:"rigueur"},
-  {k:"oral",l:"participation à l'oral"},{k:"ecrit",l:"travail écrit soigné"},
-  {k:"methode",l:"bonne méthode"},{k:"efforts_gen",l:"efforts constants"},
-  {k:"autonomie_gen",l:"autonomie"},{k:"respect_gen",l:"respect des consignes"},
-  {k:"entraide",l:"entraide"},{k:"creativite",l:"créativité"},
-  {k:"perseverance",l:"persévérance"},{k:"assidu",l:"assiduité"},
-  {k:"esprit_critique",l:"esprit critique"}
+var GEN=[
+  {k:"curieux",l:"curiosité"},{k:"rigoureux",l:"rigueur"},{k:"oral",l:"participation à l'oral"},
+  {k:"ecrit",l:"travail écrit soigné"},{k:"methode",l:"bonne méthode"},{k:"efforts_g",l:"efforts constants"},
+  {k:"auto_g",l:"autonomie"},{k:"respect_g",l:"respect des consignes"},{k:"entraide",l:"entraide"},
+  {k:"creativ",l:"créativité"},{k:"persev",l:"persévérance"},{k:"assidu",l:"assiduité"},
+  {k:"crit",l:"esprit critique"}
 ];
-var CHIPS_COMP=[
-  {k:"attitude",l:"attitude positive"},{k:"respectueux",l:"respectueux/euse"},
-  {k:"agreable",l:"agréable en cours"},{k:"comportement",l:"comportement à améliorer"},
-  {k:"ponctuel",l:"ponctuel(le)"}
+var COMP=[
+  {k:"attitude",l:"attitude positive"},{k:"respect",l:"respectueux/euse"},
+  {k:"agreable",l:"agréable en cours"},{k:"compneg",l:"comportement à améliorer"},{k:"ponctuel",l:"ponctuel(le)"}
 ];
-var CHIPS_PROG=[
-  {k:"progres",l:"en progrès"},{k:"progression",l:"progression constante"},
-  {k:"potentiel",l:"potentiel à exploiter"},{k:"encourageant",l:"résultats encourageants"},
-  {k:"hausse",l:"trimestre en hausse"},{k:"acquis",l:"acquis solides"}
+var PROG=[
+  {k:"prog",l:"en progrès"},{k:"progression",l:"progression constante"},{k:"potentiel",l:"potentiel à exploiter"},
+  {k:"encour",l:"résultats encourageants"},{k:"hausse",l:"trimestre en hausse"},{k:"acquis",l:"acquis solides"}
 ];
-var CHIPS_PAR_MATIERE={
+
+var MAT={
   "EPS":{
-    pos:[{k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},{k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},{k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},{k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},{k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}],
-    neg:[{k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},{k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},{k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},{k:"efforts",l:"efforts insuffisants"},{k:"perturbateur",l:"perturbateur/trice"}]
+    pos:[{k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/euse"},{k:"applique",l:"appliqué(e)"},
+         {k:"particip",l:"participation active"},{k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},
+         {k:"ecoute",l:"écoute des consignes"},{k:"leader",l:"leadership"},{k:"technique",l:"bon niveau technique"},{k:"auto",l:"autonomie"}],
+    neg:[{k:"invest_n",l:"manque d'investissement"},{k:"bavard",l:"bavardage"},{k:"concentr",l:"manque de concentration"},
+         {k:"diff_tech",l:"difficultés techniques"},{k:"retrait",l:"en retrait"},{k:"irreg",l:"irrégulier(e)"},
+         {k:"effort_n",l:"efforts insuffisants"},{k:"perturb",l:"comportement perturbateur"}]
   },
   "Français":{
-    pos:[{k:"expression_ecrite",l:"expression écrite"},{k:"expression_orale",l:"expression orale"},{k:"lecture",l:"lecture fluide"},{k:"orthographe",l:"orthographe"},{k:"vocabulaire",l:"richesse du vocabulaire"},{k:"analyse",l:"capacité d'analyse"},{k:"redaction",l:"qualité de rédaction"},{k:"grammaire",l:"maîtrise grammaticale"},{k:"imagination",l:"imagination"},{k:"participation_fr",l:"participation active"}],
-    neg:[{k:"orthographe_neg",l:"orthographe"},{k:"expression_neg",l:"expression"},{k:"lecture_neg",l:"lecture"},{k:"grammaire_neg",l:"grammaire"},{k:"participation_neg",l:"participation"},{k:"redaction_neg",l:"rédaction"},{k:"concentration_fr",l:"concentration"},{k:"bavardage_fr",l:"bavardage"}]
+    pos:[{k:"expr_e",l:"expression écrite"},{k:"expr_o",l:"expression orale"},{k:"lecture",l:"lecture"},
+         {k:"ortho",l:"orthographe"},{k:"vocab",l:"vocabulaire"},{k:"analyse",l:"analyse"},
+         {k:"redac",l:"rédaction"},{k:"gram",l:"grammaire"},{k:"imagin",l:"imagination"},{k:"particip_f",l:"participation"}],
+    neg:[{k:"ortho_n",l:"orthographe"},{k:"expr_n",l:"expression"},{k:"lect_n",l:"lecture"},
+         {k:"gram_n",l:"grammaire"},{k:"particip_fn",l:"participation"},{k:"redac_n",l:"rédaction"},
+         {k:"concentr_f",l:"concentration"},{k:"bavard_f",l:"bavardage"}]
   },
   "Maths":{
-    pos:[{k:"calcul",l:"calcul"},{k:"raisonnement",l:"raisonnement logique"},{k:"geometrie",l:"géométrie"},{k:"problemes",l:"résolution de problèmes"},{k:"rigueur_m",l:"rigueur"},{k:"rapidite",l:"rapidité d'exécution"},{k:"algebre",l:"algèbre"},{k:"methodologie",l:"méthodologie"},{k:"participation_m",l:"participation active"},{k:"abstraction",l:"abstraction"}],
-    neg:[{k:"calcul_neg",l:"calcul"},{k:"raisonnement_neg",l:"raisonnement"},{k:"lacunes",l:"lacunes"},{k:"methode_neg",l:"méthode"},{k:"concentration_m",l:"concentration"},{k:"travail_maison",l:"travail à la maison"},{k:"abstraction_neg",l:"abstraction"},{k:"participation_m_neg",l:"participation"}]
+    pos:[{k:"calcul",l:"calcul"},{k:"raison",l:"raisonnement logique"},{k:"geo",l:"géométrie"},
+         {k:"pb",l:"résolution de problèmes"},{k:"rigueur_m",l:"rigueur"},{k:"rapid",l:"rapidité"},
+         {k:"algebre",l:"algèbre"},{k:"method_m",l:"méthodologie"},{k:"particip_m",l:"participation"},{k:"abstr",l:"abstraction"}],
+    neg:[{k:"calcul_n",l:"calcul"},{k:"raison_n",l:"raisonnement"},{k:"lacunes",l:"lacunes"},
+         {k:"method_mn",l:"méthode"},{k:"concentr_m",l:"concentration"},{k:"travdom",l:"travail à la maison"},
+         {k:"abstr_n",l:"abstraction"},{k:"particip_mn",l:"participation"}]
   },
   "Anglais":{
-    pos:[{k:"comprehension_orale",l:"compréhension orale"},{k:"expression_orale_ang",l:"expression orale"},{k:"comprehension_ecrite",l:"compréhension écrite"},{k:"expression_ecrite_ang",l:"expression écrite"},{k:"vocabulaire_ang",l:"vocabulaire"},{k:"prononciation",l:"prononciation"},{k:"grammaire_ang",l:"grammaire"},{k:"participation_ang",l:"participation active"},{k:"aisance",l:"aisance à l'oral"},{k:"memorisation",l:"mémorisation"}],
-    neg:[{k:"vocabulaire_neg",l:"vocabulaire"},{k:"grammaire_neg_ang",l:"grammaire"},{k:"oral_neg",l:"expression orale"},{k:"participation_ang_neg",l:"participation"},{k:"prononciation_neg",l:"prononciation"},{k:"memorisation_neg",l:"mémorisation"},{k:"ecrit_neg_ang",l:"expression écrite"}]
+    pos:[{k:"co",l:"compréhension orale"},{k:"eo_a",l:"expression orale"},{k:"ce_a",l:"compréhension écrite"},
+         {k:"ee_a",l:"expression écrite"},{k:"vocab_a",l:"vocabulaire"},{k:"prononc",l:"prononciation"},
+         {k:"gram_a",l:"grammaire"},{k:"particip_a",l:"participation"},{k:"aisance",l:"aisance à l'oral"},{k:"memo_a",l:"mémorisation"}],
+    neg:[{k:"vocab_an",l:"vocabulaire"},{k:"gram_an",l:"grammaire"},{k:"oral_an",l:"expression orale"},
+         {k:"particip_an",l:"participation"},{k:"prononc_n",l:"prononciation"},{k:"memo_an",l:"mémorisation"},{k:"ecrit_an",l:"expression écrite"}]
   },
   "Arabe":{
-    pos:[{k:"lecture_ar",l:"lecture"},{k:"ecriture_ar",l:"écriture"},{k:"comprehension_ar",l:"compréhension"},{k:"expression_ar",l:"expression"},{k:"vocabulaire_ar",l:"vocabulaire"},{k:"participation_ar",l:"participation active"},{k:"memorisation_ar",l:"mémorisation"},{k:"calligraphie",l:"calligraphie"}],
-    neg:[{k:"lecture_neg_ar",l:"lecture"},{k:"ecriture_neg_ar",l:"écriture"},{k:"vocabulaire_neg_ar",l:"vocabulaire"},{k:"participation_neg_ar",l:"participation"},{k:"memorisation_neg_ar",l:"mémorisation"}]
+    pos:[{k:"lect_ar",l:"lecture"},{k:"ecrit_ar",l:"écriture"},{k:"compr_ar",l:"compréhension"},
+         {k:"expr_ar",l:"expression"},{k:"vocab_ar",l:"vocabulaire"},{k:"particip_ar",l:"participation"},
+         {k:"memo_ar",l:"mémorisation"},{k:"calligr",l:"calligraphie"}],
+    neg:[{k:"lect_arn",l:"lecture"},{k:"ecrit_arn",l:"écriture"},{k:"vocab_arn",l:"vocabulaire"},
+         {k:"particip_arn",l:"participation"},{k:"memo_arn",l:"mémorisation"}]
   },
   "Espagnol":{
-    pos:[{k:"comprehension_esp",l:"compréhension"},{k:"expression_esp",l:"expression orale"},{k:"vocabulaire_esp",l:"vocabulaire"},{k:"grammaire_esp",l:"grammaire"},{k:"participation_esp",l:"participation active"},{k:"prononciation_esp",l:"prononciation"},{k:"aisance_esp",l:"aisance à l'oral"},{k:"ecrit_esp",l:"expression écrite"}],
-    neg:[{k:"vocabulaire_neg_esp",l:"vocabulaire"},{k:"grammaire_neg_esp",l:"grammaire"},{k:"oral_neg_esp",l:"expression orale"},{k:"participation_neg_esp",l:"participation"},{k:"ecrit_neg_esp",l:"expression écrite"}]
+    pos:[{k:"compr_e",l:"compréhension"},{k:"expr_e2",l:"expression orale"},{k:"vocab_e",l:"vocabulaire"},
+         {k:"gram_e",l:"grammaire"},{k:"particip_e",l:"participation"},{k:"prononc_e",l:"prononciation"},
+         {k:"aisance_e",l:"aisance à l'oral"},{k:"ecrit_e",l:"expression écrite"}],
+    neg:[{k:"vocab_en",l:"vocabulaire"},{k:"gram_en",l:"grammaire"},{k:"oral_en",l:"expression orale"},
+         {k:"particip_en",l:"participation"},{k:"ecrit_en",l:"expression écrite"}]
   },
   "Histoire-Géo/EMC":{
-    pos:[{k:"connaissance",l:"connaissances solides"},{k:"analyse_hg",l:"esprit d'analyse"},{k:"redaction_hg",l:"qualité de rédaction"},{k:"participation_hg",l:"participation active"},{k:"carte",l:"lecture de cartes"},{k:"esprit_critique_hg",l:"esprit critique"},{k:"memorisation_hg",l:"mémorisation"},{k:"citoyennete",l:"sens civique"}],
-    neg:[{k:"connaissance_neg",l:"connaissances"},{k:"analyse_neg_hg",l:"analyse"},{k:"redaction_neg_hg",l:"rédaction"},{k:"participation_neg_hg",l:"participation"},{k:"memorisation_neg_hg",l:"mémorisation"},{k:"concentration_hg",l:"concentration"}]
+    pos:[{k:"connais",l:"connaissances solides"},{k:"analyse_h",l:"esprit d'analyse"},{k:"redac_h",l:"rédaction"},
+         {k:"particip_h",l:"participation"},{k:"carte",l:"lecture de cartes"},{k:"crit_h",l:"esprit critique"},
+         {k:"memo_h",l:"mémorisation"},{k:"cito",l:"sens civique"}],
+    neg:[{k:"connais_n",l:"connaissances"},{k:"analyse_hn",l:"analyse"},{k:"redac_hn",l:"rédaction"},
+         {k:"particip_hn",l:"participation"},{k:"memo_hn",l:"mémorisation"},{k:"concentr_h",l:"concentration"}]
   },
   "SVT":{
-    pos:[{k:"observation",l:"sens de l'observation"},{k:"experimentation",l:"démarche expérimentale"},{k:"redaction_svt",l:"qualité des comptes-rendus"},{k:"participation_svt",l:"participation active"},{k:"raisonnement_svt",l:"raisonnement scientifique"},{k:"memorisation_svt",l:"mémorisation du cours"},{k:"soin",l:"soin du travail"},{k:"curiosite_svt",l:"curiosité scientifique"}],
-    neg:[{k:"memorisation_neg_svt",l:"mémorisation"},{k:"redaction_neg_svt",l:"comptes-rendus"},{k:"participation_neg_svt",l:"participation"},{k:"soin_neg",l:"soin"},{k:"raisonnement_neg_svt",l:"raisonnement"},{k:"concentration_svt",l:"concentration"}]
+    pos:[{k:"observ",l:"sens de l'observation"},{k:"experi",l:"démarche expérimentale"},{k:"cr_svt",l:"comptes-rendus soignés"},
+         {k:"particip_s",l:"participation"},{k:"raison_s",l:"raisonnement scientifique"},{k:"memo_s",l:"mémorisation"},
+         {k:"soin_s",l:"soin du travail"},{k:"curio_s",l:"curiosité scientifique"}],
+    neg:[{k:"memo_sn",l:"mémorisation"},{k:"cr_svtn",l:"comptes-rendus"},{k:"particip_sn",l:"participation"},
+         {k:"soin_sn",l:"soin"},{k:"raison_sn",l:"raisonnement"},{k:"concentr_s",l:"concentration"}]
   },
   "Physique-Chimie":{
-    pos:[{k:"manipulation",l:"habileté en manipulation"},{k:"raisonnement_pc",l:"raisonnement scientifique"},{k:"rigueur_pc",l:"rigueur"},{k:"participation_pc",l:"participation active"},{k:"calcul_pc",l:"calcul"},{k:"redaction_pc",l:"qualité des comptes-rendus"},{k:"curiosite_pc",l:"curiosité scientifique"},{k:"methode_pc",l:"méthodologie"}],
-    neg:[{k:"calcul_neg_pc",l:"calcul"},{k:"methode_neg_pc",l:"méthode"},{k:"participation_neg_pc",l:"participation"},{k:"manipulation_neg",l:"manipulation"},{k:"memorisation_neg_pc",l:"mémorisation"},{k:"concentration_pc",l:"concentration"}]
+    pos:[{k:"manip",l:"habileté en manipulation"},{k:"raison_p",l:"raisonnement scientifique"},{k:"rigueur_p",l:"rigueur"},
+         {k:"particip_p",l:"participation"},{k:"calcul_p",l:"calcul"},{k:"cr_pc",l:"comptes-rendus"},
+         {k:"curio_p",l:"curiosité scientifique"},{k:"method_p",l:"méthodologie"}],
+    neg:[{k:"calcul_pn",l:"calcul"},{k:"method_pn",l:"méthode"},{k:"particip_pn",l:"participation"},
+         {k:"manip_n",l:"manipulation"},{k:"memo_pn",l:"mémorisation"},{k:"concentr_p",l:"concentration"}]
   },
   "Technologie":{
-    pos:[{k:"conception",l:"sens de la conception"},{k:"fabrication",l:"habileté en fabrication"},{k:"numerique",l:"maîtrise du numérique"},{k:"creativity_techno",l:"créativité"},{k:"participation_techno",l:"participation active"},{k:"methode_techno",l:"méthodologie"},{k:"soin_techno",l:"soin du travail"},{k:"autonomie_techno",l:"autonomie"}],
-    neg:[{k:"soin_neg_techno",l:"soin"},{k:"methode_neg_techno",l:"méthode"},{k:"participation_neg_techno",l:"participation"},{k:"autonomie_neg_techno",l:"autonomie"},{k:"concentration_techno",l:"concentration"}]
+    pos:[{k:"concept",l:"sens de la conception"},{k:"fabric",l:"habileté en fabrication"},{k:"num",l:"maîtrise du numérique"},
+         {k:"creat_t",l:"créativité"},{k:"particip_t",l:"participation"},{k:"method_t",l:"méthodologie"},
+         {k:"soin_t",l:"soin du travail"},{k:"auto_t",l:"autonomie"}],
+    neg:[{k:"soin_tn",l:"soin"},{k:"method_tn",l:"méthode"},{k:"particip_tn",l:"participation"},
+         {k:"auto_tn",l:"autonomie"},{k:"concentr_t",l:"concentration"}]
   },
   "Arts Plastiques":{
-    pos:[{k:"creativite_ap",l:"créativité"},{k:"technique_ap",l:"maîtrise technique"},{k:"imagination_ap",l:"imagination"},{k:"soin_ap",l:"soin du travail"},{k:"participation_ap",l:"participation active"},{k:"originalite",l:"originalité"},{k:"sensibilite",l:"sensibilité artistique"},{k:"autonomie_ap",l:"autonomie"}],
-    neg:[{k:"soin_neg_ap",l:"soin"},{k:"implication_neg_ap",l:"implication"},{k:"technique_neg_ap",l:"technique"},{k:"participation_neg_ap",l:"participation"},{k:"finition",l:"finitions"}]
+    pos:[{k:"creat_a",l:"créativité"},{k:"tech_a",l:"maîtrise technique"},{k:"imagin_a",l:"imagination"},
+         {k:"soin_a",l:"soin"},{k:"particip_ap",l:"participation"},{k:"origin",l:"originalité"},
+         {k:"sensib",l:"sensibilité artistique"},{k:"auto_a",l:"autonomie"}],
+    neg:[{k:"soin_an",l:"soin"},{k:"implic_an",l:"implication"},{k:"tech_an",l:"technique"},
+         {k:"particip_apn",l:"participation"},{k:"finit",l:"finitions"}]
   },
   "Éducation Musicale":{
-    pos:[{k:"ecoute_mus",l:"écoute musicale"},{k:"chant",l:"qualité vocale"},{k:"rythme",l:"sens du rythme"},{k:"participation_mus",l:"participation active"},{k:"sensibilite_mus",l:"sensibilité musicale"},{k:"memorisation_mus",l:"mémorisation"},{k:"engagement_mus",l:"engagement"},{k:"technique_mus",l:"maîtrise technique"}],
-    neg:[{k:"participation_neg_mus",l:"participation"},{k:"ecoute_neg_mus",l:"écoute"},{k:"memorisation_neg_mus",l:"mémorisation"},{k:"engagement_neg_mus",l:"engagement"},{k:"tenue_neg",l:"tenue en cours"}]
+    pos:[{k:"ecoute_m",l:"écoute musicale"},{k:"chant",l:"qualités vocales"},{k:"rythme",l:"sens du rythme"},
+         {k:"particip_mu",l:"participation"},{k:"sensib_m",l:"sensibilité musicale"},{k:"memo_mu",l:"mémorisation"},
+         {k:"engag_m",l:"engagement"},{k:"tech_m",l:"maîtrise technique"}],
+    neg:[{k:"particip_mun",l:"participation"},{k:"ecoute_mn",l:"écoute"},{k:"memo_mun",l:"mémorisation"},
+         {k:"engag_mn",l:"engagement"},{k:"tenue_m",l:"tenue en cours"}]
   }
 };
-var CHIPS={
-  gen:CHIPS_GEN,
-  pos:[{k:"investi",l:"investi(e)"},{k:"serieux",l:"sérieux/sérieuse"},{k:"applique",l:"appliqué(e)"},{k:"participation",l:"participation active"},{k:"equipe",l:"esprit d'équipe"},{k:"fairplay",l:"fair-play"},{k:"ecoute",l:"écoute des consignes"},{k:"leadership",l:"leadership"},{k:"technique",l:"bon niveau technique"},{k:"autonome",l:"autonomie"}],
-  neg:[{k:"investissement",l:"manque d'investissement"},{k:"bavardage",l:"bavardage"},{k:"concentration",l:"manque de concentration"},{k:"difficultes",l:"difficultés techniques"},{k:"retrait",l:"en retrait"},{k:"irregulier",l:"irrégulier(e)"},{k:"efforts",l:"efforts insuffisants"},{k:"perturbateur",l:"perturbateur/trice"}],
-  comp:CHIPS_COMP,
-  prog:CHIPS_PROG
+
+// Traductions positives → groupe nominal avec article
+var NOM={
+  "investi":"un bel investissement","serieux":"un travail sérieux","applique":"une belle application",
+  "particip":"une participation active","equipe":"un bon esprit d'équipe","fairplay":"le fair-play",
+  "ecoute":"une bonne écoute","leader":"un vrai leadership","technique":"un bon niveau technique","auto":"de l'autonomie",
+  "expr_e":"une belle expression écrite","expr_o":"une bonne expression orale","lecture":"une lecture fluide",
+  "ortho":"une orthographe soignée","vocab":"un vocabulaire riche","analyse":"un bon esprit d'analyse",
+  "redac":"une rédaction de qualité","gram":"une maîtrise de la grammaire","imagin":"beaucoup d'imagination",
+  "particip_f":"une participation active","calcul":"de bonnes aptitudes en calcul","raison":"un bon raisonnement",
+  "geo":"de la rigueur en géométrie","pb":"une bonne résolution de problèmes","rigueur_m":"de la rigueur",
+  "rapid":"une belle rapidité","algebre":"une maîtrise de l'algèbre","method_m":"une bonne méthodologie",
+  "particip_m":"une participation active","abstr":"un bon sens de l'abstraction",
+  "co":"une bonne compréhension orale","eo_a":"une bonne expression orale","ce_a":"une bonne compréhension écrite",
+  "ee_a":"une bonne expression écrite","vocab_a":"un bon vocabulaire","prononc":"une belle prononciation",
+  "gram_a":"une bonne maîtrise grammaticale","particip_a":"une participation active","aisance":"une aisance à l'oral","memo_a":"une bonne mémorisation",
+  "lect_ar":"une bonne lecture","ecrit_ar":"une belle écriture","compr_ar":"une bonne compréhension",
+  "expr_ar":"une bonne expression","vocab_ar":"un bon vocabulaire","particip_ar":"une participation active",
+  "memo_ar":"une bonne mémorisation","calligr":"une belle calligraphie",
+  "compr_e":"une bonne compréhension","expr_e2":"une bonne expression orale","vocab_e":"un bon vocabulaire",
+  "gram_e":"une bonne grammaire","particip_e":"une participation active","prononc_e":"une belle prononciation",
+  "aisance_e":"une aisance à l'oral","ecrit_e":"une bonne expression écrite",
+  "connais":"de solides connaissances","analyse_h":"un bon esprit d'analyse","redac_h":"une rédaction de qualité",
+  "particip_h":"une participation active","carte":"une bonne lecture des cartes","crit_h":"un esprit critique",
+  "memo_h":"une bonne mémorisation","cito":"un sens civique développé",
+  "observ":"un bon sens de l'observation","experi":"une bonne démarche expérimentale","cr_svt":"des comptes-rendus soignés",
+  "particip_s":"une participation active","raison_s":"un bon raisonnement scientifique","memo_s":"une bonne mémorisation",
+  "soin_s":"un grand soin du travail","curio_s":"une curiosité scientifique",
+  "manip":"une bonne habileté en manipulation","raison_p":"un bon raisonnement scientifique","rigueur_p":"de la rigueur",
+  "particip_p":"une participation active","calcul_p":"de bonnes aptitudes en calcul","cr_pc":"des comptes-rendus soignés",
+  "curio_p":"une curiosité scientifique","method_p":"une bonne méthodologie",
+  "concept":"un bon sens de la conception","fabric":"une bonne habileté","num":"une maîtrise du numérique",
+  "creat_t":"de la créativité","particip_t":"une participation active","method_t":"une bonne méthodologie",
+  "soin_t":"un grand soin du travail","auto_t":"de l'autonomie",
+  "creat_a":"de la créativité","tech_a":"une bonne maîtrise technique","imagin_a":"beaucoup d'imagination",
+  "soin_a":"un grand soin du travail","particip_ap":"une participation active","origin":"de l'originalité",
+  "sensib":"une belle sensibilité artistique","auto_a":"de l'autonomie",
+  "ecoute_m":"une belle écoute musicale","chant":"de belles qualités vocales","rythme":"un bon sens du rythme",
+  "particip_mu":"une participation active","sensib_m":"une belle sensibilité musicale","memo_mu":"une bonne mémorisation",
+  "engag_m":"un bel engagement","tech_m":"une bonne maîtrise technique",
+  "curieux":"une vraie curiosité","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral",
+  "ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_g":"des efforts constants",
+  "auto_g":"de l'autonomie","respect_g":"le respect des consignes","entraide":"un beau sens de l'entraide",
+  "creativ":"de la créativité","persev":"de la persévérance","assidu":"de l'assiduité","crit":"un bon esprit critique",
+  "attitude":"une attitude positive","agreable":"une présence agréable"
 };
 
-var KEY="eps_v2";
-var genre="M", sel={}, filtreCur="toutes", phrase="", prenomCur="", classeCur="", matiereCur="";
-var regenCount=0;
+// Traductions adjectifs (accordés selon genre)
+function adj(k,f){
+  var m={"investi":["investi","investie"],"serieux":["sérieux","sérieuse"],"applique":["appliqué","appliquée"],
+         "auto":["autonome","autonome"],"fairplay":["fair-play","fair-play"],"rigoureux":["rigoureux","rigoureuse"],
+         "assidu":["assidu","assidue"],"respect":["respectueux","respectueuse"],"ponctuel":["ponctuel","ponctuelle"]};
+  if(!m[k]) return null;
+  return m[k][f?1:0];
+}
 
-function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return[];}}
-function dbSave(d){localStorage.setItem(KEY,JSON.stringify(d));}
-function getTrimAuto(){var m=new Date().getMonth()+1;if(m>=9)return"T1";if(m<=3)return"T2";return"T3";}
-function getAnnee(){var n=new Date(),m=n.getMonth()+1,y=n.getFullYear();return m>=9?y+"-"+(y+1):(y-1)+"-"+y;}
+// Formulations négatives naturelles (plusieurs variantes)
+var NEG={
+  "invest_n":[["l'investissement en cours doit s'améliorer"],["une plus grande implication est attendue"],["davantage d'engagement est nécessaire"]],
+  "bavard":[["le bavardage perturbe le bon déroulement des séances"],["les bavardages nuisent à la concentration de la classe"],["le bavardage reste un obstacle à la progression"]],
+  "concentr":[["la concentration doit être renforcée"],["un manque de concentration pénalise les résultats"],["une attention plus soutenue est nécessaire"]],
+  "diff_tech":[["des lacunes techniques sont à combler"],["des bases techniques restent à consolider"],["la maîtrise technique est encore à développer"]],
+  "retrait":[["une participation plus active est attendue"],["un investissement plus visible dans les activités est souhaité"],["la discrétion en cours nuit à la progression"]],
+  "irreg":[["la régularité dans l'effort est à améliorer"],["l'investissement manque de constance"],["des résultats trop irréguliers freinent la progression"]],
+  "effort_n":[["davantage d'efforts sont nécessaires pour progresser"],["une remobilisation est attendue"],["l'effort fourni reste en dessous des attentes"]],
+  "perturb":[["le comportement perturbe le bon déroulement des cours"],["une attitude plus respectueuse est indispensable"],["le comportement nuit au groupe"]],
+  "ortho_n":[["l'orthographe est encore à consolider"],["des progrès en orthographe sont attendus"]],
+  "expr_n":[["l'expression gagnerait à être enrichie"],["un travail sur l'expression est nécessaire"]],
+  "lect_n":[["la lecture doit être davantage travaillée"],["des progrès en lecture sont attendus"]],
+  "gram_n":[["la grammaire est encore à consolider"],["des lacunes grammaticales sont à combler"]],
+  "particip_fn":[["la participation doit s'améliorer"],["une implication plus active en classe est attendue"]],
+  "redac_n":[["la rédaction est encore insuffisante"],["des progrès en rédaction sont attendus"]],
+  "concentr_f":[["la concentration doit être renforcée"],["un manque de concentration nuit aux résultats"]],
+  "bavard_f":[["le bavardage nuit au bon déroulement du cours"],["les bavardages perturbent la classe"]],
+  "calcul_n":[["le calcul est encore à renforcer"],["des lacunes en calcul sont à combler"]],
+  "raison_n":[["le raisonnement doit être mieux structuré"],["des progrès en raisonnement sont attendus"]],
+  "lacunes":[["des lacunes importantes sont à combler"],["des bases solides restent à acquérir"]],
+  "method_mn":[["une méthode de travail est à acquérir"],["le manque de méthode pénalise les résultats"]],
+  "concentr_m":[["la concentration doit être améliorée"],["un manque de concentration pénalise les résultats"]],
+  "travdom":[["le travail personnel à la maison est insuffisant"],["davantage de travail à la maison est attendu"]],
+  "abstr_n":[["l'abstraction reste difficile à appréhender"],["des difficultés d'abstraction sont à surmonter"]],
+  "particip_mn":[["la participation doit s'améliorer"],["une implication plus active est attendue"]],
+  "vocab_an":[["le vocabulaire est à enrichir"],["des efforts sur le vocabulaire sont nécessaires"]],
+  "gram_an":[["la grammaire est à consolider"],["des lacunes grammaticales sont à combler"]],
+  "oral_an":[["l'expression orale est encore timide"],["l'oral doit être davantage travaillé"]],
+  "particip_an":[["la participation doit s'améliorer"],["une implication plus active est attendue"]],
+  "prononc_n":[["la prononciation est à améliorer"],["des progrès en prononciation sont attendus"]],
+  "memo_an":[["la mémorisation du vocabulaire est insuffisante"],["des efforts de mémorisation sont nécessaires"]],
+  "ecrit_an":[["l'expression écrite est encore à développer"],["des progrès à l'écrit sont attendus"]]
+};
+// Pour les clés non listées
+function negDefaut(k){return [["des progrès sont attendus sur ce point"],["un effort particulier est à fournir"]];}
 
-function updateMatieres(){
+function getNeg(k,ri){var v=NEG[k]||negDefaut(k);return v[ri%v.length][0];}
+
+// Joindre des noms avec "et" (pas de "de une" → "d'une")
+function joinNoms(arr){
+  if(!arr.length) return "";
+  if(arr.length===1) return arr[0];
+  return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
+}
+function joinAdjs(arr){
+  if(!arr.length) return "";
+  if(arr.length===1) return arr[0];
+  return arr.slice(0,-1).join(", ")+" et "+arr[arr.length-1];
+}
+
+// ── ÉTAT ─────────────────────────────────────────────────────────────────────
+var KEY="eps_v3";
+var genre="M",sel={},filtreCur="toutes",phrase="",prenomCur="",classeCur="",matCur="",ri=0;
+
+function db(){try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){return[];}}
+function dbS(d){localStorage.setItem(KEY,JSON.stringify(d));}
+function trim(){var m=new Date().getMonth()+1;return m>=9?"T1":m<=3?"T2":"T3";}
+function annee(){var n=new Date(),m=n.getMonth()+1,y=n.getFullYear();return m>=9?y+"-"+(y+1):(y-1)+"-"+y;}
+
+// ── UI ───────────────────────────────────────────────────────────────────────
+function onClasse(){
   var cl=document.getElementById("classe").value;
   var liste=cl==="6e"?M6:M5;
-  document.getElementById("matiere").innerHTML=liste.map(function(m){return "<option>"+m+"</option>";}).join("");
-  updateChipsParMatiere();
+  var sel_mat=document.getElementById("matiere");
+  sel_mat.innerHTML=liste.map(function(m){return "<option>"+m+"</option>";}).join("");
+  onMatiere();
 }
-
-function updateChipsParMatiere(){
+function onMatiere(){
   var mat=document.getElementById("matiere").value;
-  var data=CHIPS_PAR_MATIERE[mat]||CHIPS_PAR_MATIERE["EPS"];
-  CHIPS.pos=data.pos; CHIPS.neg=data.neg;
-  Object.keys(sel).forEach(function(k){
-    if((sel[k]==="pos"||sel[k]==="neg")&&!CHIPS.pos.concat(CHIPS.neg).some(function(c){return c.k===k;})) delete sel[k];
-  });
-  var lp=document.getElementById("label-pos");
-  var ln=document.getElementById("label-neg");
-  if(lp) lp.textContent="Points positifs — "+mat;
-  if(ln) ln.textContent="Points à travailler — "+mat;
-  renderChips();
+  matCur=mat;
+  var data=MAT[mat]||MAT["EPS"];
+  // Vider sélections pos/neg invalidées
+  var valid=data.pos.concat(data.neg).map(function(c){return c.k;});
+  Object.keys(sel).forEach(function(k){if((sel[k]==="pos"||sel[k]==="neg")&&valid.indexOf(k)<0)delete sel[k];});
+  document.getElementById("lpos").textContent="Points positifs — "+mat;
+  document.getElementById("lneg").textContent="Points à travailler — "+mat;
+  renderAll();
 }
-
 function setG(g){
   genre=g;
-  document.getElementById("gb-m").classList.toggle("on",g==="M");
-  document.getElementById("gb-f").classList.toggle("on",g==="F");
+  document.getElementById("gm").classList.toggle("on",g==="M");
+  document.getElementById("gf").classList.toggle("on",g==="F");
 }
+function allC(){var r=[];[GEN,MAT[matCur]?MAT[matCur].pos:[],MAT[matCur]?MAT[matCur].neg:[],COMP,PROG].forEach(function(a){r=r.concat(a);});return r;}
 
-function allChipsList(){var r=[];Object.keys(CHIPS).forEach(function(c){r=r.concat(CHIPS[c]);});return r;}
-
-function renderChips(){
-  Object.keys(CHIPS).forEach(function(cat){
+function renderAll(){
+  var mat=document.getElementById("matiere").value||"EPS";
+  var data=MAT[mat]||MAT["EPS"];
+  var cats={gen:GEN,pos:data.pos,neg:data.neg,comp:COMP,prog:PROG};
+  Object.keys(cats).forEach(function(cat){
     var el=document.getElementById("cp-"+cat);
     if(!el)return;
     el.innerHTML="";
-    CHIPS[cat].forEach(function(c){
-      var btn=document.createElement("button");
-      btn.className="chip "+cat+(sel[c.k]?" on":"");
-      btn.textContent=c.l;
-      btn.setAttribute("data-k",c.k);
-      btn.setAttribute("data-cat",cat);
-      btn.onclick=function(){tog(this.getAttribute("data-k"),this.getAttribute("data-cat"));};
-      el.appendChild(btn);
+    cats[cat].forEach(function(c){
+      var b=document.createElement("button");
+      b.className="chip "+cat+(sel[c.k]?" on":"");
+      b.textContent=c.l;
+      b.onclick=(function(k,ca){return function(){tog(k,ca);};})(c.k,cat);
+      el.appendChild(b);
     });
   });
   renderTags();
 }
-
-function tog(k,cat){if(sel[k])delete sel[k];else sel[k]=cat;renderChips();}
-
+function tog(k,cat){if(sel[k])delete sel[k];else sel[k]=cat;renderAll();}
 function renderTags(){
   var keys=Object.keys(sel);
   var fv=document.getElementById("free").value;
   var ft=fv?fv.split(",").map(function(s){return s.trim();}).filter(Boolean):[];
   var all=keys.concat(ft);
-  var el=document.getElementById("sel-tags");
+  var el=document.getElementById("stags");
   if(!all.length){el.innerHTML='<span style="font-size:12px;color:#aaa;font-style:italic">Aucun</span>';return;}
-  el.innerHTML=all.map(function(k){
-    var found=allChipsList().filter(function(c){return c.k===k;})[0];
-    return '<span class="stag">'+(found?found.l:k)+'</span>';
-  }).join("");
+  el.innerHTML=all.map(function(k){var f=allC().filter(function(c){return c.k===k;})[0];return '<span class="stag">'+(f?f.l:k)+"</span>";}).join("");
 }
 
-// ─── GÉNÉRATION DE PHRASES ────────────────────────────────────────────────────
-
-// Traduit une clé positive en adjectif accordé
-function toAdj(k, f){
-  var map={"investi":f?"investie":"investi","serieux":f?"sérieuse":"sérieux","applique":f?"appliquée":"appliqué","autonome":"autonome","fairplay":"fair-play","rigoureux":f?"rigoureuse":"rigoureux","assidu":f?"assidue":"assidu"};
-  return map[k]||null;
-}
-// Traduit une clé positive en groupe nominal (déjà avec article)
-function toNom(k){
-  var map={
-    "participation":"une participation active","equipe":"un esprit d'équipe","ecoute":"une bonne écoute des consignes",
-    "leadership":"un vrai leadership","technique":"un bon niveau technique",
-    "curieux":"une réelle curiosité","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral",
-    "ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_gen":"des efforts constants",
-    "autonomie_gen":"de l'autonomie","respect_gen":"le respect des consignes","entraide":"un sens de l'entraide",
-    "creativite":"de la créativité","perseverance":"de la persévérance","esprit_critique":"un esprit critique",
-    "attitude":"une attitude positive","agreable":"une présence agréable",
-    // Matière-spécifiques
-    "expression_ecrite":"une belle expression écrite","expression_orale":"une bonne expression orale",
-    "lecture":"une lecture fluide","orthographe":"une orthographe soignée","vocabulaire":"un vocabulaire riche",
-    "analyse":"une bonne capacité d'analyse","redaction":"une rédaction de qualité","grammaire":"une bonne maîtrise grammaticale",
-    "imagination":"de l'imagination","participation_fr":"une participation active",
-    "calcul":"de bonnes capacités en calcul","raisonnement":"un bon raisonnement logique","geometrie":"de la rigueur en géométrie",
-    "problemes":"une bonne résolution de problèmes","rapidite":"une belle rapidité d'exécution","algebre":"une bonne maîtrise de l'algèbre",
-    "methodologie":"une méthodologie efficace","participation_m":"une participation active","abstraction":"un bon sens de l'abstraction",
-    "comprehension_orale":"une bonne compréhension orale","expression_orale_ang":"une bonne expression orale",
-    "comprehension_ecrite":"une bonne compréhension écrite","expression_ecrite_ang":"une bonne expression écrite",
-    "vocabulaire_ang":"un bon vocabulaire","prononciation":"une belle prononciation","grammaire_ang":"une bonne grammaire",
-    "participation_ang":"une participation active","aisance":"une aisance à l'oral","memorisation":"une bonne mémorisation",
-    "observation":"un bon sens de l'observation","experimentation":"une bonne démarche expérimentale",
-    "redaction_svt":"des comptes-rendus soignés","participation_svt":"une participation active",
-    "raisonnement_svt":"un bon raisonnement scientifique","memorisation_svt":"une bonne mémorisation du cours",
-    "soin":"un grand soin du travail","curiosite_svt":"une curiosité scientifique",
-    "manipulation":"une bonne habileté en manipulation","raisonnement_pc":"un bon raisonnement scientifique",
-    "rigueur_pc":"de la rigueur","participation_pc":"une participation active","calcul_pc":"de bonnes aptitudes en calcul",
-    "redaction_pc":"des comptes-rendus de qualité","curiosite_pc":"une curiosité scientifique","methode_pc":"une bonne méthodologie",
-    "connaissance":"de solides connaissances","analyse_hg":"un bon esprit d'analyse","redaction_hg":"une rédaction de qualité",
-    "participation_hg":"une participation active","carte":"une bonne lecture des cartes","esprit_critique_hg":"un esprit critique",
-    "memorisation_hg":"une bonne mémorisation","citoyennete":"un sens civique développé",
-    "lecture_ar":"une bonne lecture","ecriture_ar":"une belle écriture","comprehension_ar":"une bonne compréhension",
-    "expression_ar":"une bonne expression","vocabulaire_ar":"un bon vocabulaire","participation_ar":"une participation active",
-    "memorisation_ar":"une bonne mémorisation","calligraphie":"une belle calligraphie",
-    "comprehension_esp":"une bonne compréhension","expression_esp":"une bonne expression orale","vocabulaire_esp":"un bon vocabulaire",
-    "grammaire_esp":"une bonne maîtrise grammaticale","participation_esp":"une participation active",
-    "prononciation_esp":"une belle prononciation","aisance_esp":"une aisance à l'oral","ecrit_esp":"une bonne expression écrite",
-    "conception":"un bon sens de la conception","fabrication":"une bonne habileté","numerique":"une bonne maîtrise du numérique",
-    "creativity_techno":"de la créativité","participation_techno":"une participation active","methode_techno":"une bonne méthodologie",
-    "soin_techno":"un grand soin du travail","autonomie_techno":"de l'autonomie",
-    "creativite_ap":"de la créativité","technique_ap":"une bonne maîtrise technique","imagination_ap":"de l'imagination",
-    "soin_ap":"un grand soin","participation_ap":"une participation active","originalite":"de l'originalité",
-    "sensibilite":"une belle sensibilité artistique","autonomie_ap":"de l'autonomie",
-    "ecoute_mus":"une belle écoute musicale","chant":"de belles qualités vocales","rythme":"un bon sens du rythme",
-    "participation_mus":"une participation active","sensibilite_mus":"une belle sensibilité musicale",
-    "memorisation_mus":"une bonne mémorisation","engagement_mus":"un bel engagement","technique_mus":"une bonne maîtrise technique"
-  };
-  return map[k]||null;
-}
-// Traduit une clé négative en phrase naturelle (déjà conjuguée)
-function toNegPhrase(k, v, f, Il, regenIdx){
-  var opts={
-    "investissement":["l'investissement doit progresser","une meilleure implication est attendue","un effort d'implication est nécessaire"],
-    "bavardage":["le bavardage perturbe encore le cours","les bavardages nuisent à la concentration de la classe","le bavardage reste un frein à la progression"],
-    "concentration":["la concentration doit être améliorée","des difficultés de concentration pénalisent les résultats","une attention plus soutenue est nécessaire"],
-    "difficultes":["des lacunes techniques sont à combler","des bases sont à consolider","des notions fondamentales restent à renforcer"],
-    "retrait":[Il+" gagnerait à s'impliquer davantage","une participation plus active est attendue","un manque d'implication dans les activités est à noter"],
-    "irregulier":["la régularité dans l'effort est à améliorer","l'investissement manque de constance","des résultats trop irréguliers ne permettent pas de progresser"],
-    "efforts":["davantage d'efforts sont nécessaires pour progresser","une remobilisation est attendue","l'effort fourni reste insuffisant"],
-    "perturbateur":["le comportement perturbe le bon déroulement des cours","une attitude plus respectueuse est indispensable","le comportement nuit à l'ambiance de travail"],
-    // Négatifs matières
-    "orthographe_neg":["l'orthographe est à améliorer","des progrès en orthographe sont attendus"],
-    "expression_neg":["l'expression est à développer","l'expression gagne à être enrichie"],
-    "lecture_neg":["la lecture doit être travaillée","des progrès en lecture sont attendus"],
-    "grammaire_neg":["la grammaire est à consolider","des lacunes grammaticales sont à combler"],
-    "participation_neg":["la participation doit s'améliorer","une implication plus active est attendue"],
-    "redaction_neg":["la rédaction est insuffisante","des progrès en rédaction sont attendus"],
-    "concentration_fr":["la concentration doit être renforcée","un manque de concentration nuit aux résultats"],
-    "bavardage_fr":["le bavardage perturbe encore le cours","les bavardages nuisent au bon déroulement de la classe"],
-    "calcul_neg":["le calcul est à renforcer","des lacunes en calcul sont à combler"],
-    "raisonnement_neg":["le raisonnement doit être structuré","des progrès en raisonnement sont attendus"],
-    "lacunes":["des lacunes importantes sont à combler","des bases solides restent à acquérir"],
-    "methode_neg":["une méthode de travail est à acquérir","le manque de méthode pénalise les résultats"],
-    "concentration_m":["la concentration doit être améliorée","un manque de concentration pénalise les résultats"],
-    "travail_maison":["le travail à la maison est insuffisant","davantage de travail personnel est attendu"],
-    "abstraction_neg":["des difficultés d'abstraction sont à surmonter","l'abstraction reste un obstacle à travailler"],
-    "participation_m_neg":["la participation doit s'améliorer","une implication plus active en classe est attendue"],
-    "vocabulaire_neg":["le vocabulaire est à enrichir","des efforts sur le vocabulaire sont attendus"],
-    "grammaire_neg_ang":["la grammaire est à consolider","des lacunes grammaticales sont à combler"],
-    "oral_neg":["l'expression orale est encore timide","l'oral doit être davantage travaillé"],
-    "participation_ang_neg":["la participation doit s'améliorer","une implication plus active est attendue"],
-    "prononciation_neg":["la prononciation est à travailler","des progrès en prononciation sont attendus"],
-    "memorisation_neg":["la mémorisation est insuffisante","des efforts de mémorisation sont nécessaires"],
-    "ecrit_neg_ang":["l'expression écrite est à développer","des progrès à l'écrit sont attendus"]
-  };
-  var list=opts[k]||["des progrès sont attendus"];
-  return list[regenIdx % list.length];
-}
-
-function joinNoms(noms){
-  // "une bonne écoute, un esprit d'équipe et une participation active"
-  if(!noms.length) return "";
-  if(noms.length===1) return noms[0];
-  return noms.slice(0,-1).join(", ")+" et "+noms[noms.length-1];
-}
-function joinAdjs(adjs){
-  if(!adjs.length) return "";
-  if(adjs.length===1) return adjs[0];
-  return adjs.slice(0,-1).join(", ")+" et "+adjs[adjs.length-1];
-}
-
-function genPhrase(keys, ft, f, Il, il, mat, regen){
+// ── GÉNÉRATION ───────────────────────────────────────────────────────────────
+function construire(keys,ft,f,Il,il,mat,ri){
   var gen=keys.filter(function(k){return sel[k]==="gen";});
   var pos=keys.filter(function(k){return sel[k]==="pos";});
   var neg=keys.filter(function(k){return sel[k]==="neg";});
   var comp=keys.filter(function(k){return sel[k]==="comp";});
   var prog=keys.filter(function(k){return sel[k]==="prog";});
+  var compneg=comp.indexOf("compneg")>=0;
+  var comppos=comp.filter(function(k){return k!=="compneg";});
 
-  // Séparer adjectifs et groupes nominaux côté positif
-  var adjList=[];
-  var nomList=[];
+  // Listes adjectifs et noms pour le positif
+  var adjs=[];
+  var noms=[];
   pos.concat(gen).forEach(function(k){
-    var adj=toAdj(k,f);
-    if(adj) adjList.push(adj);
-    else {var n=toNom(k);if(n) nomList.push(n);}
+    var a=adj(k,f);
+    if(a) adjs.push(a);
+    else if(NOM[k]) noms.push(NOM[k]);
   });
-  comp.filter(function(k){return k!=="comportement";}).forEach(function(k){
-    var adj={"respectueux":f?"respectueuse":"respectueux","ponctuel":f?"ponctuelle":"ponctuel"}[k];
-    if(adj) adjList.push(adj);
-    else {var n=toNom(k);if(n) nomList.push(n);}
+  comppos.forEach(function(k){
+    var a=adj(k,f);
+    if(a) adjs.push(a);
+    else if(NOM[k]) noms.push(NOM[k]);
   });
 
-  var progLabels={"progres":"en progrès","progression":"une progression constante","potentiel":"un potentiel à exploiter","encourageant":"des résultats encourageants","hausse":"un trimestre en hausse","acquis":"des acquis solides"};
-  var progList=prog.map(function(k){return progLabels[k]||k;});
+  var progL={"prog":"en progrès","progression":"une progression constante","potentiel":"un potentiel à exploiter","encour":"des résultats encourageants","hausse":"un trimestre en hausse","acquis":"des acquis solides"};
+  var progNoms=prog.map(function(k){return progL[k]||k;});
 
-  var hasPos=pos.length+gen.length+comp.filter(function(k){return k!=="comportement";}).length>0;
+  var hasPos=adjs.length+noms.length>0;
   var hasNeg=neg.length>0;
   var hasProg=prog.length>0;
-  var compNeg=comp.indexOf("comportement")>=0;
 
-  // ── Construire la partie positive (structures variées) ──
-  function buildPosPart(){
-    var a=joinAdjs(adjList);
-    var n=joinNoms(nomList);
-    if(adjList.length&&nomList.length){
-      var structs=[
-        "Élève "+a+", "+il+" fait preuve de "+n,
-        Il+" se montre "+a+" et témoigne de "+n,
-        Il+" s'investit avec sérieux : "+a+", "+il+" fait preuve de "+n,
-        "Bon trimestre : "+il+" est "+a+" et fait preuve de "+n,
-        Il+" affiche un profil encourageant — "+a+" et doté"+( f?"e":"")+" de "+n
-      ];
-      return structs[regen%structs.length];
-    } else if(adjList.length){
-      var structs=[
-        "Élève "+a,
-        Il+" se montre "+a+" en cours",
-        Il+" fait preuve d'un investissement "+a,
-        "Bon trimestre : "+il+" est "+a
-      ];
-      return structs[regen%structs.length];
-    } else if(nomList.length){
-      var structs=[
-        Il+" fait preuve de "+n,
-        "On retient de ce trimestre "+n,
-        Il+" se distingue par "+n,
-        "Bon travail : "+il+" témoigne de "+n
-      ];
-      return structs[regen%structs.length];
-    }
+  // Structures positives variées
+  var structs_pos_adj_nom=[
+    function(){return "Élève "+joinAdjs(adjs)+", "+il+" fait preuve de "+joinNoms(noms);},
+    function(){return Il+" se montre "+joinAdjs(adjs)+" et témoigne de "+joinNoms(noms);},
+    function(){return "Bon trimestre : "+il+" est "+joinAdjs(adjs)+" et fait preuve de "+joinNoms(noms);},
+    function(){return Il+" affiche un profil encourageant : "+joinAdjs(adjs)+", avec "+joinNoms(noms);}
+  ];
+  var structs_pos_adj=[
+    function(){return "Élève "+joinAdjs(adjs);},
+    function(){return Il+" se montre "+joinAdjs(adjs)+" en cours";},
+    function(){return "Bon trimestre : "+il+" est "+joinAdjs(adjs);}
+  ];
+  var structs_pos_nom=[
+    function(){return Il+" fait preuve de "+joinNoms(noms);},
+    function(){return "On retiendra de ce trimestre "+joinNoms(noms);},
+    function(){return Il+" se distingue par "+joinNoms(noms);},
+    function(){return "Bon travail : "+il+" témoigne de "+joinNoms(noms);}
+  ];
+
+  function buildPos(){
+    if(adjs.length&&noms.length) return structs_pos_adj_nom[ri%structs_pos_adj_nom.length]();
+    if(adjs.length) return structs_pos_adj[ri%structs_pos_adj.length]();
+    if(noms.length) return structs_pos_nom[ri%structs_pos_nom.length]();
     return Il+" s'investit de manière satisfaisante";
   }
 
-  // ── Construire la partie négative ──
-  function buildNegPart(){
-    var phrases=neg.map(function(k){return toNegPhrase(k,sel[k],f,Il,regen);});
+  // Formulations négatives
+  function buildNeg(){
+    var phrases=neg.map(function(k){return getNeg(k,ri);});
     if(phrases.length===1) return phrases[0];
     return phrases.slice(0,-1).join(", ")+" et "+phrases[phrases.length-1];
   }
 
-  // ── Conclusions positives (variées) ──
-  var conclusBon=["Bon trimestre.","À poursuivre.","Continuons dans cette dynamique.","Encourageant."];
-  var conclusExc=["Excellent trimestre, félicitations !","Très bon trimestre !","Bravo pour ce travail !","Des résultats à la hauteur de l'engagement."];
-  var isBien=(pos.length+gen.length)>=3;
-  var conclu=isBien?conclusExc[regen%conclusExc.length]:conclusBon[regen%conclusBon.length];
+  // Conclusions positives variées
+  var concBon=["Bon trimestre.","À poursuivre.","Continuons dans cette dynamique.","Ces efforts sont à saluer."];
+  var concExc=["Excellent trimestre, félicitations !","Très bon trimestre !","Bravo pour ce travail !","Des résultats à la hauteur de l'engagement."];
+  var isExc=(pos.length+gen.length)>=3;
+  var conclu=(isExc?concExc:concBon)[ri%(isExc?concExc:concBon).length];
+
+  // Liaisons négatif
+  var liaisons=["Cependant, ","Toutefois, ","Il est à noter que ","Un point de vigilance : "];
+  var liai=liaisons[ri%liaisons.length];
 
   var p="";
 
   if(hasPos&&hasNeg){
-    var posPart=buildPosPart();
-    var negPart=buildNegPart();
-    var liaisons=["Cependant, ","Il faudra néanmoins veiller à ce que ","Un point d'attention : ","À améliorer : "];
-    var liai=liaisons[regen%liaisons.length];
-    p=posPart+". "+liai+negPart+".";
-    if(hasProg&&prog.indexOf("potentiel")<0) p+=" "+Il+" affiche néanmoins "+joinNoms(progList)+".";
-  } else if(hasPos&&!hasNeg){
-    var posPart=buildPosPart();
-    if(hasProg){
-      p=posPart+". "+Il+" affiche "+joinNoms(progList)+". "+conclu;
+    p=buildPos()+". "+liai+buildNeg()+".";
+    if(hasProg&&prog.indexOf("potentiel")<0) p+=" "+Il+" affiche néanmoins "+joinNoms(progNoms)+".";
+  } else if(hasPos){
+    p=buildPos()+". ";
+    if(hasProg) p+=Il+" affiche "+joinNoms(progNoms)+". "+conclu;
+    else p+=conclu;
+  } else if(hasNeg){
+    if(neg.indexOf("perturb")>=0){
+      var pp=[Il+" perturbe le bon déroulement des cours. Une attitude plus respectueuse est indispensable.",
+              "Le comportement de "+il+" nuit à l'ambiance de travail. Un changement d'attitude est attendu."];
+      p=pp[ri%pp.length];
     } else {
-      p=posPart+". "+conclu;
+      var intro=["Ce trimestre, ","Il est à noter que ","Des progrès sont attendus : "];
+      var remob=["Une remobilisation sérieuse est attendue.","Un effort régulier permettra de progresser.","Des efforts constants sont nécessaires."];
+      p=intro[ri%intro.length]+buildNeg()+". "+remob[ri%remob.length];
     }
-  } else if(!hasPos&&hasNeg){
-    if(neg.indexOf("perturbateur")>=0){
-      var perts=["Le comportement de "+il+" perturbe le bon déroulement des cours. Une attitude plus respectueuse est indispensable.","Le comportement perturbateur est inacceptable. Un changement est attendu dès maintenant."];
-      p=perts[regen%perts.length];
-    } else {
-      var negPart=buildNegPart();
-      var intros=["Ce trimestre, ","Il est à noter que ","Un effort est attendu : ","Des progrès sont à réaliser : "];
-      var remobs=["Une remobilisation sérieuse est attendue.","Un travail régulier permettra de progresser.","Des efforts constants sont nécessaires."];
-      p=intros[regen%intros.length]+negPart+". "+remobs[regen%remobs.length];
-    }
-    if(hasProg&&prog.indexOf("potentiel")>=0) p+=" Le potentiel est là — il faut s'en saisir.";
-  } else if(compNeg&&!hasPos){
-    var compNegPhrases=["Le comportement de "+il+" est à revoir. Des efforts de respect et d'implication sont attendus.","L'attitude en cours est insuffisante. Un effort est demandé."];
-    p=compNegPhrases[regen%compNegPhrases.length];
-  } else if(hasProg&&!hasPos&&!hasNeg){
+    if(hasProg&&prog.indexOf("potentiel")>=0) p+=" Le potentiel est là.";
+  } else if(compneg){
+    var cp=[Il+" doit revoir son attitude en cours. Des efforts de respect sont attendus.",
+            "Le comportement de "+il+" est à améliorer. Une implication plus positive est souhaitée."];
+    p=cp[ri%cp.length];
+  } else if(hasProg){
     if(prog.indexOf("potentiel")>=0){
-      p=Il+" dispose d'un réel potentiel qui reste à exploiter. Avec plus d'implication, les résultats pourraient être bien meilleurs.";
+      p=Il+" dispose d'un réel potentiel à exploiter. Avec plus d'implication, les résultats seront au rendez-vous.";
     } else {
-      var progIntros=["Ce trimestre, "+il+" affiche ","Les résultats montrent ","On note "];
-      p=progIntros[regen%progIntros.length]+joinNoms(progList)+". Ces efforts méritent d'être soulignés.";
+      var pi=["Ce trimestre, "+il+" affiche ","Les résultats témoignent de "];
+      p=pi[ri%pi.length]+joinNoms(progNoms)+". Ces efforts méritent d'être soulignés.";
     }
   } else {
     p=Il+" participe aux activités. Des marges de progression existent.";
   }
 
-  // Ajouter le contexte matière en début si pertinent
-  if(mat&&mat!=="EPS") p=p.charAt(0).toLowerCase()+p.slice(1);
-  if(mat) p="En "+mat+", "+p;
+  // Préfixe matière
+  if(mat&&mat!=="EPS"){
+    p="En "+mat+", "+p.charAt(0).toLowerCase()+p.slice(1);
+  }
 
   // Mots libres
   if(ft.length){
     var ctx=ft.join(", ");
-    var sports=["badminton","tennis","basket","football","handball","volley","athlétisme","natation","gymnastique","rugby","judo","escalade","course","sprint","relais","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","vélo","cross","ping"];
-    var profils=["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclusion","phobie","anxieux","anxieuse","allophone"];
-    var isSport=ft.some(function(m){return sports.some(function(s){return m.toLowerCase().indexOf(s)>=0;});});
-    var isProfil=ft.some(function(m){return profils.some(function(pr){return m.toLowerCase().indexOf(pr)>=0;});});
-    if(isSport) p=p.replace(/\.$/,"")+", notamment en "+ctx+".";
-    else if(isProfil) p=p.replace(/\.$/,"")+" (profil "+ctx+" pris en compte).";
-    else p=p.replace(/\.$/,"")+". "+ctx.charAt(0).toUpperCase()+ctx.slice(1)+".";
+    var sports=["badminton","tennis","basket","football","handball","volley","athlétisme","natation","rugby","judo","escalade","demi-fond","ultimate","frisbee","acrosport","danse","boxe","lutte","cross","ping"];
+    var profils=["ulis","segpa","dys","tdah","fragile","blessé","handicap","asthme","dispensé","inclusion","allophone"];
+    var isSp=ft.some(function(m){return sports.some(function(s){return m.toLowerCase().indexOf(s)>=0;});});
+    var isPr=ft.some(function(m){return profils.some(function(pr){return m.toLowerCase().indexOf(pr)>=0;});});
+    if(isSp) p=p.replace(/\.$/,"")+", notamment en "+ctx+".";
+    else if(isPr) p=p.replace(/\.$/,"")+" (profil "+ctx+" pris en compte).";
+    else p=p.replace(/\.$/,"")+" — "+ctx+".";
   }
 
   return p;
 }
-
-function regenerer(){regenCount++;generer();}
 
 function generer(){
   var keys=Object.keys(sel);
@@ -584,110 +571,107 @@ function generer(){
   if(!keys.length&&!ft.length){alert("Sélectionne au moins un mot-clé.");return;}
   prenomCur=document.getElementById("prenom").value.trim();
   classeCur=document.getElementById("classe").value;
-  matiereCur=document.getElementById("matiere").value;
+  matCur=document.getElementById("matiere").value;
   var f=genre==="F";
   var Il=prenomCur||(f?"Elle":"Il");
   var il=prenomCur||(f?"elle":"il");
-  phrase=genPhrase(keys,ft,f,Il,il,matiereCur,regenCount);
-  document.getElementById("result-zone").style.display="block";
-  document.getElementById("ok-banner").style.display="none";
-  document.getElementById("rlabel").textContent=prenomCur?"Phrase pour "+prenomCur:"Phrase générée";
-  document.getElementById("rtext").textContent=phrase;
-  document.getElementById("rhint").textContent="Enregistrer pour sauvegarder, Regénérer pour varier.";
+  phrase=construire(keys,ft,f,Il,il,matCur,ri);
+  document.getElementById("rz").style.display="block";
+  document.getElementById("ok").style.display="none";
+  document.getElementById("rl").textContent=prenomCur?"Phrase pour "+prenomCur:"Phrase générée";
+  document.getElementById("rt").textContent=phrase;
 }
-
-function populateAnnees(){
-  var db=dbLoad();
-  var annees=[];
-  db.forEach(function(e){if(e.annee&&annees.indexOf(e.annee)<0)annees.push(e.annee);});
-  annees.sort().reverse();
-  ["filtre-annee","ecl-annee"].forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el)return;
-    el.innerHTML='<option value="toutes">Toutes années</option>'+annees.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join("");
-  });
-}
+function regenerer(){ri++;generer();}
 
 function enregistrer(){
   if(!phrase)return;
-  var db=dbLoad();
-  db.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matiereCur,genre:genre,phrase:phrase,date:new Date().toLocaleDateString("fr-FR"),trimestre:getTrimAuto(),annee:getAnnee()});
-  dbSave(db);updateBadge();populateAnnees();
-  var b=document.getElementById("ok-banner");
-  b.style.display="block";setTimeout(function(){b.style.display="none";},2000);
+  var d=db();
+  d.push({id:Date.now(),prenom:prenomCur||"—",classe:classeCur,matiere:matCur,genre:genre,phrase:phrase,date:new Date().toLocaleDateString("fr-FR"),tri:trim(),an:annee()});
+  dbS(d);badge();popAn();
+  var b=document.getElementById("ok");b.style.display="block";setTimeout(function(){b.style.display="none";},2000);
 }
-
 function copierPhrase(){
   navigator.clipboard.writeText(phrase).catch(function(){var t=document.createElement("textarea");t.value=phrase;document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);});
 }
-
 function resetForm(){
-  sel={};regenCount=0;
+  sel={};ri=0;
   document.getElementById("prenom").value="";
   document.getElementById("free").value="";
-  document.getElementById("result-zone").style.display="none";
-  phrase="";renderChips();
+  document.getElementById("rz").style.display="none";
+  phrase="";renderAll();
 }
 
+// ── LISTE ────────────────────────────────────────────────────────────────────
 function filtrer(f,btn){
   filtreCur=f;
-  document.querySelectorAll(".fbtn").forEach(function(b){b.classList.remove("on");});
+  document.querySelectorAll(".fb").forEach(function(b){b.classList.remove("on");});
   btn.classList.add("on");renderListe();
 }
-
+function popAn(){
+  var d=db();var ans=[];
+  d.forEach(function(e){if(e.an&&ans.indexOf(e.an)<0)ans.push(e.an);});
+  ans.sort().reverse();
+  ["fa","ean"].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
+    el.innerHTML='<option value="t">Toutes années</option>'+ans.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join("");
+  });
+}
 function renderListe(){
-  var db=dbLoad();
-  var fm=document.getElementById("filtre-matiere").value;
-  var ft=document.getElementById("filtre-trim").value;
-  var fa=document.getElementById("filtre-annee").value;
-  if(filtreCur!=="toutes") db=db.filter(function(e){return e.classe===filtreCur;});
-  if(fm!=="toutes") db=db.filter(function(e){return e.matiere===fm;});
-  if(ft!=="tous") db=db.filter(function(e){return (e.trimestre||"T1")===ft;});
-  if(fa!=="toutes") db=db.filter(function(e){return (e.annee||"")===fa;});
-  document.getElementById("lcounter").textContent=db.length+" élève(s)";
+  var d=db();
+  var fm=document.getElementById("fm").value;
+  var ft=document.getElementById("ft").value;
+  var fa=document.getElementById("fa").value;
+  if(filtreCur!=="toutes") d=d.filter(function(e){return e.classe===filtreCur;});
+  if(fm!=="t") d=d.filter(function(e){return e.matiere===fm;});
+  if(ft!=="t") d=d.filter(function(e){return (e.tri||"T1")===ft;});
+  if(fa!=="t") d=d.filter(function(e){return (e.an||"")===fa;});
+  document.getElementById("cnt").textContent=d.length+" élève(s)";
   var el=document.getElementById("elist");
-  if(!db.length){el.innerHTML='<div class="empty">Aucune appréciation enregistrée.</div>';return;}
-  el.innerHTML=db.map(function(e){
-    return '<div class="eleve-item"><div class="eleve-info"><div class="eleve-nom">'+e.prenom+' <span style="font-weight:400;font-size:12px;color:var(--muted)">'+e.classe+'</span></div><div class="eleve-meta">'+(e.trimestre||"")+" "+(e.annee||"")+" · "+(e.matiere||"")+" · "+e.date+'</div><div class="eleve-phrase">'+e.phrase+'</div></div><div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0"><button class="ibtn" onclick="cpItem('+e.id+')">⎘</button><button class="ibtn danger" onclick="delItem('+e.id+')">🗑</button></div></div>';
+  if(!d.length){el.innerHTML='<div class="emp">Aucune appréciation enregistrée.</div>';return;}
+  el.innerHTML=d.map(function(e){
+    return '<div class="ei"><div class="ein"><div class="en">'+e.prenom+' <span style="font-weight:400;font-size:12px;color:var(--mut)">'+e.classe+'</span></div>'
+      +'<div class="em">'+(e.tri||"")+" "+(e.an||"")+" · "+(e.matiere||"")+" · "+e.date+'</div>'
+      +'<div class="ep">'+e.phrase+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">'
+      +'<button class="ib" onclick="cpItem('+e.id+')">⎘</button>'
+      +'<button class="ib d" onclick="delItem('+e.id+')">🗑</button></div></div>';
   }).join("");
 }
+function cpItem(id){var e=db().filter(function(x){return x.id===id;})[0];if(e)navigator.clipboard.writeText(e.phrase).catch(function(){});}
+function delItem(id){if(!confirm("Supprimer ?"))return;dbS(db().filter(function(x){return x.id!==id;}));badge();renderListe();renderExp();}
 
-function cpItem(id){var e=dbLoad().filter(function(x){return x.id===id;})[0];if(e)navigator.clipboard.writeText(e.phrase).catch(function(){});}
-function delItem(id){if(!confirm("Supprimer ?"))return;dbSave(dbLoad().filter(function(x){return x.id!==id;}));updateBadge();renderListe();renderExport();}
-
-function renderExport(){
-  var fc=document.getElementById("ecl").value;
-  var fm=document.getElementById("ecl-mat").value;
-  var ft=document.getElementById("ecl-trim").value;
-  var fa=document.getElementById("ecl-annee").value;
-  var db=dbLoad();
-  if(fc!=="toutes") db=db.filter(function(e){return e.classe===fc;});
-  if(fm!=="toutes") db=db.filter(function(e){return e.matiere===fm;});
-  if(ft!=="tous") db=db.filter(function(e){return (e.trimestre||"T1")===ft;});
-  if(fa!=="toutes") db=db.filter(function(e){return (e.annee||"")===fa;});
-  var el=document.getElementById("econtent");
-  if(!db.length){el.textContent="Aucune appréciation.";return;}
-  el.textContent=db.map(function(e){
-    var meta=e.prenom+" ("+e.classe+(e.matiere?" · "+e.matiere:"")+(e.trimestre?" · "+e.trimestre:"")+(e.annee?" "+e.annee:"")+")";
-    return meta+"\n"+e.phrase;
+// ── EXPORT ───────────────────────────────────────────────────────────────────
+function renderExp(){
+  var d=db();
+  var ecl=document.getElementById("ecl").value;
+  var emat=document.getElementById("emat").value;
+  var etr=document.getElementById("etr").value;
+  var ean=document.getElementById("ean").value;
+  if(ecl!=="t") d=d.filter(function(e){return e.classe===ecl;});
+  if(emat!=="t") d=d.filter(function(e){return e.matiere===emat;});
+  if(etr!=="t") d=d.filter(function(e){return (e.tri||"T1")===etr;});
+  if(ean!=="t") d=d.filter(function(e){return (e.an||"")===ean;});
+  var el=document.getElementById("ecnt");
+  if(!d.length){el.textContent="Aucune appréciation.";return;}
+  el.textContent=d.map(function(e){
+    return e.prenom+" ("+e.classe+(e.matiere?" · "+e.matiere:"")+(e.tri?" · "+e.tri:"")+(e.an?" "+e.an:"")+")\n"+e.phrase;
   }).join("\n\n");
 }
+function copierExp(){navigator.clipboard.writeText(document.getElementById("ecnt").textContent).catch(function(){});}
 
-function copierExport(){navigator.clipboard.writeText(document.getElementById("econtent").textContent).catch(function(){});}
-function updateBadge(){var n=dbLoad().length;document.getElementById("badge").textContent=n?"("+n+")":"";}
+function badge(){var n=db().length;document.getElementById("bdg").textContent=n?"("+n+")":"";}
 
 function setTab(id){
-  document.querySelectorAll(".tab").forEach(function(t,i){t.classList.toggle("active",["gen","liste","export"][i]===id);});
-  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
-  document.getElementById(id).classList.add("active");
-  if(id==="liste"){populateAnnees();renderListe();}
-  if(id==="export"){populateAnnees();renderExport();}
+  document.querySelectorAll(".tab").forEach(function(t,i){t.classList.toggle("on",["gen","lst","exp"][i]===id);});
+  document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on");});
+  document.getElementById(id).classList.add("on");
+  if(id==="lst"){popAn();renderListe();}
+  if(id==="exp"){popAn();renderExp();}
 }
 
-updateMatieres();
-updateChipsParMatiere();
-renderChips();
-updateBadge();
+// ── INIT ─────────────────────────────────────────────────────────────────────
+onClasse();
+badge();
 </script>
 </body>
 </html>

@@ -551,7 +551,14 @@ function generer(){
 
   if(hasPos&&hasNeg){
     p1=buildPos();
-    var neg2=["Cependant, "+joinList(negItems)+" reste"+( negItems.length>1?"nt":"")+" un point à travailler.","Des efforts sont à fournir sur : "+joinList(negItems)+".","Il faudra cependant progresser sur : "+joinList(negItems)+".","Un travail reste à fournir sur : "+joinList(negItems)+"."];
+    var neg1=negItems.length===1?negItems[0]:"certains points";
+    var negJ=joinList(negItems);
+    var neg2=[
+      "Cependant, "+negJ+" reste"+(negItems.length>1?"nt":"")+" un point à travailler.",
+      "Des progrès sont encore attendus concernant "+negJ+".",
+      "Il faudra cependant travailler sur "+negJ+" pour progresser davantage.",
+      "Un effort particulier est attendu en ce qui concerne "+negJ+"."
+    ];
     p2=neg2[regenCount%neg2.length];
     if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
   } else if(hasPos&&!hasNeg){

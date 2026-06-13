@@ -520,6 +520,17 @@ function generer(){
   var T_ADJ_POS={"investi":f?"investie":"investi","serieux":f?"sérieuse":"sérieux","applique":f?"appliquée":"appliqué","autonome":"autonome","fairplay":"fair-play"};
   var T_NOM_POS={"participation":"une participation active","equipe":"un esprit d'équipe","ecoute":"une bonne écoute","leadership":"un vrai leadership","technique":"un bon niveau technique"};
   var T_GEN={"curieux":"une curiosité intellectuelle","rigoureux":"de la rigueur","oral":"une bonne participation à l'oral","ecrit":"un travail écrit soigné","methode":"une bonne méthode de travail","efforts_gen":"des efforts constants","autonomie_gen":"de l'autonomie","respect_gen":"le respect des consignes","entraide":"un sens de l'entraide","creativite":"de la créativité","perseverance":"de la persévérance","assidu":"de l'assiduité","esprit_critique":"un esprit critique"};
+  // Formulations négatives contextualisées — déjà intégrées dans une phrase
+  var T_NEG_PHRASE={
+    "investissement": ["l'investissement en cours doit progresser","un manque d'investissement pénalise les résultats","l'implication en séance doit s'améliorer"],
+    "bavardage": ["le bavardage perturbe encore le bon déroulement des cours","les bavardages nuisent à la concentration de la classe","le bavardage est un frein à la progression"],
+    "concentration": ["la concentration doit être renforcée","un manque de concentration nuit aux résultats","la régularité dans l'attention est à améliorer"],
+    "difficultes": ["des lacunes sont à combler pour progresser","des notions fondamentales restent à consolider","les bases doivent être renforcées"],
+    "retrait": ["une plus grande participation est attendue","un manque d'implication dans les activités est à noter","il faudra davantage s'impliquer"],
+    "irregulier": ["la régularité dans l'effort est à améliorer","des résultats irréguliers qui ne reflètent pas le potentiel réel","l'investissement manque de constance"],
+    "efforts": ["davantage d'efforts sont nécessaires pour progresser","l'effort fourni est encore insuffisant","une remobilisation est attendue"],
+    "perturbateur": ["le comportement perturbe le bon déroulement des cours","une attitude plus respectueuse est indispensable","le comportement nuit à l'ambiance de travail"]
+  };
   var T_NEG={"investissement":"manque d'investissement","bavardage":"bavardage","concentration":"manque de concentration","difficultes":"difficultés techniques","retrait":"tendance à rester en retrait","irregulier":"irrégularité dans l'effort","efforts":"efforts insuffisants","perturbateur":"comportement perturbateur"};
   var T_COMP_ADJ={"respectueux":f?"respectueuse":"respectueux","agreable":"agréable","ponctuel":f?"ponctuelle":"ponctuel"};
   var T_COMP_NOM={"attitude":"une attitude positive"};
@@ -551,15 +562,17 @@ function generer(){
 
   if(hasPos&&hasNeg){
     p1=buildPos();
-    var neg1=negItems.length===1?negItems[0]:"certains points";
-    var negJ=joinList(negItems);
-    var neg2=[
-      "Cependant, "+negJ+" reste"+(negItems.length>1?"nt":"")+" un point à travailler.",
-      "Des progrès sont encore attendus concernant "+negJ+".",
-      "Il faudra cependant travailler sur "+negJ+" pour progresser davantage.",
-      "Un effort particulier est attendu en ce qui concerne "+negJ+"."
-    ];
-    p2=neg2[regenCount%neg2.length];
+    // Construire p2 avec des formulations naturelles pour chaque négatif
+    var negPhrases=neg.map(function(k){
+      var opts=T_NEG_PHRASE[k];
+      if(opts) return opts[regenCount%opts.length];
+      return T_NEG[k]||k;
+    });
+    if(negPhrases.length===1){
+      p2="Cependant, "+negPhrases[0]+".";
+    } else {
+      p2="Cependant, "+negPhrases.slice(0,-1).join(", ")+" et "+negPhrases[negPhrases.length-1]+".";
+    }
     if(hasProg&&prog.indexOf("potentiel")<0) p2+=" "+Il+" affiche néanmoins "+joinList(progItems)+".";
   } else if(hasPos&&!hasNeg){
     p1=buildPos();
@@ -572,11 +585,20 @@ function generer(){
       p2=(pos.length+gen.length)>=3?concluBien[regenCount%concluBien.length]:conclu[regenCount%conclu.length];
     }
   } else if(!hasPos&&hasNeg){
+    // Phrases négatives naturelles sans positif
+    var negPhrases2=neg.map(function(k){
+      var opts=T_NEG_PHRASE[k];
+      if(opts) return opts[regenCount%opts.length];
+      return T_NEG[k]||k;
+    });
+    var negSentence=negPhrases2.length===1
+      ? negPhrases2[0]
+      : negPhrases2.slice(0,-1).join(", ")+" et "+negPhrases2[negPhrases2.length-1];
     var phrases_neg_gen=[
-      [Il+" présente "+joinList(negItems)+" qui pénalise ses résultats.","Une remobilisation sérieuse est attendue."],
-      ["Des points à améliorer : "+joinList(negItems)+".","Un effort régulier est nécessaire pour progresser."],
-      ["Des difficultés persistent : "+joinList(negItems)+".","Une plus grande implication est indispensable."],
-      [Il+" doit travailler sur : "+joinList(negItems)+".","Des efforts constants permettront de progresser."]
+      [Il+" présente des fragilités : "+negSentence+".","Une remobilisation sérieuse est attendue."],
+      ["Ce trimestre, "+negSentence+".","Un effort régulier est nécessaire pour progresser."],
+      ["Des points sont à améliorer : "+negSentence+".","Une plus grande implication est attendue."],
+      [Il+" devra veiller à ce que "+negSentence+".","Des efforts constants permettront de progresser."]
     ];
     if(neg.indexOf("perturbateur")>=0){
       var perts=[

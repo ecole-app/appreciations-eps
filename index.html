@@ -302,9 +302,16 @@ function renderChips(){
   Object.keys(CHIPS).forEach(function(cat){
     var el=document.getElementById("cp-"+cat);
     if(!el)return;
-    el.innerHTML=CHIPS[cat].map(function(c){
-      return '<button class="chip '+cat+' '+(sel[c.k]?"on":"")+'" onclick="tog(''+c.k+'',''+cat+'')">'+c.l+'</button>';
-    }).join("");
+    el.innerHTML="";
+    CHIPS[cat].forEach(function(c){
+      var btn=document.createElement("button");
+      btn.className="chip "+cat+(sel[c.k]?" on":"");
+      btn.textContent=c.l;
+      btn.setAttribute("data-k",c.k);
+      btn.setAttribute("data-cat",cat);
+      btn.onclick=function(){tog(this.getAttribute("data-k"),this.getAttribute("data-cat"));};
+      el.appendChild(btn);
+    });
   });
   renderTags();
 }
